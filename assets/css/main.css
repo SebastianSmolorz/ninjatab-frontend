@@ -1,1 +1,16 @@
 @import "tailwindcss";
+@import "@nuxt/ui";
+
+@layer base {
+  :root {
+    --color-primary: 59 130 246; /* blue-500 */
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
+  }
+}
