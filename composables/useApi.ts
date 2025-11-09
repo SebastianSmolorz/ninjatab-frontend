@@ -57,8 +57,8 @@ export const useApi = () => {
           method: 'DELETE',
         }),
 
-      settle: (id: number) =>
-        apiFetch<Tab>(`/tabs/${id}/settle`, {
+      close: (id: number) =>
+        apiFetch<Tab>(`/tabs/${id}/close`, {
           method: 'POST',
         }),
     },

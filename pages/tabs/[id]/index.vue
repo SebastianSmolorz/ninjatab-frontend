@@ -24,24 +24,23 @@
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
               {{ tab.name }}
             </h2>
-            <div class="flex items-center gap-3">
-              <div>
-                <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
-                  Settled
-                </div>
-                <div v-else class="text-sm text-green-600 dark:text-green-400">
+            <div>
+              <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
+                Closed
+              </div>
+              <div v-else>
+                <div class="text-sm text-green-600 dark:text-green-400 mb-2">
                   Open
                 </div>
+                <UButton
+                  variant="outline"
+                  size="xs"
+                  @click="closeTab"
+                  :loading="closingTab"
+                >
+                  Mark as Closed
+                </UButton>
               </div>
-              <UButton
-                v-if="!tab.is_settled"
-                variant="outline"
-                size="sm"
-                @click="settleTab"
-                :loading="settlingTab"
-              >
-                Mark as Settled
-              </UButton>
             </div>
           </div>
           <p v-if="tab.description" class="text-gray-600 dark:text-gray-400 mb-4">
@@ -89,6 +88,7 @@
               Bills
             </h3>
             <UButton
+              v-if="!tab.is_settled"
               icon="i-heroicons-plus"
               size="sm"
               @click="router.push(`/tabs/${tab.id}/bills/create`)"
@@ -151,7 +151,7 @@ const tabStore = useTabStore()
 const billStore = useBillStore()
 
 // State
-const settlingTab = ref(false)
+const closingTab = ref(false)
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
@@ -189,19 +189,19 @@ const getStatusColor = (status: BillStatus) => {
   return colorMap[status] || 'text-gray-600 dark:text-gray-400'
 }
 
-const settleTab = async () => {
+const closeTab = async () => {
   if (!tab.value) return
 
-  settlingTab.value = true
+  closingTab.value = true
   try {
     const api = useApi()
-    await api.tabs.settle(tab.value.id)
+    await api.tabs.close(tab.value.id)
     await tabStore.fetchTabById(tab.value.id)
   } catch (error) {
-    console.error('Failed to settle tab:', error)
+    console.error('Failed to close tab:', error)
     // TODO: Show error notification
   } finally {
-    settlingTab.value = false
+    closingTab.value = false
   }
 }
 

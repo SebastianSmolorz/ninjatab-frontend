@@ -70,7 +70,7 @@
                 {{ tab.name }}
               </h3>
               <div v-if="tab.is_settled" class="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                Settled
+                Closed
               </div>
             </div>
             <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
