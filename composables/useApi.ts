@@ -78,6 +78,11 @@ export const useApi = () => {
           method: 'POST',
           body: JSON.stringify(data),
         }),
+
+      close: (id: number) =>
+        apiFetch<Bill>(`/bills/${id}/close`, {
+          method: 'POST',
+        }),
     },
   }
 }

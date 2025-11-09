@@ -21,9 +21,19 @@
       <div class="space-y-6">
         <!-- Tab info -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            {{ tab.name }}
-          </h2>
+          <div class="flex items-start justify-between mb-2">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+              {{ tab.name }}
+            </h2>
+            <div>
+              <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
+                Settled
+              </div>
+              <div v-else class="text-sm text-green-600 dark:text-green-400">
+                Open
+              </div>
+            </div>
+          </div>
           <p v-if="tab.description" class="text-gray-600 dark:text-gray-400 mb-4">
             {{ tab.description }}
           </p>
@@ -92,17 +102,16 @@
                   </h4>
                   <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
                     <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
-                    <span v-if="bill.date && bill.status">•</span>
-                    <span v-if="bill.status" :class="getStatusColor(bill.status)">
-                      {{ formatStatus(bill.status) }}
-                    </span>
                   </div>
                 </div>
                 <div class="text-right">
                   <div class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ bill.currency }} {{ (bill.total_amount || 0) }}
                   </div>
-                  <div v-if="!bill.is_closed" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <div v-if="bill.is_closed" class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                    Closed
+                  </div>
+                  <div v-else class="text-xs text-green-600 dark:text-green-400 mt-1">
                     Open
                   </div>
                 </div>
@@ -125,7 +134,6 @@ import { onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
-import type { BillStatus } from '~/types'
 
 const route = useRoute()
 const router = useRouter()

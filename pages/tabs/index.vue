@@ -58,12 +58,22 @@
           <div
             v-for="tab in tabs"
             :key="tab.id"
-            class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:border-primary-500 dark:hover:border-primary-400 transition-colors cursor-pointer"
+            :class="[
+              'rounded-lg border p-6 transition-colors cursor-pointer',
+              tab.is_settled
+                ? 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-800 opacity-60 hover:opacity-80'
+                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-400'
+            ]"
             @click="navigateToTab(tab.id)"
           >
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              {{ tab.name }}
-            </h3>
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                {{ tab.name }}
+              </h3>
+              <div v-if="tab.is_settled" class="text-xs text-gray-600 dark:text-gray-400 font-medium">
+                Settled
+              </div>
+            </div>
             <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {{ tab.description }}
             </p>
