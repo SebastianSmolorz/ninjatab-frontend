@@ -62,7 +62,7 @@
           </div>
         </div>
 
-        <!-- Bills section (placeholder) -->
+        <!-- Bills section -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -71,11 +71,47 @@
             <UButton
               icon="i-heroicons-plus"
               size="sm"
+              @click="router.push(`/tabs/${tab.id}/bills/create`)"
             >
               Add Bill
             </UButton>
           </div>
-          <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+
+          <!-- Bills list -->
+          <div v-if="bills && bills.length > 0" class="space-y-3">
+            <div
+              v-for="bill in bills"
+              :key="bill.id"
+              class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary-300 dark:hover:border-primary-700 transition-colors cursor-pointer"
+              @click="tab && router.push(`/tabs/${tab.id}/bills/${bill.id}`)"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex-1">
+                  <h4 class="font-medium text-gray-900 dark:text-white">
+                    {{ bill.description }}
+                  </h4>
+                  <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
+                    <span v-if="bill.date && bill.status">•</span>
+                    <span v-if="bill.status" :class="getStatusColor(bill.status)">
+                      {{ formatStatus(bill.status) }}
+                    </span>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div class="text-lg font-semibold text-gray-900 dark:text-white">
+                    {{ bill.currency }} {{ (bill.total_amount || 0) }}
+                  </div>
+                  <div v-if="!bill.is_closed" class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Open
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
             No bills yet. Add your first expense to get started.
           </div>
         </div>
@@ -88,17 +124,51 @@
 import { onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
+import { useBillStore } from '~/stores/bills'
+import type { BillStatus } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
 const tabStore = useTabStore()
+const billStore = useBillStore()
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
 const loading = computed(() => tabStore.isLoading)
 const error = computed(() => tabStore.error)
+const bills = computed(() => billStore.bills)
 
-// Load tab on mount
+// Helper functions
+const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr)
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  })
+}
+
+const formatStatus = (status: BillStatus) => {
+  const statusMap: Record<BillStatus, string> = {
+    'open': 'Open',
+    'all_claimed': 'All Claimed',
+    'all_paid': 'All Paid',
+    'archived': 'Archived'
+  }
+  return statusMap[status] || status
+}
+
+const getStatusColor = (status: BillStatus) => {
+  const colorMap: Record<BillStatus, string> = {
+    'open': 'text-yellow-600 dark:text-yellow-400',
+    'all_claimed': 'text-blue-600 dark:text-blue-400',
+    'all_paid': 'text-green-600 dark:text-green-400',
+    'archived': 'text-gray-600 dark:text-gray-400'
+  }
+  return colorMap[status] || 'text-gray-600 dark:text-gray-400'
+}
+
+// Load tab and bills on mount
 onMounted(async () => {
   const id = parseInt(route.params.id as string)
   if (isNaN(id)) {
@@ -108,8 +178,9 @@ onMounted(async () => {
 
   try {
     await tabStore.fetchTabById(id)
+    await billStore.fetchBills(id)
   } catch (error) {
-    console.error('Failed to load tab:', error)
+    console.error('Failed to load tab or bills:', error)
   }
 })
 </script>
