@@ -9,7 +9,6 @@
     <div v-else-if="error" class="max-w-7xl mx-auto px-4 py-8">
       <UAlert
         icon="i-heroicons-exclamation-triangle"
-        color="red"
         variant="soft"
         title="Error loading tab"
         :description="error"
@@ -72,6 +71,23 @@
           </div>
         </div>
 
+        <!-- Actions -->
+        <div v-if="!tab.is_settled" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Actions
+          </h3>
+          <UButton
+            variant="outline"
+            @click="settleTab"
+            :loading="settlingTab"
+          >
+            Mark Tab as Settled
+          </UButton>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            Once settled, the tab cannot be reopened.
+          </p>
+        </div>
+
         <!-- Bills section -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div class="flex items-center justify-between mb-4">
@@ -130,7 +146,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
@@ -139,6 +155,9 @@ const route = useRoute()
 const router = useRouter()
 const tabStore = useTabStore()
 const billStore = useBillStore()
+
+// State
+const settlingTab = ref(false)
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
@@ -174,6 +193,22 @@ const getStatusColor = (status: BillStatus) => {
     'archived': 'text-gray-600 dark:text-gray-400'
   }
   return colorMap[status] || 'text-gray-600 dark:text-gray-400'
+}
+
+const settleTab = async () => {
+  if (!tab.value) return
+
+  settlingTab.value = true
+  try {
+    const api = useApi()
+    await api.tabs.settle(tab.value.id)
+    await tabStore.fetchTabById(tab.value.id)
+  } catch (error) {
+    console.error('Failed to settle tab:', error)
+    // TODO: Show error notification
+  } finally {
+    settlingTab.value = false
+  }
 }
 
 // Load tab and bills on mount

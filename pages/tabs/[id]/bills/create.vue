@@ -127,7 +127,6 @@
               </div>
               <UButton
                 @click="removeLineItem(index)"
-                color="red"
                 variant="ghost"
                 icon="i-heroicons-trash"
                 size="sm"

@@ -26,7 +26,6 @@
         <UAlert
           v-else-if="error"
           icon="i-heroicons-exclamation-triangle"
-          color="red"
           variant="soft"
           title="Error loading tabs"
           :description="error"

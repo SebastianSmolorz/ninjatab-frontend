@@ -56,6 +56,11 @@ export const useApi = () => {
         apiFetch<{ success: boolean }>(`/tabs/${id}`, {
           method: 'DELETE',
         }),
+
+      settle: (id: number) =>
+        apiFetch<Tab>(`/tabs/${id}/settle`, {
+          method: 'POST',
+        }),
     },
 
     // Bill endpoints

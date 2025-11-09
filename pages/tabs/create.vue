@@ -94,7 +94,6 @@
                   <UButton
                     v-if="formData.people.length > 1"
                     @click="removePerson(index)"
-                    color="red"
                     variant="ghost"
                     icon="i-heroicons-trash"
                     size="lg"

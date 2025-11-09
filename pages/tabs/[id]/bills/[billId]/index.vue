@@ -218,7 +218,6 @@
             Actions
           </h3>
           <UButton
-            color="red"
             variant="outline"
             @click="closeBill"
             :loading="closingBill"
