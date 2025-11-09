@@ -24,13 +24,24 @@
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
               {{ tab.name }}
             </h2>
-            <div>
-              <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
-                Settled
+            <div class="flex items-center gap-3">
+              <div>
+                <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
+                  Settled
+                </div>
+                <div v-else class="text-sm text-green-600 dark:text-green-400">
+                  Open
+                </div>
               </div>
-              <div v-else class="text-sm text-green-600 dark:text-green-400">
-                Open
-              </div>
+              <UButton
+                v-if="!tab.is_settled"
+                variant="outline"
+                size="sm"
+                @click="settleTab"
+                :loading="settlingTab"
+              >
+                Mark as Settled
+              </UButton>
             </div>
           </div>
           <p v-if="tab.description" class="text-gray-600 dark:text-gray-400 mb-4">
@@ -48,44 +59,27 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             People
           </h3>
-          <div class="space-y-3">
+          <div class="flex flex-wrap gap-4">
             <div
               v-for="person in tab.people"
               :key="person.id"
-              class="flex items-center gap-3"
+              class="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 rounded-lg px-4 py-3 min-w-0"
             >
-              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
+              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
                 <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
                   {{ person.name.charAt(0).toUpperCase() }}
                 </span>
               </div>
-              <div>
-                <div class="font-medium text-gray-900 dark:text-white">
+              <div class="min-w-0">
+                <div class="font-medium text-gray-900 dark:text-white truncate">
                   {{ person.name }}
                 </div>
-                <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400">
+                <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400 truncate">
                   {{ person.email }}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Actions -->
-        <div v-if="!tab.is_settled" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Actions
-          </h3>
-          <UButton
-            variant="outline"
-            @click="settleTab"
-            :loading="settlingTab"
-          >
-            Mark Tab as Settled
-          </UButton>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">
-            Once settled, the tab cannot be reopened.
-          </p>
         </div>
 
         <!-- Bills section -->

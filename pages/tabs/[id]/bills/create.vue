@@ -59,7 +59,7 @@
             </label>
             <USelect
               v-model="formData.currency"
-              :options="currencyOptions"
+              :items="currencyOptions"
               size="xl"
             />
           </div>
