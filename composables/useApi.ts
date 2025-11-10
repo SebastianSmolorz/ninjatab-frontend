@@ -6,6 +6,7 @@ import type {
   BillListItem,
   CreateBillData,
   SubmitSplitsData,
+  SimplifyResult,
 } from '~/types'
 
 export const useApi = () => {
@@ -59,6 +60,11 @@ export const useApi = () => {
 
       close: (id: number) =>
         apiFetch<Tab>(`/tabs/${id}/close`, {
+          method: 'POST',
+        }),
+
+      simplify: (id: number) =>
+        apiFetch<SimplifyResult>(`/tabs/${id}/simplify`, {
           method: 'POST',
         }),
     },

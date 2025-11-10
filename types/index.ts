@@ -61,8 +61,24 @@ export interface TabListItem {
   updated_at: string
 }
 
+export interface Settlement {
+  id: number
+  from_person: TabPerson
+  to_person: TabPerson
+  amount: number
+  currency: Currency
+  created_at: string
+  updated_at: string
+}
+
 export interface Tab extends TabListItem {
   people: TabPerson[]
+  settlements: Settlement[]
+}
+
+export interface SimplifyResult {
+  settlements: Settlement[]
+  message: string
 }
 
 // Line Item and Claim interfaces

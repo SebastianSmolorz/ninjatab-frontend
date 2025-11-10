@@ -28,18 +28,29 @@
               <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
                 Closed
               </div>
-              <div v-else>
+              <div v-else class="flex gap-2">
                 <div class="text-sm text-green-600 dark:text-green-400 mb-2">
                   Open
                 </div>
-                <UButton
-                  variant="outline"
-                  size="xs"
-                  @click="closeTab"
-                  :loading="closingTab"
-                >
-                  Mark as Closed
-                </UButton>
+                <div class="flex flex-col gap-2">
+                  <UButton
+                    variant="outline"
+                    size="xs"
+                    @click="closeTab"
+                    :loading="closingTab"
+                  >
+                    Mark as Closed
+                  </UButton>
+                  <UButton
+                    variant="solid"
+                    size="xs"
+                    color="primary"
+                    @click="closeAndSimplify"
+                    :loading="simplifyingTab"
+                  >
+                    Close & Simplify
+                  </UButton>
+                </div>
               </div>
             </div>
           </div>
@@ -75,6 +86,52 @@
                 </div>
                 <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400 truncate">
                   {{ person.email }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Settlements section -->
+        <div v-if="tab.settlements && tab.settlements.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Settlements
+          </h3>
+          <div class="space-y-3">
+            <div
+              v-for="settlement in tab.settlements"
+              :key="settlement.id"
+              class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+            >
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                    {{ settlement.from_person.name.charAt(0).toUpperCase() }}
+                  </span>
+                </div>
+                <div>
+                  <div class="font-medium text-gray-900 dark:text-white">
+                    {{ settlement.from_person.name }}
+                  </div>
+                  <div class="text-sm text-gray-500 dark:text-gray-400">
+                    pays
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="text-xl font-bold text-green-700 dark:text-green-400">
+                  {{ settlement.currency }} {{ settlement.amount }}
+                </div>
+                <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 text-gray-400" />
+                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                    {{ settlement.to_person.name.charAt(0).toUpperCase() }}
+                  </span>
+                </div>
+                <div>
+                  <div class="font-medium text-gray-900 dark:text-white">
+                    {{ settlement.to_person.name }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -152,6 +209,7 @@ const billStore = useBillStore()
 
 // State
 const closingTab = ref(false)
+const simplifyingTab = ref(false)
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
@@ -202,6 +260,26 @@ const closeTab = async () => {
     // TODO: Show error notification
   } finally {
     closingTab.value = false
+  }
+}
+
+const closeAndSimplify = async () => {
+  if (!tab.value) return
+
+  simplifyingTab.value = true
+  try {
+    const api = useApi()
+    // First close the tab
+    await api.tabs.close(tab.value.id)
+    // Then simplify it
+    await api.tabs.simplify(tab.value.id)
+    // Refresh the tab to get the settlements
+    await tabStore.fetchTabById(tab.value.id)
+  } catch (error) {
+    console.error('Failed to close and simplify tab:', error)
+    // TODO: Show error notification
+  } finally {
+    simplifyingTab.value = false
   }
 }
 

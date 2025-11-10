@@ -63,6 +63,18 @@
               size="xl"
             />
           </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Who Paid? <span class="text-red-500">*</span>
+            </label>
+            <USelect
+              v-model="formData.paid_by_id"
+              :items="peopleOptions"
+              size="xl"
+              placeholder="Select who paid for this bill"
+            />
+          </div>
         </div>
       </div>
 
@@ -320,6 +332,7 @@ const loading = ref(false)
 const formData = ref({
   description: '',
   currency: Currency.GBP,
+  paid_by_id: null as number | null,
   line_items: [] as Array<{ description: string; value: number }>
 })
 
@@ -345,8 +358,18 @@ const tabId = computed(() => parseInt(route.params.id as string))
 
 const tab = computed(() => tabStore.currentTab)
 
+const peopleOptions = computed(() => {
+  if (!tab.value?.people) return []
+  return tab.value.people.map(person => ({
+    label: person.name,
+    value: person.id
+  }))
+})
+
 const canProceedToStep2 = computed(() => {
-  return formData.value.description.trim().length > 0 && formData.value.currency
+  return formData.value.description.trim().length > 0 &&
+         formData.value.currency &&
+         formData.value.paid_by_id !== null
 })
 
 const canProceedToStep3 = computed(() => {
@@ -361,6 +384,11 @@ const totalAmount = computed(() => {
 onMounted(async () => {
   if (!tabStore.currentTab || tabStore.currentTab.id !== tabId.value) {
     await tabStore.fetchTabById(tabId.value)
+  }
+
+  // Auto-select first person as payer if not already selected
+  if (tab.value?.people && tab.value.people.length > 0 && !formData.value.paid_by_id) {
+    formData.value.paid_by_id = tab.value.people[0].id
   }
 })
 
@@ -507,6 +535,7 @@ const createBill = async () => {
       description: formData.value.description.trim(),
       currency: formData.value.currency,
       creator_id: currentTab.people[0].id,
+      paid_by_id: formData.value.paid_by_id ?? undefined,
       line_items: lineItems
     })
 
