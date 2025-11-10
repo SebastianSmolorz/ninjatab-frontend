@@ -1,12 +1,12 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <UMain class="bg-gray-50 dark:bg-gray-900">
     <!-- Loading state -->
     <div v-if="loading" class="flex items-center justify-center py-12">
       <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-400" />
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="max-w-4xl mx-auto px-4 py-8">
+    <UContainer v-else-if="error" class="py-8 max-w-4xl">
       <UAlert
         icon="i-heroicons-exclamation-triangle"
         color="red"
@@ -14,10 +14,10 @@
         title="Error loading bill"
         :description="error"
       />
-    </div>
+    </UContainer>
 
     <!-- Bill content -->
-    <div v-else-if="bill" class="max-w-4xl mx-auto px-4 py-8">
+    <UContainer v-else-if="bill" class="py-8 max-w-4xl">
       <div class="space-y-6">
         <!-- Header with back button -->
         <div class="flex items-center gap-4">
@@ -39,6 +39,14 @@
               </h2>
               <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                 <span>{{ formatDate(bill.date) }}</span>
+                <span>•</span>
+                <USelect
+                  v-model="selectedCurrency"
+                  :items="currencyOptions"
+                  size="xs"
+                  @change="updateCurrency"
+                  :disabled="bill.is_closed"
+                />
               </div>
             </div>
             <div class="text-right">
@@ -222,16 +230,16 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </UContainer>
+  </UMain>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useBillStore } from '~/stores/bills'
 import { useTabStore } from '~/stores/tabs'
-import type { BillStatus } from '~/types'
+import { Currency, type BillStatus } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -244,6 +252,7 @@ const savingsplits = ref(false)
 const closingBill = ref(false)
 const splitModes = ref<Record<number, 'even' | 'custom'>>({})
 const splits = ref<Record<number, Record<number, number>>>({})
+const selectedCurrency = ref<Currency>(Currency.GBP)
 
 // Computed
 const tabId = computed(() => parseInt(route.params.id as string))
@@ -251,6 +260,18 @@ const billId = computed(() => parseInt(route.params.billId as string))
 const bill = computed(() => billStore.currentBill)
 const loading = computed(() => billStore.isLoading)
 const error = computed(() => billStore.error)
+
+const currencyOptions = Object.values(Currency).map(c => ({
+  label: c,
+  value: c
+}))
+
+// Watch bill changes to update selected currency
+watch(bill, (newBill) => {
+  if (newBill) {
+    selectedCurrency.value = newBill.currency as Currency
+  }
+}, { immediate: true })
 
 // Helper functions
 const formatDate = (dateStr: string) => {
@@ -384,6 +405,22 @@ const saveSplits = async () => {
     // TODO: Show error notification
   } finally {
     savingsplits.value = false
+  }
+}
+
+const updateCurrency = async () => {
+  if (!bill.value || selectedCurrency.value === bill.value.currency) return
+
+  try {
+    const api = useApi()
+    await api.bills.update(billId.value, { currency: selectedCurrency.value })
+    await billStore.fetchBillById(billId.value)
+  } catch (error) {
+    console.error('Failed to update currency:', error)
+    // Revert on error
+    if (bill.value) {
+      selectedCurrency.value = bill.value.currency as Currency
+    }
   }
 }
 

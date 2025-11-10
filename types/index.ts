@@ -170,6 +170,12 @@ export interface SubmitSplitsData {
   line_item_splits: LineItemSplitSubmit[]
 }
 
+export interface UpdateBillData {
+  description?: string
+  currency?: Currency
+  paid_by_id?: number
+}
+
 // Draft splits for UI state
 export interface DraftSplits {
   [lineItemId: number]: {

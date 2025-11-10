@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+  <UMain class="bg-gray-50 dark:bg-gray-900 flex flex-col">
     <!-- Progress indicator -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
       <div class="max-w-2xl mx-auto px-4 py-3">
@@ -29,7 +29,7 @@
     <!-- Form container -->
     <div class="flex-1 overflow-y-auto">
       <!-- Step 1: Bill Details -->
-      <div v-if="step === 1" class="max-w-2xl mx-auto px-4 py-8">
+      <UContainer v-if="step === 1" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -76,10 +76,10 @@
             />
           </div>
         </div>
-      </div>
+      </UContainer>
 
       <!-- Step 2: Add Line Items -->
-      <div v-if="step === 2" class="max-w-2xl mx-auto px-4 py-8">
+      <UContainer v-if="step === 2" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -165,10 +165,10 @@
             description="Add at least one line item to continue"
           />
         </div>
-      </div>
+      </UContainer>
 
       <!-- Step 3: Create Splits -->
-      <div v-if="step === 3" class="max-w-2xl mx-auto px-4 py-8">
+      <UContainer v-if="step === 3" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -264,12 +264,12 @@
             </div>
           </div>
         </div>
-      </div>
+      </UContainer>
     </div>
 
     <!-- Footer actions - Fixed at bottom -->
     <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 sticky bottom-0">
-      <div class="max-w-2xl mx-auto px-4 py-4">
+      <UContainer class="py-4 max-w-2xl">
         <div class="flex gap-3">
           <UButton
             v-if="step > 1"
@@ -308,9 +308,9 @@
             Create Bill
           </UButton>
         </div>
-      </div>
+      </UContainer>
     </div>
-  </div>
+  </UMain>
 </template>
 
 <script setup lang="ts">
@@ -384,6 +384,11 @@ const totalAmount = computed(() => {
 onMounted(async () => {
   if (!tabStore.currentTab || tabStore.currentTab.id !== tabId.value) {
     await tabStore.fetchTabById(tabId.value)
+  }
+
+  // Set default currency from tab
+  if (tab.value?.default_currency) {
+    formData.value.currency = tab.value.default_currency as Currency
   }
 
   // Auto-select first person as payer if not already selected

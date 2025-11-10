@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <UMain class="bg-gray-50 dark:bg-gray-900">
     <!-- Content -->
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <UContainer class="py-8">
       <div class="space-y-6">
         <!-- Header -->
         <div class="flex justify-between items-center">
@@ -87,8 +87,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </UContainer>
+  </UMain>
 </template>
 
 <script setup lang="ts">

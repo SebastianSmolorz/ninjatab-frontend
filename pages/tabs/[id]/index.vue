@@ -1,22 +1,22 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <UMain class="bg-gray-50 dark:bg-gray-900">
     <!-- Loading state -->
     <div v-if="loading" class="flex items-center justify-center py-12">
       <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-400" />
     </div>
 
     <!-- Error state -->
-    <div v-else-if="error" class="max-w-7xl mx-auto px-4 py-8">
+    <UContainer v-else-if="error" class="py-8">
       <UAlert
         icon="i-heroicons-exclamation-triangle"
         variant="soft"
         title="Error loading tab"
         :description="error"
       />
-    </div>
+    </UContainer>
 
     <!-- Tab content -->
-    <div v-else-if="tab" class="max-w-7xl mx-auto px-4 py-8">
+    <UContainer v-else-if="tab" class="py-8">
       <div class="space-y-6">
         <!-- Tab info -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
@@ -192,8 +192,8 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </UContainer>
+  </UMain>
 </template>
 
 <script setup lang="ts">

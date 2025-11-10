@@ -7,6 +7,7 @@ import type {
   CreateBillData,
   SubmitSplitsData,
   SimplifyResult,
+  UpdateBillData,
 } from '~/types'
 
 export const useApi = () => {
@@ -93,6 +94,12 @@ export const useApi = () => {
       close: (id: number) =>
         apiFetch<Bill>(`/bills/${id}/close`, {
           method: 'POST',
+        }),
+
+      update: (id: number, data: UpdateBillData) =>
+        apiFetch<Bill>(`/bills/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
         }),
     },
   }
