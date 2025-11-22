@@ -61,6 +61,12 @@ export interface TabListItem {
   updated_at: string
 }
 
+export interface PersonBalance {
+  person_id: number
+  person_name: string
+  balance: number
+}
+
 export interface Settlement {
   id: number
   from_person: TabPerson
@@ -74,6 +80,7 @@ export interface Settlement {
 export interface Tab extends TabListItem {
   people: TabPerson[]
   settlements: Settlement[]
+  balances: PersonBalance[]
 }
 
 export interface SimplifyResult {
@@ -113,6 +120,7 @@ export interface BillListItem {
   date: string
   is_closed: boolean
   total_amount: number
+  paid_by: TabPerson | null
   created_at: string
 }
 

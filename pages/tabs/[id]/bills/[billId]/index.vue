@@ -193,18 +193,18 @@
                   <!-- People rows -->
                   <div class="space-y-3">
                     <div
-                      v-for="claim in item.person_claims"
-                      :key="claim.id"
+                      v-for="person in tabStore.currentTab?.people || []"
+                      :key="person.id"
                       class="flex items-start gap-3"
                     >
                       <div class="flex-1">
                         <div class="font-medium text-gray-900 dark:text-white text-sm">
-                          {{ claim.person_name }}
+                          {{ person.name }}
                         </div>
                       </div>
                       <div class="w-24">
                         <UInput
-                          v-model.number="splits[itemIndex][claim.person_id]"
+                          v-model.number="splits[itemIndex][person.id]"
                           type="number"
                           min="0"
                           step="1"
@@ -214,7 +214,7 @@
                         />
                         <!-- Calculated amount display -->
                         <div class="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
-                          {{ calculateShareAmount(itemIndex, claim.person_id, item.value) }}
+                          {{ calculateShareAmount(itemIndex, person.id, item.value) }}
                         </div>
                       </div>
                     </div>
@@ -223,7 +223,7 @@
 
                 <!-- Even split mode -->
                 <div v-else class="text-sm text-gray-600 dark:text-gray-400">
-                  Split evenly between all {{ item.person_claims.length }} people
+                  Split evenly between all {{ tabStore.currentTab?.people.length || 0 }} people
                 </div>
               </div>
             </div>
@@ -336,7 +336,7 @@ const calculateShareAmount = (itemIndex: number, personId: number, itemValue: nu
 }
 
 const enterEditMode = () => {
-  if (!bill.value) return
+  if (!bill.value || !tabStore.currentTab) return
 
   // Initialize split states from current bill data
   splitModes.value = {}
@@ -349,8 +349,15 @@ const enterEditMode = () => {
 
     splitModes.value[index] = isEven ? 'even' : 'custom'
 
-    // Initialize splits object
+    // Initialize splits object for ALL tab people
     splits.value[index] = {}
+
+    // First, set all people to 0
+    tabStore.currentTab.people.forEach(person => {
+      splits.value[index][person.id] = 0
+    })
+
+    // Then, update with existing claim values
     item.person_claims.forEach(claim => {
       splits.value[index][claim.person_id] = Number(claim.split_value) || 0
     })
@@ -366,30 +373,32 @@ const cancelEdit = () => {
 }
 
 const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
-  if (!bill.value) return
+  if (!bill.value || !tabStore.currentTab) return
 
   splitModes.value[itemIndex] = mode
 
-  // If switching to even, set all splits to 1
+  // If switching to even, set all tab people's splits to 1
   if (mode === 'even') {
-    const item = bill.value.line_items[itemIndex]
-    item.person_claims.forEach(claim => {
-      splits.value[itemIndex][claim.person_id] = 1
+    tabStore.currentTab.people.forEach(person => {
+      splits.value[itemIndex][person.id] = 1
     })
   }
 }
 
 const saveSplits = async () => {
-  if (!bill.value) return
+  if (!bill.value || !tabStore.currentTab) return
 
   savingsplits.value = true
 
   try {
-    // Update draft splits in store
+    // Update draft splits in store for ALL tab people
     bill.value.line_items.forEach((item, itemIndex) => {
-      item.person_claims.forEach(claim => {
-        const splitValue = splits.value[itemIndex][claim.person_id] || 0
-        billStore.updateDraftSplit(item.id, claim.person_id, splitValue)
+      tabStore.currentTab!.people.forEach(person => {
+        const splitValue = splits.value[itemIndex][person.id] || 0
+        // Only include people with split_value > 0 (as per user requirement)
+        if (splitValue > 0) {
+          billStore.updateDraftSplit(item.id, person.id, splitValue)
+        }
       })
     })
 

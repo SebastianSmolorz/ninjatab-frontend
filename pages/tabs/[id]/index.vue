@@ -92,6 +92,36 @@
           </div>
         </div>
 
+        <!-- Per-person balances section -->
+        <div v-if="tab.balances && tab.balances.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Per Person Balance
+          </h3>
+          <div class="space-y-2">
+            <div
+              v-for="balance in tab.balances"
+              :key="balance.person_id"
+              class="flex items-center justify-between p-3 rounded-lg"
+              :class="Number(balance.balance) > 0 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'"
+            >
+              <div class="font-medium text-gray-900 dark:text-white">
+                {{ balance.person_name }}
+              </div>
+              <div class="flex items-center gap-2">
+                <span
+                  class="text-lg font-semibold"
+                  :class="Number(balance.balance) > 0 ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'"
+                >
+                  {{ Number(balance.balance) > 0 ? '+' : '' }}{{ tab.settlements[0]?.currency || 'GBP' }} {{ Number(balance.balance).toFixed(2) }}
+                </span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ Number(balance.balance) > 0 ? '(is owed)' : '(owes)' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Settlements section -->
         <div v-if="tab.settlements && tab.settlements.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
@@ -169,6 +199,10 @@
                   </h4>
                   <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
                     <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
+                    <span v-if="bill.paid_by">•</span>
+                    <span v-if="bill.paid_by" class="text-primary-600 dark:text-primary-400">
+                      Paid by {{ bill.paid_by.name }}
+                    </span>
                   </div>
                 </div>
                 <div class="text-right">
