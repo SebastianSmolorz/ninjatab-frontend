@@ -202,7 +202,7 @@ export const useBillStore = defineStore('bills', {
           if (!splits) continue
 
           const person_splits = Object.entries(splits)
-            .filter(([_, value]) => value !== null)
+            .filter(([_, value]) => value !== null && value > 0)
             .map(([personId, value]) => ({
               person_id: parseInt(personId),
               split_value: value,

@@ -59,6 +59,34 @@
                     :rows="3"
                 />
               </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Default Currency
+                  </label>
+                  <USelectMenu
+                      v-model="formData.default_currency"
+                      :items="Object.values(Currency)"
+                  />
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    For creating new bills
+                  </p>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Settlement Currency
+                  </label>
+                  <USelectMenu
+                      v-model="formData.settlement_currency"
+                      :items="Object.values(Currency)"
+                  />
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    For totals and settlements
+                  </p>
+                </div>
+              </div>
             </div>
           </UContainer>
         </div>
@@ -181,6 +209,8 @@ const loading = ref(false)
 const formData = ref({
   name: '',
   description: '',
+  default_currency: Currency.GBP,
+  settlement_currency: Currency.GBP,
   people: [{name: ''}]
 })
 
@@ -229,7 +259,8 @@ const createTab = async () => {
     const newTab = await tabStore.createTab({
       name: formData.value.name.trim(),
       description: formData.value.description.trim(),
-      default_currency: Currency.GBP,
+      default_currency: formData.value.default_currency,
+      settlement_currency: formData.value.settlement_currency,
       people: validPeople
     })
 

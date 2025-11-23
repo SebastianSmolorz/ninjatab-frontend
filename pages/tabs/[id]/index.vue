@@ -92,31 +92,53 @@
           </div>
         </div>
 
-        <!-- Per-person balances section -->
-        <div v-if="tab.balances && tab.balances.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <!-- Per-person spending totals section -->
+        <div v-if="personSpendingTotals.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Per Person Balance
+            Total Spent per Person
           </h3>
           <div class="space-y-2">
             <div
-              v-for="balance in tab.balances"
-              :key="balance.person_id"
-              class="flex items-center justify-between p-3 rounded-lg"
-              :class="Number(balance.balance) > 0 ? 'bg-green-50 dark:bg-green-900/20' : 'bg-red-50 dark:bg-red-900/20'"
+              v-for="person in personSpendingTotals"
+              :key="person.person_id"
+              class="flex items-center justify-between py-3 px-4 rounded-lg bg-gray-50 dark:bg-gray-900"
             >
-              <div class="font-medium text-gray-900 dark:text-white">
-                {{ balance.person_name }}
+              <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
+              <span class="text-lg font-semibold text-blue-700 dark:text-blue-400">
+                {{ tab.settlement_currency }} {{ formatCurrencyAmount(Number(person.total)) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total spent per currency section -->
+        <div v-if="tab.settlements && tab.settlements.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Total Spent
+          </h3>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div
+              v-for="(total, currency) in totalSpentByCurrency"
+              :key="currency"
+              class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+            >
+              <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                {{ currency }}
               </div>
-              <div class="flex items-center gap-2">
-                <span
-                  class="text-lg font-semibold"
-                  :class="Number(balance.balance) > 0 ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400'"
-                >
-                  {{ Number(balance.balance) > 0 ? '+' : '' }}{{ tab.settlements[0]?.currency || 'GBP' }} {{ Number(balance.balance).toFixed(2) }}
-                </span>
-                <span class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ Number(balance.balance) > 0 ? '(is owed)' : '(owes)' }}
-                </span>
+              <div class="text-2xl font-bold text-blue-700 dark:text-blue-400">
+                {{ formatCurrencyAmount(total) }}
+              </div>
+            </div>
+            <!-- Total in settlement currency (converted) -->
+            <div
+              v-if="totalSpentInGBP !== null"
+              class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+            >
+              <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                Total ({{ tab.settlement_currency }})
+              </div>
+              <div class="text-2xl font-bold text-green-700 dark:text-green-400">
+                {{ formatCurrencyAmount(totalSpentInGBP) }}
               </div>
             </div>
           </div>
@@ -235,6 +257,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
+import type { PersonSpendingTotal } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -244,6 +267,7 @@ const billStore = useBillStore()
 // State
 const closingTab = ref(false)
 const simplifyingTab = ref(false)
+const personSpendingTotals = ref<PersonSpendingTotal[]>([])
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
@@ -251,7 +275,39 @@ const loading = computed(() => tabStore.isLoading)
 const error = computed(() => tabStore.error)
 const bills = computed(() => billStore.bills)
 
+// Calculate total spent per currency
+const totalSpentByCurrency = computed(() => {
+  if (!bills.value) return {}
+
+  const totals: Record<string, number> = {}
+
+  bills.value.forEach(bill => {
+    const currency = bill.currency
+    const amount = Number(bill.total_amount) || 0
+
+    if (!totals[currency]) {
+      totals[currency] = 0
+    }
+    totals[currency] += amount
+  })
+
+  return totals
+})
+
+// Get total spent in GBP from backend
+const totalSpentInGBP = computed(() => {
+  if (!tab.value?.total_spent_gbp) return null
+  return Number(tab.value.total_spent_gbp)
+})
+
 // Helper functions
+const formatCurrencyAmount = (amount: number) => {
+  return amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+}
+
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
   return date.toLocaleDateString('en-US', {
@@ -328,6 +384,10 @@ onMounted(async () => {
   try {
     await tabStore.fetchTabById(id)
     await billStore.fetchBills(id)
+
+    // Fetch person spending totals
+    const api = useApi()
+    personSpendingTotals.value = await api.tabs.personTotals(id)
   } catch (error) {
     console.error('Failed to load tab or bills:', error)
   }

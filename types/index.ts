@@ -67,6 +67,12 @@ export interface PersonBalance {
   balance: number
 }
 
+export interface PersonSpendingTotal {
+  person_id: number
+  person_name: string
+  total: number
+}
+
 export interface Settlement {
   id: number
   from_person: TabPerson
@@ -81,6 +87,8 @@ export interface Tab extends TabListItem {
   people: TabPerson[]
   settlements: Settlement[]
   balances: PersonBalance[]
+  settlement_currency: Currency
+  total_spent_gbp: number | null
 }
 
 export interface SimplifyResult {
@@ -137,6 +145,7 @@ export interface CreateTabData {
   name: string
   description: string
   default_currency: Currency
+  settlement_currency: Currency
   people: TabPersonCreate[]
 }
 

@@ -85,6 +85,25 @@
           </div>
         </div>
 
+        <!-- Person totals summary -->
+        <div v-if="personTotals.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Spending per person
+          </h3>
+          <div class="space-y-2">
+            <div
+              v-for="person in personTotals"
+              :key="person.person_id"
+              class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+            >
+              <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
+              <span class="text-lg font-semibold text-gray-900 dark:text-white">
+                {{ bill.currency }} {{ formatCurrencyAmount(person.total) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
         <!-- Line items -->
         <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
           <div class="flex items-center justify-between mb-4">
@@ -266,6 +285,30 @@ const currencyOptions = Object.values(Currency).map(c => ({
   value: c
 }))
 
+// Calculate person totals (sum of all their claims across line items)
+const personTotals = computed(() => {
+  if (!bill.value) return []
+
+  const totals = new Map<number, { person_id: number, person_name: string, total: number }>()
+
+  bill.value.line_items.forEach(lineItem => {
+    lineItem.person_claims.forEach(claim => {
+      const amount = Number(claim.calculated_amount) || 0
+      if (totals.has(claim.person_id)) {
+        totals.get(claim.person_id)!.total += amount
+      } else {
+        totals.set(claim.person_id, {
+          person_id: claim.person_id,
+          person_name: claim.person_name,
+          total: amount
+        })
+      }
+    })
+  })
+
+  return Array.from(totals.values()).sort((a, b) => a.person_name.localeCompare(b.person_name))
+})
+
 // Watch bill changes to update selected currency
 watch(bill, (newBill) => {
   if (newBill) {
@@ -274,6 +317,13 @@ watch(bill, (newBill) => {
 }, { immediate: true })
 
 // Helper functions
+const formatCurrencyAmount = (amount: number) => {
+  return amount.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+}
+
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
   return date.toLocaleDateString('en-US', {
@@ -343,12 +393,6 @@ const enterEditMode = () => {
   splits.value = {}
 
   bill.value.line_items.forEach((item, index) => {
-    // Determine if it's even split (all have same split_value)
-    const splitValues = item.person_claims.map(c => Number(c.split_value) || 0)
-    const isEven = splitValues.every(v => v === splitValues[0])
-
-    splitModes.value[index] = isEven ? 'even' : 'custom'
-
     // Initialize splits object for ALL tab people
     splits.value[index] = {}
 
@@ -361,6 +405,15 @@ const enterEditMode = () => {
     item.person_claims.forEach(claim => {
       splits.value[index][claim.person_id] = Number(claim.split_value) || 0
     })
+
+    // Determine if it's even split:
+    // - All tab people must have a claim (count matches)
+    // - All claims must have the same split_value (typically 1)
+    const allPeopleIncluded = item.person_claims.length === tabStore.currentTab.people.length
+    const splitValues = item.person_claims.map(c => Number(c.split_value) || 0)
+    const allSameValue = splitValues.length > 0 && splitValues.every(v => v === splitValues[0])
+
+    splitModes.value[index] = (allPeopleIncluded && allSameValue) ? 'even' : 'custom'
   })
 
   editMode.value = true
@@ -382,6 +435,18 @@ const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
     tabStore.currentTab.people.forEach(person => {
       splits.value[itemIndex][person.id] = 1
     })
+  } else if (mode === 'custom') {
+    // When switching to custom, ensure all people have a value in splits
+    // This is needed for reactivity to work properly with the input fields
+    if (!splits.value[itemIndex]) {
+      splits.value[itemIndex] = {}
+    }
+    tabStore.currentTab.people.forEach(person => {
+      // Only set if not already set, to preserve existing values
+      if (!(person.id in splits.value[itemIndex])) {
+        splits.value[itemIndex][person.id] = 0
+      }
+    })
   }
 }
 
@@ -391,14 +456,26 @@ const saveSplits = async () => {
   savingsplits.value = true
 
   try {
+    // Clear existing draft splits to ensure fresh state
+    billStore.draftSplits = {}
+
     // Update draft splits in store for ALL tab people
     bill.value.line_items.forEach((item, itemIndex) => {
       tabStore.currentTab!.people.forEach(person => {
-        const splitValue = splits.value[itemIndex][person.id] || 0
-        // Only include people with split_value > 0 (as per user requirement)
-        if (splitValue > 0) {
-          billStore.updateDraftSplit(item.id, person.id, splitValue)
+        // Get split value, ensure it's a number and handle empty strings
+        let splitValue = splits.value[itemIndex]?.[person.id]
+
+        // Convert to number and handle various input states
+        if (splitValue === '' || splitValue === null || splitValue === undefined) {
+          splitValue = 0
+        } else {
+          splitValue = Number(splitValue)
         }
+
+        // Include ALL people in draftSplits with their actual values (including 0)
+        // The backend deletes all old claims and creates new ones from the payload
+        // 0 means "remove from split" - if we don't include it, old claim persists
+        billStore.updateDraftSplit(item.id, person.id, splitValue)
       })
     })
 

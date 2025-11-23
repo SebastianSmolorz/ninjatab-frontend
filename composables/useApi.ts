@@ -8,6 +8,7 @@ import type {
   SubmitSplitsData,
   SimplifyResult,
   UpdateBillData,
+  PersonSpendingTotal,
 } from '~/types'
 
 export const useApi = () => {
@@ -68,6 +69,9 @@ export const useApi = () => {
         apiFetch<SimplifyResult>(`/tabs/${id}/simplify`, {
           method: 'POST',
         }),
+
+      personTotals: (id: number) =>
+        apiFetch<PersonSpendingTotal[]>(`/tabs/${id}/person-totals`),
     },
 
     // Bill endpoints
