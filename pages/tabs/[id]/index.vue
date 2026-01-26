@@ -17,185 +17,209 @@
 
     <!-- Tab content -->
     <UContainer v-else-if="tab" class="py-8">
-      <div class="space-y-6">
-        <!-- Tab info -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <div class="flex items-start justify-between mb-2">
-            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+      <!-- Header -->
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
               {{ tab.name }}
-            </h2>
-            <div>
-              <div v-if="tab.is_settled" class="text-sm text-gray-600 dark:text-gray-400">
-                Closed
-              </div>
-              <div v-else class="flex gap-2">
-                <div class="text-sm text-green-600 dark:text-green-400 mb-2">
-                  Open
-                </div>
-                <div class="flex flex-col gap-2">
-                  <UButton
-                    variant="outline"
-                    size="xs"
-                    @click="closeTab"
-                    :loading="closingTab"
-                  >
-                    Mark as Closed
-                  </UButton>
-                  <UButton
-                    variant="solid"
-                    size="xs"
-                    color="primary"
-                    @click="closeAndSimplify"
-                    :loading="simplifyingTab"
-                  >
-                    Close & Simplify
-                  </UButton>
-                </div>
-              </div>
-            </div>
+            </h1>
+            <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              {{ tab.description }}
+            </p>
           </div>
-          <p v-if="tab.description" class="text-gray-600 dark:text-gray-400 mb-4">
-            {{ tab.description }}
-          </p>
-          <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-            <span>{{ tab.default_currency }}</span>
-            <span>•</span>
-            <span>{{ tab.bill_count }} {{ tab.bill_count === 1 ? 'bill' : 'bills' }}</span>
-          </div>
-        </div>
-
-        <!-- People -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            People
-          </h3>
-          <div class="flex flex-wrap gap-4">
-            <div
-              v-for="person in tab.people"
-              :key="person.id"
-              class="flex items-center gap-3 bg-gray-50 dark:bg-gray-900 rounded-lg px-4 py-3 min-w-0"
+          <div class="flex items-center gap-3">
+            <UBadge
+              :color="tab.is_settled ? 'gray' : 'green'"
+              variant="soft"
+              size="md"
             >
-              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                  {{ person.name.charAt(0).toUpperCase() }}
-                </span>
-              </div>
-              <div class="min-w-0">
-                <div class="font-medium text-gray-900 dark:text-white truncate">
-                  {{ person.name }}
-                </div>
-                <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400 truncate">
-                  {{ person.email }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Per-person spending totals section -->
-        <div v-if="personSpendingTotals.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            Total Spent per Person
-          </h3>
-          <div class="space-y-2">
-            <div
-              v-for="person in personSpendingTotals"
-              :key="person.person_id"
-              class="flex items-center justify-between py-3 px-4 rounded-lg bg-gray-50 dark:bg-gray-900"
+              {{ tab.is_settled ? 'Closed' : 'Open' }}
+            </UBadge>
+            <UButton
+              v-if="!tab.is_settled"
+              color="primary"
+              variant="solid"
+              @click="settleTab"
+              :loading="simplifyingTab"
             >
-              <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
-              <span class="text-lg font-semibold text-blue-700 dark:text-blue-400">
-                {{ tab.settlement_currency }} {{ formatCurrencyAmount(Number(person.total)) }}
-              </span>
-            </div>
+              Settle Tab
+            </UButton>
+            <USelectMenu
+              v-model="selectedAction"
+              :items="tabActions"
+              placeholder="Actions"
+              size="md"
+              @update:model-value="handleActionSelect"
+            >
+              <template #leading>
+                <UIcon name="i-heroicons-ellipsis-horizontal" />
+              </template>
+            </USelectMenu>
           </div>
         </div>
+      </div>
 
-        <!-- Total spent per currency section -->
-        <div v-if="tab.settlements && tab.settlements.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <div class="space-y-6">
+      <!-- Tab Settings -->
+      <UCard>
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
+            <USelectMenu
+              v-model="selectedCurrency"
+              :items="currencyOptions"
+              size="sm"
+              @update:model-value="updateSettlementCurrency"
+            />
+          </div>
+        </div>
+      </UCard>
+
+      <!-- People & Spending -->
+      <UCard>
+        <UCollapsible v-model:open="peopleSpendingOpen">
+          <UButton
+            label="People & Spending"
+            color="neutral"
+            variant="subtle"
+            trailing-icon="i-heroicons-chevron-down"
+            block
+          />
+
+          <template #content>
+            <div class="space-y-4 mt-4">
+              <div
+                v-for="person in tab.people"
+                :key="person.id"
+                class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
+              >
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                    <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                      {{ person.name.charAt(0).toUpperCase() }}
+                    </span>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-900 dark:text-white">
+                      {{ person.name }}
+                    </div>
+                    <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400">
+                      {{ person.email }}
+                    </div>
+                  </div>
+                </div>
+                <div v-if="getPersonTotal(person.id)" class="text-right">
+                  <div class="text-lg font-semibold text-blue-700 dark:text-blue-400">
+                    {{ tab.settlement_currency }} {{ formatCurrencyAmount(getPersonTotal(person.id)) }}
+                  </div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">
+                    Total spent
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </UCollapsible>
+      </UCard>
+
+      <!-- Total Spent per Currency -->
+      <UCard v-if="tab.settlements && tab.settlements.length > 0">
+        <template #header>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
             Total Spent
           </h3>
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div
-              v-for="(total, currency) in totalSpentByCurrency"
-              :key="currency"
-              class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
-            >
-              <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                {{ currency }}
-              </div>
-              <div class="text-2xl font-bold text-blue-700 dark:text-blue-400">
-                {{ formatCurrencyAmount(total) }}
-              </div>
+        </template>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div
+            v-for="(total, currency) in totalSpentByCurrency"
+            :key="currency"
+            class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+          >
+            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+              {{ currency }}
             </div>
-            <!-- Total in settlement currency (converted) -->
-            <div
-              v-if="totalSpentInGBP !== null"
-              class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-            >
-              <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                Total ({{ tab.settlement_currency }})
-              </div>
-              <div class="text-2xl font-bold text-green-700 dark:text-green-400">
-                {{ formatCurrencyAmount(totalSpentInGBP) }}
-              </div>
+            <div class="text-2xl font-bold text-blue-700 dark:text-blue-400">
+              {{ formatCurrencyAmount(total) }}
+            </div>
+          </div>
+          <!-- Total in settlement currency (converted) -->
+          <div
+            v-if="totalSpentInSettlement !== null"
+            class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+          >
+            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+              Total ({{ tab.settlement_currency }})
+            </div>
+            <div class="text-2xl font-bold text-green-700 dark:text-green-400">
+              {{ formatCurrencyAmount(totalSpentInSettlement) }}
             </div>
           </div>
         </div>
+      </UCard>
 
-        <!-- Settlements section -->
-        <div v-if="tab.settlements && tab.settlements.length > 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+      <!-- Settlements section -->
+      <UCard v-if="tab.settlements && tab.settlements.length > 0">
+        <template #header>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
             Settlements
           </h3>
-          <div class="space-y-3">
-            <div
-              v-for="settlement in tab.settlements"
-              :key="settlement.id"
-              class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-            >
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                  <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                    {{ settlement.from_person.name.charAt(0).toUpperCase() }}
-                  </span>
+        </template>
+
+        <div class="space-y-3">
+          <div
+            v-for="settlement in tab.settlements"
+            :key="settlement.id"
+            class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                  {{ settlement.from_person.name.charAt(0).toUpperCase() }}
+                </span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900 dark:text-white">
+                  {{ settlement.from_person.name }}
                 </div>
-                <div>
-                  <div class="font-medium text-gray-900 dark:text-white">
-                    {{ settlement.from_person.name }}
-                  </div>
-                  <div class="text-sm text-gray-500 dark:text-gray-400">
-                    pays
-                  </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  pays
                 </div>
               </div>
-              <div class="flex items-center gap-3">
-                <div class="text-xl font-bold text-green-700 dark:text-green-400">
-                  {{ settlement.currency }} {{ settlement.amount }}
-                </div>
-                <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 text-gray-400" />
-                <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                  <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                    {{ settlement.to_person.name.charAt(0).toUpperCase() }}
-                  </span>
-                </div>
-                <div>
-                  <div class="font-medium text-gray-900 dark:text-white">
-                    {{ settlement.to_person.name }}
-                  </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="text-xl font-bold text-green-700 dark:text-green-400">
+                {{ settlement.currency }} {{ settlement.amount }}
+              </div>
+              <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 text-gray-400" />
+              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                  {{ settlement.to_person.name.charAt(0).toUpperCase() }}
+                </span>
+              </div>
+              <div>
+                <div class="font-medium text-gray-900 dark:text-white">
+                  {{ settlement.to_person.name }}
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </UCard>
 
-        <!-- Bills section -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Bills
-            </h3>
+      <!-- Bills section -->
+      <UCard>
+        <template #header>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Bills
+              </h3>
+              <UBadge color="gray" variant="subtle">
+                {{ bills?.length || 0 }}
+              </UBadge>
+            </div>
             <UButton
               v-if="!tab.is_settled"
               icon="i-heroicons-plus"
@@ -205,28 +229,29 @@
               Add Bill
             </UButton>
           </div>
+        </template>
 
-          <!-- Bills list -->
-          <div v-if="bills && bills.length > 0" class="space-y-3">
-            <div
-              v-for="bill in bills"
-              :key="bill.id"
-              class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary-300 dark:hover:border-primary-700 transition-colors cursor-pointer"
-              @click="tab && router.push(`/tabs/${tab.id}/bills/${bill.id}`)"
-            >
-              <div class="flex items-start justify-between">
-                <div class="flex-1">
-                  <h4 class="font-medium text-gray-900 dark:text-white">
-                    {{ bill.description }}
-                  </h4>
-                  <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
-                    <span v-if="bill.paid_by">•</span>
-                    <span v-if="bill.paid_by" class="text-primary-600 dark:text-primary-400">
-                      Paid by {{ bill.paid_by.name }}
-                    </span>
-                  </div>
+        <!-- Bills list -->
+        <div v-if="bills && bills.length > 0" class="space-y-3">
+          <div
+            v-for="bill in bills"
+            :key="bill.id"
+            class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:border-primary-300 dark:hover:border-primary-700 transition-colors"
+          >
+            <div class="flex items-start justify-between">
+              <div class="flex-1 cursor-pointer" @click="router.push(`/tabs/${tab.id}/bills/${bill.id}`)">
+                <h4 class="font-medium text-gray-900 dark:text-white">
+                  {{ bill.description }}
+                </h4>
+                <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
+                  <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
+                  <span v-if="bill.paid_by">•</span>
+                  <span v-if="bill.paid_by" class="text-primary-600 dark:text-primary-400">
+                    Paid by {{ bill.paid_by.name }}
+                  </span>
                 </div>
+              </div>
+              <div class="flex items-center gap-3">
                 <div class="text-right">
                   <div class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ bill.currency }} {{ (bill.total_amount || 0) }}
@@ -238,17 +263,50 @@
                     Open
                   </div>
                 </div>
+                <UButton
+                  icon="i-heroicons-trash"
+                  variant="ghost"
+                  size="sm"
+                  @click.stop="confirmDeleteBill(bill.id)"
+                />
               </div>
             </div>
           </div>
-
-          <!-- Empty state -->
-          <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
-            No bills yet. Add your first expense to get started.
-          </div>
         </div>
+
+        <!-- Empty state -->
+        <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
+          No bills yet. Add your first expense to get started.
+        </div>
+      </UCard>
       </div>
     </UContainer>
+
+    <!-- Delete Bill Modal -->
+    <UModal v-model:open="showDeleteModal">
+      <template #content>
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            Delete Bill
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Are you sure you want to delete this bill? This action cannot be undone.
+          </p>
+          <div class="flex justify-end gap-2">
+            <UButton
+              label="Cancel"
+              variant="ghost"
+              @click="showDeleteModal = false"
+            />
+            <UButton
+              label="Delete"
+              @click="deleteBill"
+              :loading="deletingBill"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
   </UMain>
 </template>
 
@@ -257,17 +315,38 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
-import type { PersonSpendingTotal } from '~/types'
+import type { PersonSpendingTotal, Currency } from '~/types'
 
 const route = useRoute()
 const router = useRouter()
 const tabStore = useTabStore()
 const billStore = useBillStore()
+const api = useApi()
 
 // State
-const closingTab = ref(false)
 const simplifyingTab = ref(false)
 const personSpendingTotals = ref<PersonSpendingTotal[]>([])
+const showDeleteModal = ref(false)
+const billToDelete = ref<number | null>(null)
+const deletingBill = ref(false)
+const selectedAction = ref<string>('')
+const peopleSpendingOpen = ref(false)
+
+// Currency dropdown
+const selectedCurrency = ref<Currency>()
+const currencyOptions = [
+  { label: 'USD', value: 'USD' },
+  { label: 'EUR', value: 'EUR' },
+  { label: 'GBP', value: 'GBP' },
+  { label: 'JPY', value: 'JPY' },
+  { label: 'CAD', value: 'CAD' },
+  { label: 'TRY', value: 'TRY' },
+]
+
+// Actions dropdown
+const tabActions = [
+  { label: 'Archive Tab', value: 'archive' },
+]
 
 // Computed
 const tab = computed(() => tabStore.currentTab)
@@ -294,8 +373,8 @@ const totalSpentByCurrency = computed(() => {
   return totals
 })
 
-// Get total spent in GBP from backend
-const totalSpentInGBP = computed(() => {
+// Get total spent in settlement currency from backend
+const totalSpentInSettlement = computed(() => {
   if (!tab.value?.total_spent_gbp) return null
   return Number(tab.value.total_spent_gbp)
 })
@@ -317,48 +396,29 @@ const formatDate = (dateStr: string) => {
   })
 }
 
-const formatStatus = (status: BillStatus) => {
-  const statusMap: Record<BillStatus, string> = {
-    'open': 'Open',
-    'all_claimed': 'All Claimed',
-    'all_paid': 'All Paid',
-    'archived': 'Archived'
-  }
-  return statusMap[status] || status
+const getPersonTotal = (personId: number): number => {
+  const personTotal = personSpendingTotals.value.find(p => p.person_id === personId)
+  return personTotal ? Number(personTotal.total) : 0
 }
 
-const getStatusColor = (status: BillStatus) => {
-  const colorMap: Record<BillStatus, string> = {
-    'open': 'text-yellow-600 dark:text-yellow-400',
-    'all_claimed': 'text-blue-600 dark:text-blue-400',
-    'all_paid': 'text-green-600 dark:text-green-400',
-    'archived': 'text-gray-600 dark:text-gray-400'
-  }
-  return colorMap[status] || 'text-gray-600 dark:text-gray-400'
-}
-
-const closeTab = async () => {
+const updateSettlementCurrency = async (currency: Currency) => {
   if (!tab.value) return
 
-  closingTab.value = true
   try {
-    const api = useApi()
-    await api.tabs.close(tab.value.id)
+    await api.tabs.update(tab.value.id, { settlement_currency: currency })
     await tabStore.fetchTabById(tab.value.id)
+    // Refresh person totals as they're calculated in the new currency
+    personSpendingTotals.value = await api.tabs.personTotals(tab.value.id)
   } catch (error) {
-    console.error('Failed to close tab:', error)
-    // TODO: Show error notification
-  } finally {
-    closingTab.value = false
+    console.error('Failed to update settlement currency:', error)
   }
 }
 
-const closeAndSimplify = async () => {
+const settleTab = async () => {
   if (!tab.value) return
 
   simplifyingTab.value = true
   try {
-    const api = useApi()
     // First close the tab
     await api.tabs.close(tab.value.id)
     // Then simplify it
@@ -366,10 +426,48 @@ const closeAndSimplify = async () => {
     // Refresh the tab to get the settlements
     await tabStore.fetchTabById(tab.value.id)
   } catch (error) {
-    console.error('Failed to close and simplify tab:', error)
-    // TODO: Show error notification
+    console.error('Failed to settle tab:', error)
   } finally {
     simplifyingTab.value = false
+  }
+}
+
+const handleActionSelect = async (action: string) => {
+  if (action === 'archive') {
+    await archiveTab()
+  }
+  selectedAction.value = ''
+}
+
+const archiveTab = async () => {
+  if (!tab.value) return
+
+  try {
+    await api.tabs.close(tab.value.id)
+    await tabStore.fetchTabById(tab.value.id)
+  } catch (error) {
+    console.error('Failed to archive tab:', error)
+  }
+}
+
+const confirmDeleteBill = (billId: number) => {
+  billToDelete.value = billId
+  showDeleteModal.value = true
+}
+
+const deleteBill = async () => {
+  if (!billToDelete.value || !tab.value) return
+
+  deletingBill.value = true
+  try {
+    await api.bills.delete(billToDelete.value)
+    await billStore.fetchBills(tab.value.id)
+    showDeleteModal.value = false
+    billToDelete.value = null
+  } catch (error) {
+    console.error('Failed to delete bill:', error)
+  } finally {
+    deletingBill.value = false
   }
 }
 
@@ -385,8 +483,12 @@ onMounted(async () => {
     await tabStore.fetchTabById(id)
     await billStore.fetchBills(id)
 
+    // Set initial currency
+    if (tab.value) {
+      selectedCurrency.value = tab.value.settlement_currency
+    }
+
     // Fetch person spending totals
-    const api = useApi()
     personSpendingTotals.value = await api.tabs.personTotals(id)
   } catch (error) {
     console.error('Failed to load tab or bills:', error)

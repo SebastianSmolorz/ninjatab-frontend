@@ -55,6 +55,12 @@ export const useApi = () => {
           body: JSON.stringify(data),
         }),
 
+      update: (id: number, data: { settlement_currency?: string }) =>
+        apiFetch<Tab>(`/tabs/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(data),
+        }),
+
       delete: (id: number) =>
         apiFetch<{ success: boolean }>(`/tabs/${id}`, {
           method: 'DELETE',
@@ -104,6 +110,11 @@ export const useApi = () => {
         apiFetch<Bill>(`/bills/${id}`, {
           method: 'PATCH',
           body: JSON.stringify(data),
+        }),
+
+      delete: (id: number) =>
+        apiFetch<{ success: boolean }>(`/bills/${id}`, {
+          method: 'DELETE',
         }),
     },
   }
