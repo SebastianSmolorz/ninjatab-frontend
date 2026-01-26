@@ -17,17 +17,32 @@
 
     <!-- Tab content -->
     <UContainer v-else-if="tab" class="py-8">
-      <!-- Header -->
-      <div class="mb-6">
-        <div class="flex items-center justify-between mb-4">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              {{ tab.name }}
-            </h1>
-            <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {{ tab.description }}
-            </p>
+      <div class="space-y-6">
+      <!-- Tab Info Card -->
+      <UCard variant="solid" class="cursor-pointer" @click="handleCardClick">
+        <!-- Always visible header -->
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <UButton
+              :icon="tabDetailsOpen ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
+              color="gray"
+              variant="ghost"
+              size="md"
+              @click.stop="tabDetailsOpen = !tabDetailsOpen"
+            />
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {{ tab.name }}
+              </h1>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}
+              </p>
+              <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                {{ tab.description }}
+              </p>
+            </div>
           </div>
+
           <div class="flex items-center gap-3">
             <UBadge
               :color="tab.is_settled ? 'gray' : 'green'"
@@ -40,7 +55,7 @@
               v-if="!tab.is_settled"
               color="primary"
               variant="solid"
-              @click="settleTab"
+              @click.stop="settleTab"
               :loading="simplifyingTab"
             >
               Settle Tab
@@ -48,9 +63,10 @@
             <USelectMenu
               v-model="selectedAction"
               :items="tabActions"
-              placeholder="Actions"
+              placeholder="More"
               size="md"
               @update:model-value="handleActionSelect"
+              @click.stop
             >
               <template #leading>
                 <UIcon name="i-heroicons-ellipsis-horizontal" />
@@ -58,12 +74,10 @@
             </USelectMenu>
           </div>
         </div>
-      </div>
 
-      <div class="space-y-6">
-      <!-- Tab Settings -->
-      <UCard>
-        <div class="flex items-center gap-6">
+        <!-- Collapsible details -->
+        <div v-if="tabDetailsOpen" class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
+          <!-- Settlement Currency -->
           <div class="flex items-center gap-2">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
             <USelectMenu
@@ -73,22 +87,11 @@
               @update:model-value="updateSettlementCurrency"
             />
           </div>
-        </div>
-      </UCard>
 
-      <!-- People & Spending -->
-      <UCard>
-        <UCollapsible v-model:open="peopleSpendingOpen">
-          <UButton
-            label="People & Spending"
-            color="neutral"
-            variant="subtle"
-            trailing-icon="i-heroicons-chevron-down"
-            block
-          />
-
-          <template #content>
-            <div class="space-y-4 mt-4">
+          <!-- People & Spending -->
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
+            <div class="space-y-3">
               <div
                 v-for="person in tab.people"
                 :key="person.id"
@@ -119,12 +122,12 @@
                 </div>
               </div>
             </div>
-          </template>
-        </UCollapsible>
+          </div>
+        </div>
       </UCard>
 
       <!-- Total Spent per Currency -->
-      <UCard v-if="tab.settlements && tab.settlements.length > 0">
+      <UCard variant="solid" v-if="tab.settlements && tab.settlements.length > 0">
         <template #header>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
             Total Spent
@@ -160,7 +163,7 @@
       </UCard>
 
       <!-- Settlements section -->
-      <UCard v-if="tab.settlements && tab.settlements.length > 0">
+      <UCard variant="solid" v-if="tab.settlements && tab.settlements.length > 0">
         <template #header>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
             Settlements
@@ -209,7 +212,7 @@
       </UCard>
 
       <!-- Bills section -->
-      <UCard>
+      <UCard variant="solid">
         <template #header>
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -330,7 +333,7 @@ const showDeleteModal = ref(false)
 const billToDelete = ref<number | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
-const peopleSpendingOpen = ref(false)
+const tabDetailsOpen = ref(false)
 
 // Currency dropdown
 const selectedCurrency = ref<Currency>()
@@ -469,6 +472,10 @@ const deleteBill = async () => {
   } finally {
     deletingBill.value = false
   }
+}
+
+const handleCardClick = () => {
+  tabDetailsOpen.value = !tabDetailsOpen.value
 }
 
 // Load tab and bills on mount
