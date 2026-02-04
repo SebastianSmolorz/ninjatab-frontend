@@ -19,17 +19,10 @@
     <UContainer v-else-if="tab" class="py-8">
       <div class="space-y-6">
       <!-- Tab Info Card -->
-      <UCard variant="solid" class="cursor-pointer" @click="handleCardClick">
-        <!-- Always visible header -->
-        <div class="flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <UButton
-              :icon="tabDetailsOpen ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
-              color="gray"
-              variant="ghost"
-              size="md"
-              @click.stop="tabDetailsOpen = !tabDetailsOpen"
-            />
+      <div class="relative cursor-pointer" @click="handleCardClick">
+        <UCard variant="solid" class="!rounded-b-none">
+          <!-- Always visible header -->
+          <div class="flex items-center justify-between gap-4">
             <div>
               <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ tab.name }}
@@ -41,42 +34,41 @@
                 {{ tab.description }}
               </p>
             </div>
+
+            <div class="flex items-center gap-3">
+              <UBadge
+                :color="tab.is_settled ? 'gray' : 'green'"
+                variant="soft"
+                size="md"
+              >
+                {{ tab.is_settled ? 'Closed' : 'Open' }}
+              </UBadge>
+              <UButton
+                v-if="!tab.is_settled"
+                color="primary"
+                variant="solid"
+                @click.stop="settleTab"
+                :loading="simplifyingTab"
+              >
+                Settle Tab
+              </UButton>
+              <USelectMenu
+                v-model="selectedAction"
+                :items="tabActions"
+                placeholder="Actions"
+                size="md"
+                @update:model-value="handleActionSelect"
+                @click.stop
+              >
+                <template #leading>
+                  <UIcon name="i-heroicons-ellipsis-horizontal" />
+                </template>
+              </USelectMenu>
+            </div>
           </div>
 
-          <div class="flex items-center gap-3">
-            <UBadge
-              :color="tab.is_settled ? 'gray' : 'green'"
-              variant="soft"
-              size="md"
-            >
-              {{ tab.is_settled ? 'Closed' : 'Open' }}
-            </UBadge>
-            <UButton
-              v-if="!tab.is_settled"
-              color="primary"
-              variant="solid"
-              @click.stop="settleTab"
-              :loading="simplifyingTab"
-            >
-              Settle Tab
-            </UButton>
-            <USelectMenu
-              v-model="selectedAction"
-              :items="tabActions"
-              placeholder="Actions"
-              size="md"
-              @update:model-value="handleActionSelect"
-              @click.stop
-            >
-              <template #leading>
-                <UIcon name="i-heroicons-ellipsis-horizontal" />
-              </template>
-            </USelectMenu>
-          </div>
-        </div>
-
-        <!-- Collapsible details -->
-        <div v-if="tabDetailsOpen" class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
+          <!-- Collapsible details -->
+          <div v-if="tabDetailsOpen" class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
           <!-- Settlement Currency -->
           <div class="flex items-center gap-2">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
@@ -124,7 +116,23 @@
             </div>
           </div>
         </div>
-      </UCard>
+        </UCard>
+
+        <!-- Pull tab with chevron -->
+        <div class="flex justify-center">
+          <div
+            class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 border-gray-200 dark:border-gray-700 select-none touch-none"
+            @mousedown="startDrag"
+            @touchstart="startDrag"
+          >
+            <UIcon
+              :name="tabDetailsOpen ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
+              class="w-5 h-5 text-gray-400 transition-transform duration-200"
+              :class="{ 'translate-y-0.5': isDragging }"
+            />
+          </div>
+        </div>
+      </div>
 
       <!-- Total Spent per Currency -->
       <UCard variant="solid" v-if="tab.settlements && tab.settlements.length > 0">
@@ -327,7 +335,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
@@ -347,6 +355,11 @@ const billToDelete = ref<number | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
 const tabDetailsOpen = ref(false)
+
+// Drag state
+const isDragging = ref(false)
+const dragStartY = ref(0)
+const dragThreshold = 30 // pixels needed to trigger toggle
 
 // Currency dropdown
 const selectedCurrency = ref<Currency>()
@@ -491,6 +504,50 @@ const handleCardClick = () => {
   tabDetailsOpen.value = !tabDetailsOpen.value
 }
 
+// Drag handling for pull tab
+const getClientY = (e: MouseEvent | TouchEvent): number => {
+  if ('touches' in e) {
+    return e.touches[0].clientY
+  }
+  return e.clientY
+}
+
+const startDrag = (e: MouseEvent | TouchEvent) => {
+  e.stopPropagation()
+  isDragging.value = true
+  dragStartY.value = getClientY(e)
+
+  document.addEventListener('mousemove', onDrag)
+  document.addEventListener('mouseup', endDrag)
+  document.addEventListener('touchmove', onDrag, { passive: false })
+  document.addEventListener('touchend', endDrag)
+}
+
+const onDrag = (e: MouseEvent | TouchEvent) => {
+  if (!isDragging.value) return
+  e.preventDefault()
+}
+
+const endDrag = (e: MouseEvent | TouchEvent) => {
+  if (!isDragging.value) return
+
+  const endY = 'changedTouches' in e ? e.changedTouches[0].clientY : (e as MouseEvent).clientY
+  const deltaY = endY - dragStartY.value
+
+  // Drag down to expand (when collapsed), drag up to collapse (when expanded)
+  if (!tabDetailsOpen.value && deltaY > dragThreshold) {
+    tabDetailsOpen.value = true
+  } else if (tabDetailsOpen.value && deltaY < -dragThreshold) {
+    tabDetailsOpen.value = false
+  }
+
+  isDragging.value = false
+  document.removeEventListener('mousemove', onDrag)
+  document.removeEventListener('mouseup', endDrag)
+  document.removeEventListener('touchmove', onDrag)
+  document.removeEventListener('touchend', endDrag)
+}
+
 // Load tab and bills on mount
 onMounted(async () => {
   const id = parseInt(route.params.id as string)
@@ -513,5 +570,13 @@ onMounted(async () => {
   } catch (error) {
     console.error('Failed to load tab or bills:', error)
   }
+})
+
+// Cleanup event listeners on unmount
+onUnmounted(() => {
+  document.removeEventListener('mousemove', onDrag)
+  document.removeEventListener('mouseup', endDrag)
+  document.removeEventListener('touchmove', onDrag)
+  document.removeEventListener('touchend', endDrag)
 })
 </script>
