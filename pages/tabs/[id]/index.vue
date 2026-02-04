@@ -27,6 +27,14 @@
               <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ tab.name }}
               </h1>
+              <UBadge
+                :color="tab.is_settled ? 'neutral' : 'success'"
+                variant="subtle"
+                size="lg"
+                class="mt-1"
+              >
+                {{ tab.is_settled ? 'Closed' : 'Open' }}
+              </UBadge>
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}
               </p>
@@ -36,33 +44,14 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <UBadge
-                :color="tab.is_settled ? 'gray' : 'green'"
-                variant="soft"
-                size="md"
-              >
-                {{ tab.is_settled ? 'Closed' : 'Open' }}
-              </UBadge>
-              <UButton
-                v-if="!tab.is_settled"
-                color="primary"
-                variant="solid"
-                @click.stop="settleTab"
-                :loading="simplifyingTab"
-              >
-                Settle Tab
-              </UButton>
               <USelectMenu
                 v-model="selectedAction"
                 :items="tabActions"
                 placeholder="Actions"
-                size="md"
+                size="xl"
                 @update:model-value="handleActionSelect"
                 @click.stop
               >
-                <template #leading>
-                  <UIcon name="i-heroicons-ellipsis-horizontal" />
-                </template>
               </USelectMenu>
             </div>
           </div>
@@ -267,12 +256,12 @@
                   <div class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ bill.currency }} {{ (bill.total_amount || 0) }}
                   </div>
-                  <div v-if="bill.is_closed" class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                  <UBadge v-if="bill.is_closed">
                     Closed
-                  </div>
-                  <div v-else class="text-xs text-green-600 dark:text-green-400 mt-1">
+                  </UBadge>
+                  <UBadge color="success" v-else>
                     Open
-                  </div>
+                  </UBadge>
                 </div>
                 <UButton
                   icon="i-heroicons-trash"
@@ -372,13 +361,18 @@ const currencyOptions = [
   { label: 'TRY', value: 'TRY' },
 ]
 
-// Actions dropdown
-const tabActions = [
-  { label: 'Archive Tab', value: 'archive' },
-]
-
 // Computed
 const tab = computed(() => tabStore.currentTab)
+
+// Actions dropdown - computed to conditionally show Settle Tab
+const tabActions = computed(() => {
+  const actions = []
+  if (!tab.value?.is_settled) {
+    actions.push({ label: 'Settle Tab', value: 'settle' })
+  }
+  actions.push({ label: 'Archive Tab', value: 'archive' })
+  return actions
+})
 const loading = computed(() => tabStore.isLoading)
 const error = computed(() => tabStore.error)
 const bills = computed(() => billStore.bills)
@@ -462,7 +456,9 @@ const settleTab = async () => {
 }
 
 const handleActionSelect = async (action: string) => {
-  if (action === 'archive') {
+  if (action === 'settle') {
+    await settleTab()
+  } else if (action === 'archive') {
     await archiveTab()
   }
   selectedAction.value = ''
