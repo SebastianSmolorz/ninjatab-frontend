@@ -16,102 +16,87 @@
               step >= 2 ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700'
             ]"
           ></div>
-          <div
-            :class="[
-              'h-1 flex-1 rounded-full transition-colors duration-300',
-              step >= 3 ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700'
-            ]"
-          ></div>
         </div>
       </div>
     </div>
 
     <!-- Form container -->
     <div class="flex-1 overflow-y-auto">
-      <!-- Step 1: Bill Details -->
+      <!-- Step 1: Expenses & Details -->
       <UContainer v-if="step === 1" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Bill Details
+              Add Expenses
             </h2>
             <p class="text-gray-600 dark:text-gray-400">
-              What's this bill for?
+              Add one or more expenses to split
             </p>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Bill Name <span class="text-red-500">*</span>
-            </label>
-            <UInput
-              v-model="formData.description"
-              placeholder="e.g., Dinner at Restaurant, Groceries"
-              size="xl"
-              autofocus
-              @keyup.enter="nextStep"
-            />
+          <!-- Bill Name, Who Paid, and Currency (same line) -->
+          <div class="flex gap-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Bill Name
+              </label>
+              <UInput
+                v-model="formData.description"
+                :placeholder="lineItemsCount === 0 ? 'e.g., Dinner at Restaurant, Groceries' : ''"
+                size="lg"
+                :disabled="lineItemsCount === 0"
+              />
+            </div>
+            <div class="flex flex-col items-end flex-shrink-0">
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
+                Who Paid? <span class="text-red-500">*</span>
+              </label>
+              <USelect
+                v-model="formData.paid_by_id"
+                :items="peopleOptions"
+                size="lg"
+                placeholder="Select"
+              />
+            </div>
+            <div class="flex flex-col items-end flex-shrink-0">
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
+                Currency <span class="text-red-500">*</span>
+              </label>
+              <USelect
+                v-model="formData.currency"
+                :items="currencyOptions"
+                size="lg"
+              />
+            </div>
           </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Currency <span class="text-red-500">*</span>
-            </label>
-            <USelect
-              v-model="formData.currency"
-              :items="currencyOptions"
-              size="xl"
-            />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Who Paid? <span class="text-red-500">*</span>
-            </label>
-            <USelect
-              v-model="formData.paid_by_id"
-              :items="peopleOptions"
-              size="xl"
-              placeholder="Select who paid for this bill"
-            />
-          </div>
-        </div>
-      </UContainer>
-
-      <!-- Step 2: Add Line Items -->
-      <UContainer v-if="step === 2" class="py-8 max-w-2xl">
-        <div class="space-y-6">
-          <div>
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Add Line Items
-            </h2>
-            <p class="text-gray-600 dark:text-gray-400">
-              Break down the bill into individual items
-            </p>
-          </div>
-
-          <!-- Add Line Item Form (always at top) -->
+          <!-- Add Line Item Form -->
           <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-              Add Item
-            </h3>
-            <div class="flex gap-3">
-              <UInput
-                v-model="newLineItem.description"
-                placeholder="Item name"
-                size="lg"
-                class="flex-1"
-                @keyup.enter="addLineItem"
-              />
-              <UInput
-                v-model.number="newLineItem.value"
-                type="number"
-                step="0.01"
-                placeholder="0.00"
-                size="lg"
-                class="w-32"
-                @keyup.enter="addLineItem"
-              />
+            <div class="flex gap-3 items-end">
+              <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Item Name
+                </label>
+                <UInput
+                  v-model="newLineItem.description"
+                  placeholder="e.g., Pizza, Coffee"
+                  size="lg"
+                  @keyup.enter="addLineItem"
+                />
+              </div>
+              <div class="w-32">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Amount
+                </label>
+                <UInput
+                  v-model.number="newLineItem.value"
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  size="lg"
+                  @keyup.enter="addLineItem"
+                />
+              </div>
               <UButton
                 @click="addLineItem"
                 icon="i-heroicons-plus"
@@ -122,7 +107,7 @@
             </div>
           </div>
 
-          <!-- Line Items List (newest first) -->
+          <!-- Line Items List -->
           <div v-if="formData.line_items.length > 0" class="space-y-3">
             <div
               v-for="(item, index) in formData.line_items"
@@ -146,7 +131,7 @@
             </div>
 
             <!-- Total -->
-            <div class="bg-primary-50 dark:bg-primary-950 rounded-lg border border-primary-200 dark:border-primary-800 p-4">
+            <div class="bg-primary-50 dark:bg-primary-950/30 rounded-lg border border-primary-200 dark:border-primary-800 p-4">
               <div class="flex items-center justify-between">
                 <span class="font-semibold text-gray-900 dark:text-white">Total</span>
                 <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
@@ -156,26 +141,27 @@
             </div>
           </div>
 
+          <!-- Validation Alert -->
           <UAlert
-            v-else
-            icon="i-heroicons-information-circle"
-            color="primary"
+            v-if="showValidationError"
+            icon="i-heroicons-exclamation-triangle"
+            color="red"
             variant="soft"
-            title="No items yet"
-            description="Add at least one line item to continue"
+            title="No expenses added"
+            description="Please add at least one expense to continue"
           />
         </div>
       </UContainer>
 
-      <!-- Step 3: Create Splits -->
-      <UContainer v-if="step === 3" class="py-8 max-w-2xl">
+      <!-- Step 2: Split Expenses -->
+      <UContainer v-if="step === 2" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Split the Bill
+              Split Expenses
             </h2>
             <p class="text-gray-600 dark:text-gray-400">
-              Assign shares to each person for each item
+              Assign shares to each person for each expense
             </p>
           </div>
 
@@ -222,7 +208,7 @@
                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Name</span>
                   </div>
                   <div class="w-24 text-center">
-                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">How many</span>
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Shares</span>
                   </div>
                 </div>
 
@@ -291,15 +277,6 @@
           </UButton>
           <UButton
             v-if="step === 2"
-            @click="nextStep"
-            :disabled="!canProceedToStep3"
-            size="lg"
-            class="flex-1"
-          >
-            Continue
-          </UButton>
-          <UButton
-            v-if="step === 3"
             @click="createBill"
             :loading="loading"
             size="lg"
@@ -328,6 +305,7 @@ const tabStore = useTabStore()
 // State
 const step = ref(1)
 const loading = ref(false)
+const showValidationError = ref(false)
 
 const formData = ref({
   description: '',
@@ -367,13 +345,13 @@ const peopleOptions = computed(() => {
 })
 
 const canProceedToStep2 = computed(() => {
-  return formData.value.description.trim().length > 0 &&
-         formData.value.currency &&
-         formData.value.paid_by_id !== null
+  return formData.value.currency &&
+         formData.value.paid_by_id !== null &&
+         formData.value.line_items.length > 0
 })
 
-const canProceedToStep3 = computed(() => {
-  return formData.value.line_items.length > 0
+const lineItemsCount = computed(() => {
+  return formData.value.line_items.length
 })
 
 const totalAmount = computed(() => {
@@ -403,11 +381,19 @@ const formatCurrency = (amount: number) => {
 }
 
 const nextStep = () => {
-  if (step.value === 1 && !canProceedToStep2.value) return
-  if (step.value === 2 && !canProceedToStep3.value) return
+  if (step.value === 1 && !canProceedToStep2.value) {
+    // Show validation error if no expenses added
+    if (lineItemsCount.value === 0) {
+      showValidationError.value = true
+    }
+    return
+  }
 
-  // Initialize splits when moving to step 3
-  if (step.value === 2) {
+  // Clear validation error
+  showValidationError.value = false
+
+  // Initialize splits when moving to step 2
+  if (step.value === 1) {
     initializeSplits()
   }
 
@@ -425,11 +411,19 @@ const addLineItem = () => {
     return
   }
 
+  // Clear validation error when adding item
+  showValidationError.value = false
+
   // Add to beginning of array (newest first)
   formData.value.line_items.unshift({
     description: newLineItem.value.description.trim(),
     value: newLineItem.value.value
   })
+
+  // Autofill bill name with first item's name
+  if (formData.value.line_items.length === 1) {
+    formData.value.description = newLineItem.value.description.trim()
+  }
 
   // Reset form
   newLineItem.value.description = ''
@@ -451,9 +445,9 @@ const initializeSplits = () => {
     }
     if (!splits.value[index]) {
       splits.value[index] = {}
-      // Initialize all people with 0 shares
+      // Initialize all people with 1 share for even split
       tab.value?.people.forEach(person => {
-        splits.value[index][person.id] = 0
+        splits.value[index][person.id] = 1
       })
     }
   })
@@ -535,9 +529,14 @@ const createBill = async () => {
       }
     })
 
+    // Use bill name if provided and multiple items, otherwise use first item description
+    const billDescription = formData.value.line_items.length > 1 && formData.value.description.trim()
+      ? formData.value.description.trim()
+      : formData.value.line_items[0].description
+
     const newBill = await billStore.createBill({
       tab_id: tabId.value,
-      description: formData.value.description.trim(),
+      description: billDescription,
       currency: formData.value.currency,
       creator_id: currentTab.people[0].id,
       paid_by_id: formData.value.paid_by_id ?? undefined,

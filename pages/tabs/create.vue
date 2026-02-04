@@ -42,7 +42,7 @@
                 </label>
                 <UInput
                     v-model="formData.name"
-                    placeholder="e.g., Weekend Trip, Dinner Party"
+                    placeholder="e.g. Weekend in Berlin"
                     size="xl"
                     autofocus
                     @keyup.enter="nextStep"
@@ -60,7 +60,7 @@
                 />
               </div>
 
-              <div class="grid grid-cols-2 gap-4">
+              <div class="flex gap-5">
                 <div>
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Default Currency
@@ -83,7 +83,7 @@
                       :items="Object.values(Currency)"
                   />
                   <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    For totals and settlements
+                    Currency you want to settle in
                   </p>
                 </div>
               </div>

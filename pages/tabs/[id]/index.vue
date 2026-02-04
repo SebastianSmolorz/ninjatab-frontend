@@ -63,7 +63,7 @@
             <USelectMenu
               v-model="selectedAction"
               :items="tabActions"
-              placeholder="More"
+              placeholder="Actions"
               size="md"
               @update:model-value="handleActionSelect"
               @click.stop
@@ -278,8 +278,21 @@
         </div>
 
         <!-- Empty state -->
-        <div v-else class="text-center py-8 text-gray-500 dark:text-gray-400">
-          No bills yet. Add your first expense to get started.
+        <div v-else class="flex flex-col gap-7 text-center py-8 text-gray-500 dark:text-gray-400">
+          <div>
+            No bills yet. Add your first expense to get started.
+          </div>
+          <div>
+            <UButton
+                v-if="!tab.is_settled"
+                icon="i-heroicons-plus"
+                size="xl"
+                class="text-black"
+                @click="router.push(`/tabs/${tab.id}/bills/create`)"
+            >
+              Add your first bill
+            </UButton>
+          </div>
         </div>
       </UCard>
       </div>
