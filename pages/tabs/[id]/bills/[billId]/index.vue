@@ -54,7 +54,7 @@
           </div>
 
           <!-- Bill metadata -->
-          <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div class="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
             <div>
               <div class="text-sm text-gray-500 dark:text-gray-400">Created by</div>
               <div class="font-medium text-gray-900 dark:text-white">{{ bill.creator.name }}</div>
