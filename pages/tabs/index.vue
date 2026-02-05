@@ -69,29 +69,20 @@
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                 {{ tab.name }}
               </h3>
-              <div v-if="tab.is_settled" class="text-xs text-gray-600 dark:text-gray-400 font-medium">
-                Closed
-              </div>
+              <UBadge v-if="tab.is_settled" color="neutral" variant="subtle">
+                Settled
+              </UBadge>
+              <UBadge v-else color="success" variant="subtle">
+                Open
+              </UBadge>
             </div>
             <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {{ tab.description }}
             </p>
-            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
-              <span>{{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}</span>
+            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <span>{{ tab.people_count || 0 }} {{ tab.people_count === 1 ? 'person' : 'people' }}</span>
               <span>•</span>
               <span>{{ tab.bill_count }} {{ tab.bill_count === 1 ? 'bill' : 'bills' }}</span>
-            </div>
-            <div v-if="tab.total_spent_by_currency && Object.keys(tab.total_spent_by_currency).length > 0" class="flex flex-wrap gap-2">
-              <span
-                v-for="(amount, currency) in tab.total_spent_by_currency"
-                :key="currency"
-                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                {{ currency }} {{ Number(amount).toFixed(2) }}
-              </span>
-            </div>
-            <div v-else class="text-sm text-gray-400 dark:text-gray-500">
-              No expenses yet
             </div>
           </div>
         </div>
