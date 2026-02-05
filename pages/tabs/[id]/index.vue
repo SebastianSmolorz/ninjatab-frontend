@@ -124,86 +124,83 @@
         </div>
       </div>
 
-      <!-- Total Spent per Currency -->
+      <!-- Settlement section (combines total spent and settlements) -->
       <UCard variant="solid" v-if="tab.settlements && tab.settlements.length > 0">
-        <template #header>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Total Spent
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white pb-4">
+            Simplified Settlement
           </h3>
-        </template>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div
-            v-for="(total, currency) in totalSpentByCurrency"
-            :key="currency"
-            class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
-          >
-            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              {{ currency }}
-            </div>
-            <div class="text-2xl font-bold text-blue-700 dark:text-blue-400">
-              {{ formatCurrencyAmount(total) }}
-            </div>
-          </div>
-          <!-- Total in settlement currency (converted) -->
-          <div
-            v-if="totalSpentInSettlement !== null"
-            class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-          >
-            <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">
-              Total ({{ tab.settlement_currency }})
-            </div>
-            <div class="text-2xl font-bold text-green-700 dark:text-green-400">
-              {{ formatCurrencyAmount(totalSpentInSettlement) }}
-            </div>
-          </div>
-        </div>
-      </UCard>
-
-      <!-- Settlements section -->
-      <UCard variant="solid" v-if="tab.settlements && tab.settlements.length > 0">
-        <template #header>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-            Settlements
-          </h3>
-        </template>
-
-        <div class="space-y-3">
-          <div
-            v-for="settlement in tab.settlements"
-            :key="settlement.id"
-            class="flex items-center justify-between p-4 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-          >
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                  {{ settlement.from_person.name.charAt(0).toUpperCase() }}
-                </span>
+        <div class="space-y-4">
+          <!-- Total Spent -->
+          <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
+            <div
+              v-for="(total, currency) in totalSpentByCurrency"
+              :key="currency"
+              class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
+            >
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                {{ currency }}
               </div>
-              <div>
-                <div class="font-medium text-gray-900 dark:text-white">
+              <div class="text-lg font-bold text-blue-700 dark:text-blue-400">
+                {{ formatCurrencyAmount(total) }}
+              </div>
+            </div>
+            <div
+              v-if="totalSpentInSettlement !== null"
+              class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+            >
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                Total ({{ tab.settlement_currency }})
+              </div>
+              <div class="text-lg font-bold text-green-700 dark:text-green-400">
+                {{ formatCurrencyAmount(totalSpentInSettlement) }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Settlements -->
+          <div class="space-y-2">
+            <div
+              v-for="settlement in tab.settlements"
+              :key="settlement.id"
+              class="flex items-center justify-between p-2 rounded-lg border"
+              :class="settlement.paid ? 'bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700' : 'bg-green-50 dark:bg-blue-900/20 border-green-200 dark:border-green-800'"
+            >
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <span class="text-xs font-semibold text-primary-700 dark:text-primary-300">
+                    {{ settlement.from_person.name.charAt(0).toUpperCase() }}
+                  </span>
+                </div>
+                <span class="font-medium text-gray-900 dark:text-white text-sm">
                   {{ settlement.from_person.name }}
+                </span>
+                <span class="text-sm text-gray-500">pays</span>
+                <span class="font-bold" :class="settlement.paid ? 'text-gray-500 line-through' : 'text-green-700 dark:text-green-400'">
+                  {{ settlement.currency }} {{ settlement.amount }}
+                </span>
+                <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-400" />
+                <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <span class="text-xs font-semibold text-primary-700 dark:text-primary-300">
+                    {{ settlement.to_person.name.charAt(0).toUpperCase() }}
+                  </span>
                 </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  pays
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="text-xl font-bold text-green-700 dark:text-green-400">
-                {{ settlement.currency }} {{ settlement.amount }}
-              </div>
-              <UIcon name="i-heroicons-arrow-right" class="w-5 h-5 text-gray-400" />
-              <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
-                <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
-                  {{ settlement.to_person.name.charAt(0).toUpperCase() }}
+                <span class="font-medium text-gray-900 dark:text-white text-sm">
+                  {{ settlement.to_person.name }}
                 </span>
               </div>
-              <div>
-                <div class="font-medium text-gray-900 dark:text-white">
-                  {{ settlement.to_person.name }}
-                </div>
-              </div>
+              <UButton
+                v-if="!settlement.paid"
+                size="xs"
+                variant="soft"
+                color="success"
+                @click="markSettlementPaid(settlement.id)"
+              >
+                Mark as paid
+              </UButton>
+              <UBadge v-else color="neutral" variant="subtle">
+                Paid
+              </UBadge>
             </div>
           </div>
         </div>
@@ -442,6 +439,8 @@ const settleTab = async () => {
     await api.tabs.simplify(tab.value.id)
     // Refresh the tab to get the settlements
     await tabStore.fetchTabById(tab.value.id)
+    // Close the pull down tab
+    tabDetailsOpen.value = false
   } catch (error) {
     console.error('Failed to settle tab:', error)
   } finally {
@@ -466,6 +465,17 @@ const archiveTab = async () => {
     await tabStore.fetchTabById(tab.value.id)
   } catch (error) {
     console.error('Failed to archive tab:', error)
+  }
+}
+
+const markSettlementPaid = async (settlementId: number) => {
+  if (!tab.value) return
+
+  try {
+    await api.tabs.markSettlementPaid(settlementId)
+    await tabStore.fetchTabById(tab.value.id)
+  } catch (error) {
+    console.error('Failed to mark settlement as paid:', error)
   }
 }
 

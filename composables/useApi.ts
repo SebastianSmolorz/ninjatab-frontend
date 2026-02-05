@@ -9,6 +9,7 @@ import type {
   SimplifyResult,
   UpdateBillData,
   PersonSpendingTotal,
+  Settlement,
 } from '~/types'
 
 export const useApi = () => {
@@ -78,6 +79,11 @@ export const useApi = () => {
 
       personTotals: (id: number) =>
         apiFetch<PersonSpendingTotal[]>(`/tabs/${id}/person-totals`),
+
+      markSettlementPaid: (settlementId: number) =>
+        apiFetch<Settlement>(`/tabs/settlements/${settlementId}/mark-paid`, {
+          method: 'POST',
+        }),
     },
 
     // Bill endpoints

@@ -80,6 +80,7 @@ export interface Settlement {
   to_person: TabPerson
   amount: number
   currency: Currency
+  paid: boolean
   created_at: string
   updated_at: string
 }
