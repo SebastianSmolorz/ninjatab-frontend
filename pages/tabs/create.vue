@@ -83,7 +83,7 @@
                       :items="Object.values(Currency)"
                   />
                   <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Currency you want to settle in
+                    Currency you want to change hands at the end
                   </p>
                 </div>
               </div>
