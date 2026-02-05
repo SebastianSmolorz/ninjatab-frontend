@@ -131,7 +131,6 @@ export const useBillStore = defineStore('bills', {
             currency: bill.currency,
             status: bill.status,
             date: bill.date,
-            is_closed: bill.is_closed,
             total_amount: bill.total_amount,
             created_at: bill.created_at,
           }
@@ -164,7 +163,6 @@ export const useBillStore = defineStore('bills', {
           currency: newBill.currency,
           status: newBill.status,
           date: newBill.date,
-          is_closed: newBill.is_closed,
           total_amount: newBill.total_amount,
           created_at: newBill.created_at,
         })
@@ -234,7 +232,6 @@ export const useBillStore = defineStore('bills', {
             currency: updatedBill.currency,
             status: updatedBill.status,
             date: updatedBill.date,
-            is_closed: updatedBill.is_closed,
             total_amount: updatedBill.total_amount,
             created_at: updatedBill.created_at,
           }

@@ -45,7 +45,6 @@
                   :items="currencyOptions"
                   size="xs"
                   @change="updateCurrency"
-                  :disabled="bill.is_closed"
                 />
               </div>
             </div>
@@ -94,7 +93,7 @@
             </h3>
             <div class="flex gap-2">
               <UButton
-                v-if="!editMode && !bill.is_closed"
+                v-if="!editMode"
                 icon="i-heroicons-pencil"
                 size="sm"
                 variant="outline"
@@ -250,7 +249,6 @@ const tabStore = useTabStore()
 // State
 const editMode = ref(false)
 const savingsplits = ref(false)
-const closingBill = ref(false)
 const splitModes = ref<Record<number, 'even' | 'custom'>>({})
 const splits = ref<Record<number, Record<number, number>>>({})
 const selectedCurrency = ref<Currency>(Currency.GBP)
@@ -491,22 +489,6 @@ const updateCurrency = async () => {
     if (bill.value) {
       selectedCurrency.value = bill.value.currency as Currency
     }
-  }
-}
-
-const closeBill = async () => {
-  if (!bill.value) return
-
-  closingBill.value = true
-  try {
-    const api = useApi()
-    await api.bills.close(billId.value)
-    await billStore.fetchBillById(billId.value)
-  } catch (error) {
-    console.error('Failed to close bill:', error)
-    // TODO: Show error notification
-  } finally {
-    closingBill.value = false
   }
 }
 

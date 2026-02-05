@@ -115,7 +115,6 @@ export interface LineItem {
   description: string
   value: number
   split_type: SplitType
-  is_closed: boolean
   person_claims: PersonLineItemClaim[]
   created_at: string
   updated_at: string
@@ -128,7 +127,6 @@ export interface BillListItem {
   currency: Currency
   status: BillStatus
   date: string
-  is_closed: boolean
   total_amount: number
   paid_by: TabPerson | null
   created_at: string

@@ -254,6 +254,7 @@
                   {{ bill.currency }} {{ (bill.total_amount || 0) }}
                 </div>
                 <UButton
+                  v-if="!tab.is_settled"
                   icon="i-heroicons-trash"
                   variant="ghost"
                   size="sm"
