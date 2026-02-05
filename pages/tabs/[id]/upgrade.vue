@@ -60,10 +60,10 @@
             </UButton>
           </div>
 
-          <div class="flex justify-around text-sm text-primary-900">
-            <div class="flex items-center gap-1"><UIcon name="i-heroicons-lock-open" class="w-4 h-4"/> No limits</div>
-            <div class="flex items-center gap-1"><UIcon name="i-heroicons-camera" class="w-4 h-4"/> Receipt scanning</div>
-            <div class="flex items-center gap-1"><UIcon name="i-heroicons-currency-pound" class="w-4 h-4"/> Currency conversion</div>
+          <div class="flex flex-col sm:flex-row justify-around gap-2 sm:gap-0 text-sm text-primary-900">
+            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-lock-open" class="w-4 h-4"/> No limits</div>
+            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-camera" class="w-4 h-4"/> Receipt scanning</div>
+            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-currency-pound" class="w-4 h-4"/> Currency conversion</div>
           </div>
         </div>
 
