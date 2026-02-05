@@ -84,7 +84,7 @@
             <UButton
               @click="router.push(`/tabs/${tabId}`)"
               variant="ghost"
-              icon="i-heroicons-arrow-left"
+              icon="i-heroicons-arrow-long-left"
             >
               Back to Tab
             </UButton>

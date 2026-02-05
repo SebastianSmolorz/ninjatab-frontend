@@ -22,7 +22,7 @@
         <!-- Header with back button -->
         <div class="flex items-center gap-4">
           <UButton
-            icon="i-heroicons-arrow-left"
+            icon="i-heroicons-arrow-long-left"
             variant="ghost"
             @click="router.push(`/tabs/${tabId}`)"
           >
