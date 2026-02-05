@@ -201,3 +201,21 @@ export interface DraftSplits {
     [personId: number]: number | null
   }
 }
+
+// Auth types
+export interface AuthUser {
+  id: number
+  email: string
+  first_name: string
+  last_name: string
+}
+
+export interface LoginResponse {
+  access_token: string
+  refresh_token: string
+  user: AuthUser
+}
+
+export interface RefreshResponse {
+  access_token: string
+}

@@ -138,16 +138,45 @@
             </div>
           </div>
 
-          <!-- Add Line Item Form (hide if single expense already has one item) -->
-          <div v-if="billType === 'itemised' || lineItemsCount === 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <!-- Single Expense Form (no Add button needed) -->
+          <div v-if="billType === 'single'" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
             <div class="flex gap-3 items-end">
               <div class="flex-1 min-w-0">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  {{ billType === 'single' ? 'Description' : 'Item Name' }}
+                  Description
+                </label>
+                <UInput
+                  v-model="singleExpense.description"
+                  placeholder="e.g., Dinner, Groceries"
+                  size="lg"
+                  class="w-full"
+                />
+              </div>
+              <div class="w-32 flex-shrink-0">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Total
+                </label>
+                <UInput
+                  v-model.number="singleExpense.value"
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  size="lg"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Itemised Bill - Add Line Item Form -->
+          <div v-if="billType === 'itemised'" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+            <div class="flex gap-3 items-end">
+              <div class="flex-1 min-w-0">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Item Name
                 </label>
                 <UInput
                   v-model="newLineItem.description"
-                  :placeholder="billType === 'single' ? 'e.g., Dinner, Groceries' : 'e.g., Pizza, Coffee'"
+                  placeholder="e.g., Pizza, Coffee"
                   size="lg"
                   class="w-full"
                   @keyup.enter="addLineItem"
@@ -177,8 +206,8 @@
             </div>
           </div>
 
-          <!-- Line Items List - Receipt Style -->
-          <div v-if="formData.line_items.length > 0" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+          <!-- Line Items List - Receipt Style (only for itemised bills) -->
+          <div v-if="billType === 'itemised' && formData.line_items.length > 0" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
             <!-- Receipt header -->
             <div class="border-b-2 border-dashed border-gray-300 px-5 py-3 text-center">
               <div class="text-xs text-gray-500 uppercase tracking-widest">Receipt</div>
@@ -224,19 +253,18 @@
             </div>
           </div>
 
-          <!-- Validation Alert -->
+          <!-- Validation Alerts (only for itemised bills) -->
           <UAlert
-            v-if="showValidationError"
+            v-if="billType === 'itemised' && showValidationError"
             icon="i-heroicons-exclamation-triangle"
             type="red"
             variant="soft"
-            title="No expenses added"
-            description="Please add at least one expense to continue"
+            title="No items added"
+            description="Please add at least one item to continue"
           />
 
-          <!-- Validation Alert for Bill Name -->
           <UAlert
-            v-if="showBillNameError"
+            v-if="billType === 'itemised' && showBillNameError"
             icon="i-heroicons-exclamation-triangle"
             type="danger"
             variant="soft"
@@ -410,6 +438,12 @@ const newLineItem = ref({
   value: 0
 })
 
+// Single expense state (used directly without Add button)
+const singleExpense = ref({
+  description: '',
+  value: 0
+})
+
 // Split state: splitModes[itemIndex] = 'even' | 'custom'
 const splitModes = ref<Record<number, 'even' | 'custom'>>({})
 
@@ -436,15 +470,19 @@ const peopleOptions = computed(() => {
 })
 
 const canProceedToStep2 = computed(() => {
-  const hasBasicFields = formData.value.currency &&
-         formData.value.paid_by_id !== null &&
-         formData.value.line_items.length > 0
+  const hasBasicFields = formData.value.currency && formData.value.paid_by_id !== null
 
-  // Bill name required for itemised bills
-  const hasBillName = billType.value === 'single' ||
-         formData.value.description.trim().length > 0
-
-  return hasBasicFields && hasBillName
+  if (billType.value === 'single') {
+    // For single expense, check the singleExpense form directly
+    return hasBasicFields &&
+           singleExpense.value.description.trim().length > 0 &&
+           singleExpense.value.value > 0
+  } else {
+    // For itemised bills, need bill name and at least one item
+    return hasBasicFields &&
+           formData.value.description.trim().length > 0 &&
+           formData.value.line_items.length > 0
+  }
 })
 
 const lineItemsCount = computed(() => {
@@ -485,7 +523,7 @@ const formatCurrency = (amount: number) => {
 const nextStep = () => {
   if (step.value === 1 && !canProceedToStep2.value) {
     // Show validation error if no expenses added
-    if (lineItemsCount.value === 0) {
+    if (billType.value === 'itemised' && lineItemsCount.value === 0) {
       showValidationError.value = true
     }
     // Show bill name error for itemised bills
@@ -498,6 +536,14 @@ const nextStep = () => {
   // Clear validation errors
   showValidationError.value = false
   showBillNameError.value = false
+
+  // For single expense, add it to line_items before moving to step 2
+  if (step.value === 1 && billType.value === 'single') {
+    formData.value.line_items = [{
+      description: singleExpense.value.description.trim(),
+      value: singleExpense.value.value
+    }]
+  }
 
   // Initialize splits when moving to step 2
   if (step.value === 1) {
