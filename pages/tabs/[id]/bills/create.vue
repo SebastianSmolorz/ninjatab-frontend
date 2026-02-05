@@ -97,7 +97,7 @@
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              {{ billType === 'single' ? 'Adding Expense' : 'Adding Expenses' }}
+              {{ billType === 'single' ? 'Adding Expense' : 'Adding itemised bill' }}
             </h2>
           </div>
 
@@ -114,7 +114,7 @@
                 size="lg"
               />
             </div>
-            <div :class="['flex flex-col flex-shrink-0', billType === 'single' ? 'flex-1' : 'items-end']">
+            <div :class="['flex flex-col flex-shrink-0', billType === 'itemised' && 'items-end']">
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
                 Who Paid? <span class="text-red-500">*</span>
               </label>
@@ -123,9 +123,9 @@
                 :items="peopleOptions"
                 size="lg"
                 placeholder="Select"
-                :class="{ 'w-full': billType === 'single' }"
               />
             </div>
+            <div v-if="billType === 'single'" class="flex-1"></div>
             <div class="flex flex-col items-end flex-shrink-0">
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
                 Currency <span class="text-red-500">*</span>
