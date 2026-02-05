@@ -46,7 +46,7 @@
           </div>
 
           <p class="text-sm text-primary-950">
-            That's it. We'll automatically add this to everyone's total when you settle up. Fair and square. <strong>No subscriptions</strong>
+            That's it. We'll add this as a shared expense so you get paid back. Fair and square. <strong>No subscriptions</strong>
           </p>
 
           <div class="pt-2">
