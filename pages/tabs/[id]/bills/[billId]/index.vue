@@ -72,11 +72,11 @@
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Spending per person
           </h3>
-          <div class="space-y-2">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div
               v-for="person in personTotals"
               :key="person.person_id"
-              class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
+              class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
             >
               <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
               <span class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -288,7 +288,9 @@ const personTotals = computed(() => {
     })
   })
 
-  return Array.from(totals.values()).sort((a, b) => a.person_name.localeCompare(b.person_name))
+  return Array.from(totals.values())
+    .filter(person => person.total > 0)
+    .sort((a, b) => a.person_name.localeCompare(b.person_name))
 })
 
 // Watch bill changes to update selected currency

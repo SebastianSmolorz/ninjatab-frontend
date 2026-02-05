@@ -31,9 +31,9 @@
                 :color="tab.is_settled ? 'neutral' : 'success'"
                 variant="subtle"
                 size="lg"
-                class="mt-1"
+                class="mt-2 mb-2"
               >
-                {{ tab.is_settled ? 'Closed' : 'Unsettled' }}
+                {{ tab.is_settled ? 'Settled' : 'Open' }}
               </UBadge>
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}
@@ -73,7 +73,7 @@
           <!-- People & Spending -->
           <div>
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
-            <div class="space-y-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div
                 v-for="person in tab.people"
                 :key="person.id"
