@@ -49,26 +49,8 @@
                 />
               </div>
             </div>
-            <div class="text-right">
-              <div class="text-3xl font-bold text-gray-900 dark:text-white">
-                {{ bill.currency }} {{ bill.total_amount }}
-              </div>
-              <div v-if="bill.is_closed" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Closed
-              </div>
-              <div v-else>
-                <div class="text-sm text-green-600 dark:text-green-400 mt-1 mb-2">
-                  Open
-                </div>
-                <UButton
-                  variant="outline"
-                  size="xs"
-                  @click="closeBill"
-                  :loading="closingBill"
-                >
-                  Close Bill
-                </UButton>
-              </div>
+            <div class="text-3xl font-bold text-gray-900 dark:text-white">
+              {{ bill.currency }} {{ bill.total_amount }}
             </div>
           </div>
 

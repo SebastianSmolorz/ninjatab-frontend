@@ -7,6 +7,12 @@
           <div
             :class="[
               'h-1 flex-1 rounded-full transition-colors duration-300',
+              step >= 0 ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700'
+            ]"
+          ></div>
+          <div
+            :class="[
+              'h-1 flex-1 rounded-full transition-colors duration-300',
               step >= 1 ? 'bg-primary-500' : 'bg-gray-200 dark:bg-gray-700'
             ]"
           ></div>
@@ -22,32 +28,93 @@
 
     <!-- Form container -->
     <div class="flex-1 overflow-y-auto">
+      <!-- Step 0: Choose Bill Type -->
+      <UContainer v-if="step === 0" class="py-8 max-w-2xl">
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              What would you like to add?
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+              Choose how you want to record your expense
+            </p>
+          </div>
+
+          <div class="grid gap-4">
+            <div
+              @click="selectBillType('single')"
+              class="bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:border-primary-500 transition-colors"
+            >
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <UIcon name="i-heroicons-receipt-percent" class="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+                    Single Expense
+                  </h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    A simple expense with one total to split
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              @click="selectBillType('itemised')"
+              class="bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:border-primary-500 transition-colors"
+            >
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                  <UIcon name="i-heroicons-clipboard-document-list" class="w-6 h-6 text-primary-600 dark:text-primary-400" />
+                </div>
+                <div>
+                  <h3 class="font-semibold text-gray-900 dark:text-white mb-1">
+                    Itemised Bill
+                  </h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Multiple items with individual totals to split separately
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <UButton
+              @click="router.push(`/tabs/${tabId}`)"
+              variant="ghost"
+              icon="i-heroicons-arrow-left"
+            >
+              Back to Tab
+            </UButton>
+          </div>
+        </div>
+      </UContainer>
+
       <!-- Step 1: Expenses & Details -->
       <UContainer v-if="step === 1" class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Add Expenses
+              {{ billType === 'single' ? 'Adding Expense' : 'Adding Expenses' }}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400">
-              Add one or more expenses to split
-            </p>
           </div>
 
-          <!-- Bill Name, Who Paid, and Currency (same line) -->
+          <!-- Bill Name (only for itemised), Who Paid, and Currency -->
           <div class="flex gap-4">
-            <div class="flex-1">
+            <div v-if="billType === 'itemised'" class="flex-1">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Bill Name
+                Bill Name <span class="text-red-500">*</span>
               </label>
               <UInput
                 v-model="formData.description"
-                :placeholder="lineItemsCount === 0 ? 'e.g., Dinner at Restaurant, Groceries' : ''"
+                placeholder="e.g., Dinner at Restaurant"
+                class="w-full"
                 size="lg"
-                :disabled="lineItemsCount === 0"
               />
             </div>
-            <div class="flex flex-col items-end flex-shrink-0">
+            <div :class="['flex flex-col flex-shrink-0', billType === 'single' ? 'flex-1' : 'items-end']">
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
                 Who Paid? <span class="text-red-500">*</span>
               </label>
@@ -56,6 +123,7 @@
                 :items="peopleOptions"
                 size="lg"
                 placeholder="Select"
+                :class="{ 'w-full': billType === 'single' }"
               />
             </div>
             <div class="flex flex-col items-end flex-shrink-0">
@@ -70,23 +138,24 @@
             </div>
           </div>
 
-          <!-- Add Line Item Form -->
-          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+          <!-- Add Line Item Form (hide if single expense already has one item) -->
+          <div v-if="billType === 'itemised' || lineItemsCount === 0" class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
             <div class="flex gap-3 items-end">
-              <div class="flex-1">
+              <div class="flex-1 min-w-0">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Item Name
+                  {{ billType === 'single' ? 'Description' : 'Item Name' }}
                 </label>
                 <UInput
                   v-model="newLineItem.description"
-                  placeholder="e.g., Pizza, Coffee"
+                  :placeholder="billType === 'single' ? 'e.g., Dinner, Groceries' : 'e.g., Pizza, Coffee'"
                   size="lg"
+                  class="w-full"
                   @keyup.enter="addLineItem"
                 />
               </div>
-              <div class="w-32">
+              <div class="w-32 flex-shrink-0">
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Amount
+                  Total
                 </label>
                 <UInput
                   v-model.number="newLineItem.value"
@@ -100,6 +169,7 @@
               <UButton
                 @click="addLineItem"
                 icon="i-heroicons-plus"
+                class="flex-shrink-0"
                 size="lg"
               >
                 Add
@@ -130,8 +200,8 @@
               />
             </div>
 
-            <!-- Total -->
-            <div class="bg-primary-50 dark:bg-primary-950/30 rounded-lg border border-primary-200 dark:border-primary-800 p-4">
+            <!-- Total (only show for itemised with multiple items) -->
+            <div v-if="billType === 'itemised' && lineItemsCount > 1" class="bg-primary-50 dark:bg-primary-950/30 rounded-lg border border-primary-200 dark:border-primary-800 p-4">
               <div class="flex items-center justify-between">
                 <span class="font-semibold text-gray-900 dark:text-white">Total</span>
                 <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
@@ -145,10 +215,20 @@
           <UAlert
             v-if="showValidationError"
             icon="i-heroicons-exclamation-triangle"
-            color="red"
+            type="red"
             variant="soft"
             title="No expenses added"
             description="Please add at least one expense to continue"
+          />
+
+          <!-- Validation Alert for Bill Name -->
+          <UAlert
+            v-if="showBillNameError"
+            icon="i-heroicons-exclamation-triangle"
+            type="danger"
+            variant="soft"
+            title="Bill name required"
+            description="Please enter a name for your bill"
           />
         </div>
       </UContainer>
@@ -158,11 +238,8 @@
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Split Expenses
+              How are we splitting this?
             </h2>
-            <p class="text-gray-600 dark:text-gray-400">
-              Assign shares to each person for each expense
-            </p>
           </div>
 
           <!-- Line Items with Splits -->
@@ -254,11 +331,10 @@
     </div>
 
     <!-- Footer actions - Fixed at bottom -->
-    <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 sticky bottom-0">
+    <div v-if="step > 0" class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 sticky bottom-0">
       <UContainer class="py-4 max-w-2xl">
         <div class="flex gap-3">
           <UButton
-            v-if="step > 1"
             @click="previousStep"
             variant="outline"
             size="lg"
@@ -271,7 +347,7 @@
             @click="nextStep"
             :disabled="!canProceedToStep2"
             size="lg"
-            block
+            class="flex-1"
           >
             Continue
           </UButton>
@@ -303,9 +379,11 @@ const billStore = useBillStore()
 const tabStore = useTabStore()
 
 // State
-const step = ref(1)
+const step = ref(0)
 const loading = ref(false)
 const showValidationError = ref(false)
+const showBillNameError = ref(false)
+const billType = ref<'single' | 'itemised' | null>(null)
 
 const formData = ref({
   description: '',
@@ -345,9 +423,15 @@ const peopleOptions = computed(() => {
 })
 
 const canProceedToStep2 = computed(() => {
-  return formData.value.currency &&
+  const hasBasicFields = formData.value.currency &&
          formData.value.paid_by_id !== null &&
          formData.value.line_items.length > 0
+
+  // Bill name required for itemised bills
+  const hasBillName = billType.value === 'single' ||
+         formData.value.description.trim().length > 0
+
+  return hasBasicFields && hasBillName
 })
 
 const lineItemsCount = computed(() => {
@@ -376,6 +460,11 @@ onMounted(async () => {
 })
 
 // Methods
+const selectBillType = (type: 'single' | 'itemised') => {
+  billType.value = type
+  step.value = 1
+}
+
 const formatCurrency = (amount: number) => {
   return `${formData.value.currency} ${amount.toFixed(2)}`
 }
@@ -386,11 +475,16 @@ const nextStep = () => {
     if (lineItemsCount.value === 0) {
       showValidationError.value = true
     }
+    // Show bill name error for itemised bills
+    if (billType.value === 'itemised' && !formData.value.description.trim()) {
+      showBillNameError.value = true
+    }
     return
   }
 
-  // Clear validation error
+  // Clear validation errors
   showValidationError.value = false
+  showBillNameError.value = false
 
   // Initialize splits when moving to step 2
   if (step.value === 1) {
@@ -401,8 +495,12 @@ const nextStep = () => {
 }
 
 const previousStep = () => {
-  if (step.value > 1) {
+  if (step.value > 0) {
     step.value--
+    // Reset bill type when going back to step 0
+    if (step.value === 0) {
+      billType.value = null
+    }
   }
 }
 
@@ -411,19 +509,15 @@ const addLineItem = () => {
     return
   }
 
-  // Clear validation error when adding item
+  // Clear validation errors when adding item
   showValidationError.value = false
+  showBillNameError.value = false
 
   // Add to beginning of array (newest first)
   formData.value.line_items.unshift({
     description: newLineItem.value.description.trim(),
     value: newLineItem.value.value
   })
-
-  // Autofill bill name with first item's name
-  if (formData.value.line_items.length === 1) {
-    formData.value.description = newLineItem.value.description.trim()
-  }
 
   // Reset form
   newLineItem.value.description = ''
@@ -529,10 +623,10 @@ const createBill = async () => {
       }
     })
 
-    // Use bill name if provided and multiple items, otherwise use first item description
-    const billDescription = formData.value.line_items.length > 1 && formData.value.description.trim()
-      ? formData.value.description.trim()
-      : formData.value.line_items[0].description
+    // For single expense, use item description; for itemised, use bill name
+    const billDescription = billType.value === 'single'
+      ? formData.value.line_items[0].description
+      : formData.value.description.trim()
 
     const newBill = await billStore.createBill({
       tab_id: tabId.value,

@@ -33,7 +33,7 @@
                 size="lg"
                 class="mt-1"
               >
-                {{ tab.is_settled ? 'Closed' : 'Open' }}
+                {{ tab.is_settled ? 'Closed' : 'Unsettled' }}
               </UBadge>
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}
@@ -44,7 +44,7 @@
             </div>
 
             <div class="flex items-center gap-3">
-              <USelectMenu
+              <USelect
                 v-model="selectedAction"
                 :items="tabActions"
                 placeholder="Actions"
@@ -52,7 +52,7 @@
                 @update:model-value="handleActionSelect"
                 @click.stop
               >
-              </USelectMenu>
+              </USelect>
             </div>
           </div>
 
@@ -61,10 +61,11 @@
           <!-- Settlement Currency -->
           <div class="flex items-center gap-2">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
-            <USelectMenu
+            <USelect
               v-model="selectedCurrency"
               :items="currencyOptions"
               size="sm"
+              @click.stop
               @update:model-value="updateSettlementCurrency"
             />
           </div>
@@ -252,16 +253,8 @@
                 </div>
               </div>
               <div class="flex items-center gap-3">
-                <div class="text-right">
-                  <div class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ bill.currency }} {{ (bill.total_amount || 0) }}
-                  </div>
-                  <UBadge v-if="bill.is_closed">
-                    Closed
-                  </UBadge>
-                  <UBadge color="success" v-else>
-                    Open
-                  </UBadge>
+                <div class="text-lg font-semibold text-gray-900 dark:text-white">
+                  {{ bill.currency }} {{ (bill.total_amount || 0) }}
                 </div>
                 <UButton
                   icon="i-heroicons-trash"
