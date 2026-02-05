@@ -177,37 +177,50 @@
             </div>
           </div>
 
-          <!-- Line Items List -->
-          <div v-if="formData.line_items.length > 0" class="space-y-3">
-            <div
-              v-for="(item, index) in formData.line_items"
-              :key="index"
-              class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between"
-            >
-              <div>
-                <div class="font-medium text-gray-900 dark:text-white">
-                  {{ item.description }}
-                </div>
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ formatCurrency(item.value) }}
-                </div>
-              </div>
-              <UButton
-                @click="removeLineItem(index)"
-                variant="ghost"
-                icon="i-heroicons-trash"
-                size="sm"
-              />
+          <!-- Line Items List - Receipt Style -->
+          <div v-if="formData.line_items.length > 0" class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
+            <!-- Receipt header -->
+            <div class="border-b-2 border-dashed border-gray-300 px-5 py-3 text-center">
+              <div class="text-xs text-gray-500 uppercase tracking-widest">Receipt</div>
             </div>
 
-            <!-- Total (only show for itemised with multiple items) -->
-            <div v-if="billType === 'itemised' && lineItemsCount > 1" class="bg-primary-50 dark:bg-primary-950/30 rounded-lg border border-primary-200 dark:border-primary-800 p-4">
+            <!-- Receipt items -->
+            <div class="px-5 py-3 font-mono text-sm">
+              <div
+                v-for="(item, index) in formData.line_items"
+                :key="index"
+                class="group flex items-center justify-between py-2 hover:bg-gray-50 -mx-2 px-2 rounded"
+              >
+                <div class="flex-1 min-w-0 flex items-baseline">
+                  <span class="text-black truncate">{{ item.description }}</span>
+                  <span class="flex-1 mx-2 border-b border-dotted border-gray-300"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-black font-medium whitespace-nowrap">{{ formatCurrency(item.value) }}</span>
+                  <UButton
+                    @click="removeLineItem(index)"
+                    variant="ghost"
+                    color="error"
+                    icon="i-heroicons-x-mark"
+                    size="xs"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Receipt total -->
+            <div class="border-t-2 border-dashed border-gray-300 px-5 py-3 font-mono">
               <div class="flex items-center justify-between">
-                <span class="font-semibold text-gray-900 dark:text-white">Total</span>
-                <span class="text-xl font-bold text-primary-600 dark:text-primary-400">
+                <span class="text-black font-bold uppercase text-sm">Total</span>
+                <span class="text-lg font-bold text-black">
                   {{ formatCurrency(totalAmount) }}
                 </span>
               </div>
+            </div>
+
+            <!-- Receipt footer -->
+            <div class="bg-gray-50 px-5 py-2 text-center">
+              <div class="text-xs text-gray-500">{{ lineItemsCount }} {{ lineItemsCount === 1 ? 'item' : 'items' }}</div>
             </div>
           </div>
 

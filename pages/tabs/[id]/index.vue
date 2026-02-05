@@ -20,7 +20,7 @@
       <div class="space-y-6">
       <!-- Tab Info Card -->
       <div class="relative cursor-pointer" @click="handleCardClick">
-        <UCard variant="solid" class="!rounded-b-none">
+        <UCard variant="solid">
           <!-- Always visible header -->
           <div class="flex items-center justify-between gap-4">
             <div>
@@ -357,13 +357,14 @@ const currencyOptions = [
 // Computed
 const tab = computed(() => tabStore.currentTab)
 
-// Actions dropdown - computed to conditionally show Settle Tab
+// Actions dropdown
 const tabActions = computed(() => {
   const actions = []
   if (!tab.value?.is_settled) {
-    actions.push({ label: 'Settle Tab', value: 'settle' })
+    actions.push({ label: 'Settle up', value: 'settle' })
   }
-  actions.push({ label: 'Archive Tab', value: 'archive' })
+  actions.push({ label: 'Archive', value: 'archive' })
+  actions.push({ label: 'Delete', value: 'delete' })
   return actions
 })
 const loading = computed(() => tabStore.isLoading)
