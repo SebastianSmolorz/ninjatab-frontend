@@ -1,4 +1,14 @@
-import type { Bill, LineItem, TabPerson, SplitType } from '~/types'
+import type { Bill, LineItem, PersonLineItemClaim, TabPerson, SplitType } from '~/types'
+
+/**
+ * Check if a line item's claims represent an even split.
+ * Even means all claims have the same split_value and cover all people in the tab.
+ */
+export function isEvenSplit(claims: PersonLineItemClaim[], totalPeople: number): boolean {
+  if (claims.length === 0 || claims.length !== totalPeople) return false
+  const values = claims.map(c => Number(c.split_value) || 0)
+  return values.every(v => v === values[0])
+}
 
 /**
  * Calculate the amount a person owes for a line item based on shares

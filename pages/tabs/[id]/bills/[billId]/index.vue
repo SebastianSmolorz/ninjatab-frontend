@@ -139,7 +139,12 @@
 
               <!-- View mode: Show current splits -->
               <div v-if="!editMode">
-                <div class="space-y-2">
+                <template v-if="isEvenSplit(item.person_claims, tabStore.currentTab?.people.length || 0)">
+                  <p class="text-sm text-gray-500 dark:text-gray-400">
+                    Split evenly. All owe {{ bill.currency }} {{ (item.person_claims[0]?.calculated_amount || 0) }}
+                  </p>
+                </template>
+                <div v-else class="space-y-2">
                   <div
                     v-for="claim in item.person_claims"
                     :key="claim.id"
@@ -240,6 +245,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useBillStore } from '~/stores/bills'
 import { useTabStore } from '~/stores/tabs'
 import { Currency, type BillStatus } from '~/types'
+import { isEvenSplit } from '~/utils/calculations'
 
 const route = useRoute()
 const router = useRouter()
@@ -388,14 +394,7 @@ const enterEditMode = () => {
       splits.value[index][claim.person_id] = Number(claim.split_value) || 0
     })
 
-    // Determine if it's even split:
-    // - All tab people must have a claim (count matches)
-    // - All claims must have the same split_value (typically 1)
-    const allPeopleIncluded = item.person_claims.length === tabStore.currentTab.people.length
-    const splitValues = item.person_claims.map(c => Number(c.split_value) || 0)
-    const allSameValue = splitValues.length > 0 && splitValues.every(v => v === splitValues[0])
-
-    splitModes.value[index] = (allPeopleIncluded && allSameValue) ? 'even' : 'custom'
+    splitModes.value[index] = isEvenSplit(item.person_claims, tabStore.currentTab.people.length) ? 'even' : 'custom'
   })
 
   editMode.value = true
