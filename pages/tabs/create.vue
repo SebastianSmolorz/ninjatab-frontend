@@ -148,6 +148,14 @@
                   title="At least one person is required"
                   description="Add at least one person with a name to continue"
               />
+              <UAlert
+                  v-if="formData.people.length > 1 && hasDuplicateNames"
+                  icon="i-heroicons-information-circle"
+                  color="warning"
+                  variant="soft"
+                  title="Duplicated names"
+                  description="All names need to be unique"
+              />
             </div>
           </UContainer>
         </div>
@@ -219,8 +227,16 @@ const hasValidPeople = computed(() => {
   return formData.value.people.some(p => p.name.trim().length > 0)
 })
 
+const hasDuplicateNames = computed(() => {
+  const names = formData.value.people
+      .map(p => p.name.trim().toLowerCase())
+      .filter(n => n.length > 0)
+  return new Set(names).size !== names.length
+})
+
+
 const canCreate = computed(() => {
-  return formData.value.name.trim().length > 0 && hasValidPeople.value
+  return formData.value.name.trim().length > 0 && hasValidPeople.value && !hasDuplicateNames.value
 })
 
 // Methods
