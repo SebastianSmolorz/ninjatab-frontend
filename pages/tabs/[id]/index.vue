@@ -134,26 +134,26 @@
           <!-- Total Spent -->
           <div class="grid grid-cols-3 md:grid-cols-4 gap-2">
             <div
+              v-if="totalSpentInSettlement !== null"
+              class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
+            >
+              <div class="text-xs text-gray-500 dark:text-gray-400">
+                Total group spend ({{ tab.settlement_currency }})
+              </div>
+              <div class="text-lg font-bold text-green-700 dark:text-green-400">
+                {{ formatCurrencyAmount(totalSpentInSettlement) }}
+              </div>
+            </div>
+            <div
               v-for="(total, currency) in totalSpentByCurrency"
               :key="currency"
               class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
             >
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                {{ currency }}
+                {{ currency }} spent
               </div>
               <div class="text-lg font-bold text-blue-700 dark:text-blue-400">
                 {{ formatCurrencyAmount(total) }}
-              </div>
-            </div>
-            <div
-              v-if="totalSpentInSettlement !== null"
-              class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
-            >
-              <div class="text-xs text-gray-500 dark:text-gray-400">
-                Total ({{ tab.settlement_currency }})
-              </div>
-              <div class="text-lg font-bold text-green-700 dark:text-green-400">
-                {{ formatCurrencyAmount(totalSpentInSettlement) }}
               </div>
             </div>
           </div>
