@@ -33,10 +33,9 @@
         <div class="space-y-6">
           <div>
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              What would you like to add?
+              What are we splitting?
             </h2>
             <p class="text-gray-600 dark:text-gray-400">
-              Choose how you want to record your expense
             </p>
           </div>
 
@@ -54,7 +53,7 @@
                     Single Expense
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-400">
-                    A simple expense with one total to split
+                    One total to split e.g. plane tickets
                   </p>
                 </div>
               </div>
@@ -73,7 +72,7 @@
                     Itemised Bill
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Multiple items with individual totals to split separately
+                    Multiple items e.g. a restaurant receipt
                   </p>
                 </div>
               </div>
@@ -99,6 +98,9 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
               {{ billType === 'single' ? 'Adding Expense' : 'Adding itemised bill' }}
             </h2>
+            <p v-if="billType !== 'single'" class="text-gray-600 dark:text-gray-400">
+              Enter item totals, not per unit price. £15 for 3 beers, not £5 each.
+            </p>
           </div>
 
           <!-- Bill Name (only for itemised), Who Paid, and Currency -->
