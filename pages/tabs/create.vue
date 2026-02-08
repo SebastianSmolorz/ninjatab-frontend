@@ -119,8 +119,9 @@
                       :autofocus="index === formData.people.length - 1"
                       @keyup.enter="addPerson"
                   />
+                  <span v-if="index === 0" class="text-sm text-gray-500 dark:text-gray-400 shrink-0">(me)</span>
                   <UButton
-                      v-if="formData.people.length > 1"
+                      v-if="formData.people.length > 1 && index !== 0"
                       @click="removePerson(index)"
                       variant="ghost"
                       icon="i-heroicons-trash"
@@ -204,10 +205,12 @@
 import {ref, computed} from 'vue'
 import {useRouter} from 'vue-router'
 import {useTabStore} from '~/stores/tabs'
+import {useAuthStore} from '~/stores/auth'
 import {Currency} from '~/types'
 
 const router = useRouter()
 const tabStore = useTabStore()
+const authStore = useAuthStore()
 
 // State
 const step = ref(1)
@@ -219,7 +222,7 @@ const formData = ref({
   description: '',
   default_currency: Currency.GBP,
   settlement_currency: Currency.GBP,
-  people: [{name: ''}]
+  people: [{name: authStore.user?.first_name || ''}]
 })
 
 // Computed
@@ -267,10 +270,13 @@ const createTab = async () => {
   loading.value = true
 
   try {
-    // Filter out empty names
+    // Filter out empty names; include user's email for the first person so TabPerson auto-links
     const validPeople = formData.value.people
         .filter(p => p.name.trim().length > 0)
-        .map(p => ({name: p.name.trim()}))
+        .map((p, index) => ({
+          name: p.name.trim(),
+          ...(index === 0 && authStore.user?.email ? {email: authStore.user.email} : {})
+        }))
 
     const newTab = await tabStore.createTab({
       name: formData.value.name.trim(),
