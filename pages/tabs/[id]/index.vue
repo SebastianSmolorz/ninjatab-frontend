@@ -440,8 +440,8 @@ const settleTab = async () => {
     await api.tabs.simplify(tab.value.id)
     // Refresh the tab to get the settlements
     await tabStore.fetchTabById(tab.value.id)
-    // Close the pull down tab
-    tabDetailsOpen.value = false
+    // Navigate to the celebration screen
+    router.push(`/tabs/${tab.value.id}/settled`)
   } catch (error) {
     console.error('Failed to settle tab:', error)
   } finally {
