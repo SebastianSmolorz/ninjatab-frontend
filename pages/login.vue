@@ -1,13 +1,13 @@
 <template>
   <UMain class="flex items-center justify-center min-h-[60vh]">
-    <UContainer>
-      <UCard class="max-w-sm w-full">
+    <div class="max-w-sm w-full mx-auto px-4">
+      <UCard>
         <template #header>
           <h2 class="text-xl font-semibold text-center">Login to NinjaTab</h2>
         </template>
 
-        <form class="space-y-4" @submit.prevent="handleLogin">
-          <UFormField label="Email">
+        <form class="space-y-4 text-center" @submit.prevent="handleLogin">
+          <UFormField class="text-center">
             <UInput
               v-model="email"
               type="email"
@@ -27,7 +27,7 @@
           </p>
         </form>
       </UCard>
-    </UContainer>
+    </div>
   </UMain>
 </template>
 
