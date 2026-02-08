@@ -27,7 +27,7 @@
           v-else-if="error"
           icon="i-heroicons-exclamation-triangle"
           variant="soft"
-          title="Error loading tabs"
+          title="Error loading tabs. Are you logged in?"
           :description="error"
         />
 
