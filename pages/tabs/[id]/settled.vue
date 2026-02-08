@@ -1,5 +1,5 @@
 <template>
-  <div class="settled-page fixed inset-0 bg-gray-900 flex flex-col items-center justify-center overflow-hidden z-50">
+  <div class="settled-page fixed inset-0 bg-gray-900 flex flex-col items-center overflow-y-auto z-50">
     <!-- Confetti layer -->
     <div class="confetti-container absolute inset-0 pointer-events-none">
       <div
@@ -15,7 +15,7 @@
     <div class="pulse-ring pulse-ring-2" />
 
     <!-- Main content -->
-    <div class="relative z-10 flex flex-col items-center text-center px-6">
+    <div class="relative z-10 flex flex-col items-center text-center px-6 py-12 my-auto">
       <!-- Animated checkmark circle -->
       <div class="check-container">
         <svg class="checkmark" viewBox="0 0 100 100">
