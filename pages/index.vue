@@ -38,6 +38,12 @@
           </div>
         </div>
 
+        <!-- Description -->
+        <p class="text-gray-400 text-md max-w-lg text-center mb-10">
+          Holidays, nights out, shared meals, group tickets — anywhere money gets messy.
+          The app lets you add shared expenses, keeps track of expenses, and makes settling up simple. No more chasing payments or maths.
+        </p>
+
         <!-- CTA Button -->
         <div class="w-full max-w-sm">
           <UButton
