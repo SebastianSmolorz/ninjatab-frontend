@@ -1,50 +1,119 @@
 <template>
-  <UMain class="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-gray-900 dark:to-gray-800 flex items-center">
-    <UContainer class="flex justify-center">
-      <div class="max-w-md w-full text-center">
-        <!-- Logo/Brand -->
-        <div class="mb-8">
-          <h1 class="text-5xl font-bold text-primary-600 dark:text-primary-400 mb-3">
-            NinjaTab
-          </h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300">
-            Split bills like a ninja
-          </p>
+  <UMain class="bg-gray-900">
+    <UContainer>
+      <!-- Hero Section -->
+      <div class="flex flex-col items-center pt-16 pb-12">
+        <!-- Logo with hover/click toggle -->
+        <div
+          class="logo-container relative mb-8 cursor-pointer select-none"
+          :class="{ 'logo-active': logoActive }"
+          @click="logoActive = !logoActive"
+        >
+          <img
+            src="/logo1-small.png"
+            alt="NinjaTab"
+            class="logo-base w-40"
+          />
+          <img
+            src="/logo1-small-hover.png"
+            alt="NinjaTab hover"
+            class="logo-hover w-40 absolute top-0 left-0"
+          />
         </div>
 
-        <!-- Action buttons -->
-        <div class="space-y-4">
+        <!-- Animated Tagline -->
+        <div class="text-center mb-10">
+          <div class="text-3xl md:text-4xl font-bold text-white leading-tight">
+            Stick it on the tab<span
+              class="text-primary-400 transition-opacity duration-700"
+              :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
+            >.ninja</span>
+          </div>
+          <div
+            class="text-3xl md:text-4xl font-bold leading-tight transition-opacity duration-700 mt-1"
+            :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
+          >
+            <span class="text-primary-400">Split</span>
+            <span class="text-white"> it on the tab</span><span class="text-primary-400">.ninja</span>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <div class="w-full max-w-sm">
           <UButton
             size="xl"
             block
-            icon="i-heroicons-plus-circle"
-            @click="router.push('/tabs/create')"
+            to="/login"
           >
-            Add Tab
-          </UButton>
-
-          <UButton
-            size="xl"
-            block
-            variant="outline"
-            icon="i-heroicons-queue-list"
-            @click="router.push('/tabs')"
-          >
-            View Tabs
+            Start splitting bills like a ninja
           </UButton>
         </div>
+      </div>
 
-        <!-- Optional tagline -->
-        <p class="mt-12 text-sm text-gray-500 dark:text-gray-400">
-          Track shared expenses with friends and family
-        </p>
+      <!-- Benefits Section -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-16 pt-8 max-w-4xl mx-auto">
+        <UPageFeature
+          v-for="benefit in benefits"
+          :key="benefit.title"
+          :icon="benefit.icon"
+          :title="benefit.title"
+          :description="benefit.description"
+          orientation="vertical"
+          class="text-center p-6 rounded-xl bg-gray-800/50"
+        >
+        </UPageFeature>
       </div>
     </UContainer>
   </UMain>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+const logoActive = ref(false)
+const phase = ref(0)
 
-const router = useRouter()
+const benefits = [
+  {
+    icon: 'i-lucide-message-circle-off',
+    title: 'No more awkward chats',
+    description: 'Stop the endless "who owes what" messages after a night out'
+  },
+  {
+    icon: 'i-lucide-calculator',
+    title: 'Simplified settlements',
+    description: 'Reduce number of payments with a clear breakdown of who pays whom'
+  },
+  {
+    icon: 'i-lucide-heart',
+    title: 'Free to use',
+    description: 'Generous free usage. No subscriptions'
+  }
+]
+
+onMounted(() => {
+  setTimeout(() => { phase.value = 1 }, 1000)
+})
 </script>
+
+<style scoped>
+/* Logo crossfade */
+.logo-hover {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.logo-container:hover .logo-hover,
+.logo-active .logo-hover {
+  opacity: 1;
+}
+
+.logo-container:hover .logo-base,
+.logo-active .logo-base {
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.logo-base {
+  transition: opacity 0.4s ease-in-out;
+}
+
+</style>
