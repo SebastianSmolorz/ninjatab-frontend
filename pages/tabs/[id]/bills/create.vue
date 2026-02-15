@@ -321,60 +321,14 @@
               </div>
 
               <!-- Custom Split - People List -->
-              <div v-if="splitModes[itemIndex] === 'custom'">
-                <div class="flex flex-wrap gap-2">
-                  <div
-                    v-for="person in tab?.people"
-                    :key="person.id"
-                    class="flex items-center"
-                  >
-                    <!-- Unselected: just the name button -->
-                    <UButton
-                      v-if="!splits[itemIndex][person.id]"
-                      variant="outline"
-                      size="sm"
-                      @click="splits[itemIndex][person.id] = 1"
-                    >
-                      {{ person.name }}
-                    </UButton>
-
-                    <!-- Selected: name + shares counter -->
-                    <div v-else class="flex items-center gap-1 bg-primary-50 dark:bg-primary-900/30 rounded-lg px-1 py-0.5">
-                      <UButton
-                        variant="ghost"
-                        size="xs"
-                        icon="i-heroicons-minus"
-                        @click="decrementShare(itemIndex, person.id)"
-                      />
-                      <span class="text-sm font-medium text-primary-700 dark:text-primary-300 min-w-[2rem] text-center">
-                        {{ splits[itemIndex][person.id] }}
-                      </span>
-                      <UButton
-                        variant="ghost"
-                        size="xs"
-                        icon="i-heroicons-plus"
-                        @click="splits[itemIndex][person.id]++"
-                      />
-                      <span class="text-xs text-gray-500 dark:text-gray-400 ml-1 mr-1">
-                        {{ person.name }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Calculated amounts summary -->
-                <div v-if="hasAnySplits(itemIndex)" class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-1">
-                  <div
-                    v-for="person in tab?.people"
-                    :key="'amount-' + person.id"
-                    v-show="splits[itemIndex][person.id] > 0"
-                    class="flex justify-between text-xs text-gray-500 dark:text-gray-400"
-                  >
-                    <span>{{ person.name }}</span>
-                    <span>{{ calculateShareAmount(itemIndex, person.id) }}</span>
-                  </div>
-                </div>
-              </div>
+              <SharePicker
+                v-if="splitModes[itemIndex] === 'custom'"
+                :people="tab?.people || []"
+                :model-value="splits[itemIndex]"
+                :item-value="item.value"
+                :format-currency="formatCurrency"
+                @update:model-value="splits[itemIndex] = $event"
+              />
 
               <!-- Even Split - Show who's included -->
               <div v-else class="text-sm text-gray-600 dark:text-gray-400">
@@ -621,16 +575,6 @@ const initializeSplits = () => {
   })
 }
 
-const decrementShare = (itemIndex: number, personId: number) => {
-  if (splits.value[itemIndex][personId] > 0) {
-    splits.value[itemIndex][personId]--
-  }
-}
-
-const hasAnySplits = (itemIndex: number): boolean => {
-  return Object.values(splits.value[itemIndex] || {}).some(v => v > 0)
-}
-
 const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
   splitModes.value[itemIndex] = mode
 
@@ -647,26 +591,6 @@ const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
       })
     }
   }
-}
-
-const calculateShareAmount = (itemIndex: number, personId: number): string => {
-  const item = formData.value.line_items[itemIndex]
-  if (!item || !splits.value[itemIndex]) return formatCurrency(0)
-
-  const personShares = splits.value[itemIndex][personId] || 0
-
-  // Calculate total shares for this item
-  const totalShares = Object.values(splits.value[itemIndex]).reduce(
-    (sum, shares) => sum + (shares || 0),
-    0
-  )
-
-  if (totalShares === 0 || personShares === 0) return formatCurrency(0)
-
-  // Calculate this person's share: (item_value × person_shares) ÷ total_shares
-  const amount = (item.value * personShares) / totalShares
-
-  return formatCurrency(amount)
 }
 
 const createBill = async () => {
