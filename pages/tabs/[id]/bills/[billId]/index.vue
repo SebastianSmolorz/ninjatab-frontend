@@ -185,43 +185,56 @@
 
                 <!-- Custom split mode -->
                 <div v-if="splitModes[itemIndex] === 'custom'">
-                  <!-- Table Header -->
-                  <div class="flex items-center gap-3 pb-2 border-b border-gray-200 dark:border-gray-700 mb-3">
-                    <div class="flex-1">
-                      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Name</span>
-                    </div>
-                    <div class="w-24 text-center">
-                      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">How many</span>
-                    </div>
-                  </div>
-
-                  <!-- People rows -->
-                  <div class="space-y-3">
+                  <div class="flex flex-wrap gap-2">
                     <div
                       v-for="person in tabStore.currentTab?.people || []"
                       :key="person.id"
-                      class="flex items-start gap-3"
+                      class="flex items-center"
                     >
-                      <div class="flex-1">
-                        <div class="font-medium text-gray-900 dark:text-white text-sm">
-                          {{ person.name }}
-                        </div>
-                      </div>
-                      <div class="w-24">
-                        <UInput
-                          v-model.number="splits[itemIndex][person.id]"
-                          type="number"
-                          min="0"
-                          step="1"
-                          placeholder="0"
-                          size="sm"
-                          class="w-full"
+                      <!-- Unselected: just the name button -->
+                      <UButton
+                        v-if="!splits[itemIndex][person.id]"
+                        variant="outline"
+                        size="sm"
+                        @click="splits[itemIndex][person.id] = 1"
+                      >
+                        {{ person.name }}
+                      </UButton>
+
+                      <!-- Selected: name + shares counter -->
+                      <div v-else class="flex items-center gap-1 bg-primary-50 dark:bg-primary-900/30 rounded-lg px-1 py-0.5">
+                        <UButton
+                          variant="ghost"
+                          size="xs"
+                          icon="i-heroicons-minus"
+                          @click="decrementShare(itemIndex, person.id)"
                         />
-                        <!-- Calculated amount display -->
-                        <div class="text-xs text-gray-500 dark:text-gray-400 text-center mt-1">
-                          {{ calculateShareAmount(itemIndex, person.id, item.value) }}
-                        </div>
+                        <span class="text-sm font-medium text-primary-700 dark:text-primary-300 min-w-[2rem] text-center">
+                          {{ splits[itemIndex][person.id] }}
+                        </span>
+                        <UButton
+                          variant="ghost"
+                          size="xs"
+                          icon="i-heroicons-plus"
+                          @click="splits[itemIndex][person.id]++"
+                        />
+                        <span class="text-xs text-gray-500 dark:text-gray-400 ml-1 mr-1">
+                          {{ person.name }}
+                        </span>
                       </div>
+                    </div>
+                  </div>
+
+                  <!-- Calculated amounts summary -->
+                  <div v-if="hasAnySplits(itemIndex)" class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-1">
+                    <div
+                      v-for="person in tabStore.currentTab?.people || []"
+                      :key="'amount-' + person.id"
+                      v-show="splits[itemIndex][person.id] > 0"
+                      class="flex justify-between text-xs text-gray-500 dark:text-gray-400"
+                    >
+                      <span>{{ person.name }}</span>
+                      <span>{{ calculateShareAmount(itemIndex, person.id, item.value) }}</span>
                     </div>
                   </div>
                 </div>
@@ -306,7 +319,7 @@ watch(bill, (newBill) => {
 
 // Helper functions
 const formatCurrencyAmount = (amount: number) => {
-  return amount.toLocaleString('en-US', {
+  return amount.toLocaleString('en-GB', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })
@@ -314,7 +327,7 @@ const formatCurrencyAmount = (amount: number) => {
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('en-GB', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
@@ -404,6 +417,16 @@ const cancelEdit = () => {
   editMode.value = false
   splitModes.value = {}
   splits.value = {}
+}
+
+const decrementShare = (itemIndex: number, personId: number) => {
+  if (splits.value[itemIndex][personId] > 0) {
+    splits.value[itemIndex][personId]--
+  }
+}
+
+const hasAnySplits = (itemIndex: number): boolean => {
+  return Object.values(splits.value[itemIndex] || {}).some(v => v > 0)
 }
 
 const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
