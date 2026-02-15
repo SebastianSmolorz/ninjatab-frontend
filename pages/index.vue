@@ -96,7 +96,7 @@ const benefits = [
 ]
 
 useSeoMeta({
-  title: 'Stick it on the Tab.ninja. Free app to split shared costs',
+  title: 'Tab.ninja. Split shared costs',
   description: 'Start a tab, add or scan receipts, simplify settling payments.',
 })
 
