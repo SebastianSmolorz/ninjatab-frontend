@@ -34,7 +34,7 @@
         <h2 class="text-gray-400 text-md max-w-lg text-center mb-10">
           Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
           No more maths.
-          This app makes settling shared costs it a doddle.
+          This app makes settling shared costs a breeze.
         </h2>
 
         <!-- CTA Button -->
@@ -44,7 +44,7 @@
             block
             to="/login"
           >
-            Start a free tab now
+            Open a free tab now
           </UButton>
         </div>
       </div>
@@ -64,7 +64,7 @@
       </div>
 
       <UPageSection
-        title="How does it work?"
+        title="Less time splitting expenses. More time enjoying the trip."
         :features="features"
       />
 
@@ -88,39 +88,40 @@ import type { PageFeatureProps } from '@nuxt/ui'
 
 const features = ref<PageFeatureProps[]>([
   {
-    title: 'Step 1: Start a tab',
-    description: 'It is free. Add your mates\'s names and send them an invite (or do it all yourself if you wish)',
+    title: 'Open a tab',
+    description: 'Create a shared tab in seconds. Add friends or manage everything yourself. Completely free to start.',
     icon: 'i-lucide-smile',
   },
   {
-    title: 'Step 2: Put some bills on the tab',
-    description: 'Big or small. Scan the receipt with your phone, or type it in. Then select who had what (or let your mates claim it).',
+    title: 'Add expenses in seconds',
+    description: 'Scan a receipt or enter expenses manually. Split costs exactly how you want, or let friends claim their items.',
     icon: 'i-lucide-receipt-pound-sterling',
   },
   {
-    title: 'Step 3: Settle up',
-    description: 'See running totals, convert currency, and settle everything in one click.',
+    title: 'Settle with fewer payments',
+    description: 'See who owes what at a glance. Our smart settlement minimises transfers so your group can square up fast.',
     icon: 'i-lucide-hand-coins',
   }
 ])
+
 const logoActive = ref(false)
 const phase = ref(0)
 
 const benefits = [
   {
     icon: 'i-lucide-message-circle-off',
-    title: 'Ditch the notes app',
-    description: 'Stop the endless "who owes what" messages after a holiday. We sort it.'
+    title: 'Stop tracking expenses in chat',
+    description: 'Everything stays organised in one shared tab.'
   },
   {
     icon: 'i-lucide-calculator',
-    title: 'Simplified settlements',
-    description: 'Reduce number of payments with a clear breakdown of who pays whom.'
+    title: 'Fewer payments',
+    description: 'Our smart settlement reduces the number of transfers needed to settle up quickly.'
   },
   {
     icon: 'i-lucide-heart',
-    title: 'Free to use',
-    description: 'Generous free usage. No subscriptions.'
+    title: 'Fair and transparent pricing',
+    description: 'Free for smaller tabs. £1 per person for unlimited. Added directly to the tab.'
   }
 ]
 
