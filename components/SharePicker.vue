@@ -10,7 +10,10 @@
         <UButton
           :variant="isSelected(person.id) ? 'solid' : 'outline'"
           size="sm"
+          color="secondary"
+          block
           @click="togglePerson(person.id)"
+          class="w-26 h-12 justify-center"
         >
           {{ person.name }}
         </UButton>
