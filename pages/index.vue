@@ -64,10 +64,22 @@
       </div>
 
       <UPageSection
-          title="How does it work?"
-          description="Like a bar tab, but for your holiday, night out or restaurant trip."
-          :features="features"
+        title="How does it work?"
+        description="Like a bar tab, but for your holiday, night out or restaurant trip."
+        :features="features"
       />
+
+      <div class="flex flex-col items-center mb-24">
+        <div class="w-full max-w-sm">
+          <UButton
+            size="xl"
+            block
+            to="/login"
+          >
+            Try it yourself
+          </UButton>
+        </div>
+      </div>
     </UContainer>
   </UMain>
 </template>
@@ -104,12 +116,12 @@ const benefits = [
   {
     icon: 'i-lucide-calculator',
     title: 'Simplified settlements',
-    description: 'Reduce number of payments with a clear breakdown of who pays whom'
+    description: 'Reduce number of payments with a clear breakdown of who pays whom.'
   },
   {
     icon: 'i-lucide-heart',
     title: 'Free to use',
-    description: 'Generous free usage. No subscriptions'
+    description: 'Generous free usage. No subscriptions.'
   }
 ]
 
