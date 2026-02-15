@@ -95,6 +95,11 @@ const benefits = [
   }
 ]
 
+useSeoMeta({
+  title: 'Stick it on the Tab.ninja. Free app to split shared costs',
+  description: 'Start a tab, add or scan receipts, simplify settling payments.',
+})
+
 onMounted(() => {
   setTimeout(() => { phase.value = 1 }, 1000)
 })
