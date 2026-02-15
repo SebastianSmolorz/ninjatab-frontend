@@ -396,7 +396,7 @@ const totalSpentInSettlement = computed(() => {
 
 // Helper functions
 const formatCurrencyAmount = (amount: number) => {
-  return amount.toLocaleString('en-US', {
+  return amount.toLocaleString('en-GB', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })
@@ -404,7 +404,7 @@ const formatCurrencyAmount = (amount: number) => {
 
 const formatDate = (dateStr: string) => {
   const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleDateString('en-GB', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'
