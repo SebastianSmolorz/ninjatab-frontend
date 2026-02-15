@@ -1,6 +1,6 @@
 <template>
   <UApp>
-    <UHeader title="NinjaTab" to="/">
+    <UHeader v-if="!isIndex" title="tab.ninja" to="/">
       <template #right>
         <UNavigationMenu :items="navLinks" />
         <template v-if="authStore.isAuthenticated">
@@ -18,8 +18,7 @@
         <UNavigationMenu :items="navLinks" orientation="vertical" class="-mx-2.5" />
       </template>
     </UHeader>
-
-    <!-- Page content -->
+    <UNavigationMenu v-if="isIndex" :items="indexLinks" orientation="vertical" class="absolute right-0 top-0" />
     <NuxtPage />
   </UApp>
 </template>
@@ -39,8 +38,20 @@ const navLinks = [
   }
 ]
 
+
+const indexLinks = [
+  {
+    label: 'Already have an account?',
+    to: '/tabs'
+  }
+]
+
 function handleLogout() {
   authStore.logout()
   router.push('/login')
 }
+
+const route = useRoute()
+
+const isIndex = computed(() => route.name === 'index')
 </script>
