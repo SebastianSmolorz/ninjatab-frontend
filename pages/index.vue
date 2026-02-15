@@ -2,7 +2,7 @@
   <UMain class="bg-gray-900">
     <UContainer>
       <!-- Hero Section -->
-      <div class="flex flex-col items-center pt-16 pb-12">
+      <div class="flex flex-col items-center pt-16">
         <!-- Logo with hover/click toggle -->
         <div
           class="logo-container relative mb-8 cursor-pointer select-none"
@@ -23,25 +23,18 @@
 
         <!-- Animated Tagline -->
         <div class="text-center mb-10">
-          <div class="text-3xl md:text-4xl font-bold text-white leading-tight">
+          <h1 class="text-3xl md:text-4xl font-bold text-white leading-tight">
             Stick it on the tab<span
               class="text-primary-400 transition-opacity duration-700"
               :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
             >.ninja</span>
-          </div>
-          <div
-            class="text-3xl md:text-4xl font-bold leading-tight transition-opacity duration-700 mt-1"
-            :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
-          >
-            <span class="text-primary-400">Split</span>
-            <span class="text-white"> it on the tab</span><span class="text-primary-400">.ninja</span>
-          </div>
+          </h1>
         </div>
 
         <!-- Description -->
         <p class="text-gray-400 text-md max-w-lg text-center mb-10">
-          Holidays, nights out, shared meals, group tickets — anywhere money gets messy.
-          The app lets you add shared expenses, keeps track of expenses, and makes settling up simple. No more chasing payments or maths.
+          Group holidays, nights out, shared meals, group tickets...<br/>
+          This app makes it a doddle. Add shared expenses, keeps track of balances, and makes settling up simple. No more maths.
         </p>
 
         <!-- CTA Button -->
@@ -51,13 +44,13 @@
             block
             to="/login"
           >
-            Start splitting bills like a ninja
+            Start a free tab now
           </UButton>
         </div>
       </div>
 
       <!-- Benefits Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pb-16 pt-8 max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 max-w-4xl mx-auto">
         <UPageFeature
           v-for="benefit in benefits"
           :key="benefit.title"
@@ -69,19 +62,44 @@
         >
         </UPageFeature>
       </div>
+
+      <UPageSection
+          title="How does it work?"
+          description="Like a bar tab, but for your holiday, night out or restaurant trip."
+          :features="features"
+      />
     </UContainer>
   </UMain>
 </template>
 
 <script setup lang="ts">
+import type { PageFeatureProps } from '@nuxt/ui'
+
+const features = ref<PageFeatureProps[]>([
+  {
+    title: 'Step 1: Start a tab',
+    description: 'It is free. Add your mates\'s names and send them an invite (or do it all yourself if you wish)',
+    icon: 'i-lucide-smile',
+  },
+  {
+    title: 'Step 2: Put some bills on the tab',
+    description: 'Big or small. Scan the receipt with your phone, or type it in. Then select who had what (or let your mates claim it).',
+    icon: 'i-lucide-a-large-small',
+  },
+  {
+    title: 'Step 3: Settle up',
+    description: 'See running totals, convert currency, and settle everything in one click.',
+    icon: 'i-lucide-sun-moon',
+  }
+])
 const logoActive = ref(false)
 const phase = ref(0)
 
 const benefits = [
   {
     icon: 'i-lucide-message-circle-off',
-    title: 'No more awkward chats',
-    description: 'Stop the endless "who owes what" messages after a night out'
+    title: 'Ditch the notes app',
+    description: 'Stop the endless "who owes what" messages after a holiday. We sort it.'
   },
   {
     icon: 'i-lucide-calculator',
@@ -96,8 +114,8 @@ const benefits = [
 ]
 
 useSeoMeta({
-  title: 'Tab.ninja. Split shared costs',
-  description: 'Start a tab, add or scan receipts, simplify settling payments.',
+  title: 'Tab.ninja - Free app keep track of and settle shared costs',
+  description: 'Start a tab, add or scan receipts, simplify settling up.',
 })
 
 onMounted(() => {
