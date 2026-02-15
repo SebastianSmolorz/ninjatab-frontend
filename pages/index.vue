@@ -31,11 +31,11 @@
           </h1>
         </div>
 
-        <!-- Description -->
-        <p class="text-gray-400 text-md max-w-lg text-center mb-10">
-          Group holidays, nights out, shared meals, group tickets...<br/>
-          This app makes it a doddle. Add shared expenses, keeps track of balances, and makes settling up simple. No more maths.
-        </p>
+        <h2 class="text-gray-400 text-md max-w-lg text-center mb-10">
+          Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
+          No more maths.
+          This app makes settling shared costs it a doddle.
+        </h2>
 
         <!-- CTA Button -->
         <div class="w-full max-w-sm">
@@ -65,7 +65,6 @@
 
       <UPageSection
         title="How does it work?"
-        description="Like a bar tab, but for your holiday, night out or restaurant trip."
         :features="features"
       />
 
@@ -96,12 +95,12 @@ const features = ref<PageFeatureProps[]>([
   {
     title: 'Step 2: Put some bills on the tab',
     description: 'Big or small. Scan the receipt with your phone, or type it in. Then select who had what (or let your mates claim it).',
-    icon: 'i-lucide-a-large-small',
+    icon: 'i-lucide-receipt-pound-sterling',
   },
   {
     title: 'Step 3: Settle up',
     description: 'See running totals, convert currency, and settle everything in one click.',
-    icon: 'i-lucide-sun-moon',
+    icon: 'i-lucide-hand-coins',
   }
 ])
 const logoActive = ref(false)
