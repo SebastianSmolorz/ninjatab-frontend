@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async login(email: string) {
+    async login(email: string): Promise<{ user: AuthUser } | 'not_found'> {
       this.loading = true
       this.error = null
 
@@ -73,6 +73,10 @@ export const useAuthStore = defineStore('auth', {
           body: JSON.stringify({ email }),
         })
 
+        if (response.status === 404) {
+          return 'not_found'
+        }
+
         if (!response.ok) {
           const err = await response.json().catch(() => ({ detail: 'Login failed' }))
           throw new Error(err.detail || `Login failed with status ${response.status}`)
@@ -84,9 +88,43 @@ export const useAuthStore = defineStore('auth', {
         this.user = data.user
         this.persistToStorage()
 
-        return data.user
+        return { user: data.user }
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Login failed'
+        throw error
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async register(email: string, name: string) {
+      this.loading = true
+      this.error = null
+
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+
+        const response = await fetch(`${baseURL}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name }),
+        })
+
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({ detail: 'Registration failed' }))
+          throw new Error(err.detail || `Registration failed with status ${response.status}`)
+        }
+
+        const data: LoginResponse = await response.json()
+        this.token = data.access_token
+        this.refreshToken = data.refresh_token
+        this.user = data.user
+        this.persistToStorage()
+
+        return data.user
+      } catch (error) {
+        this.error = error instanceof Error ? error.message : 'Registration failed'
         throw error
       } finally {
         this.loading = false

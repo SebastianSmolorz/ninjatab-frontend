@@ -1,40 +1,18 @@
-<template>
-  <UMain class="flex items-center justify-center min-h-[60vh]">
-    <div class="max-w-sm w-full mx-auto px-4">
-      <UCard>
-        <template #header>
-          <h2 class="text-xl font-semibold text-center">Login to NinjaTab</h2>
-        </template>
-
-        <form class="space-y-4 text-center" @submit.prevent="handleLogin">
-          <UFormField class="text-center">
-            <UInput
-              v-model="email"
-              type="email"
-              placeholder="you@example.com"
-              icon="i-lucide-mail"
-              size="lg"
-              required
-            />
-          </UFormField>
-
-          <UButton type="submit" block size="lg" :loading="authStore.isLoading">
-            Login
-          </UButton>
-
-          <p v-if="authStore.error" class="text-sm text-red-500 text-center">
-            {{ authStore.error }}
-          </p>
-        </form>
-      </UCard>
-    </div>
-  </UMain>
-</template>
-
 <script setup lang="ts">
-const email = ref('')
+import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
+
+const step = ref<'email' | 'name'>('email')
+const storedEmail = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
+
+const fields = computed<AuthFormField[]>(() =>
+  step.value === 'email'
+    ? [{ name: 'email', type: 'email' as const, label: 'Email', placeholder: 'you@example.com', required: true }]
+    : [{ name: 'name', type: 'text' as const, label: 'What should we call you?', placeholder: 'Your name', required: true }],
+)
+
+const submitLabel = computed(() => step.value === 'email' ? 'Continue' : 'Get started')
 
 onMounted(() => {
   if (authStore.isAuthenticated) {
@@ -42,13 +20,48 @@ onMounted(() => {
   }
 })
 
-async function handleLogin() {
+async function onSubmit(event: FormSubmitEvent<{ email?: string; name?: string }>) {
   authStore.clearError()
   try {
-    await authStore.login(email.value)
-    router.push('/tabs')
+    if (step.value === 'email') {
+      const result = await authStore.login(event.data.email!)
+      if (result === 'not_found') {
+        storedEmail.value = event.data.email!
+        step.value = 'name'
+      } else {
+        router.push('/tabs')
+      }
+    } else {
+      await authStore.register(storedEmail.value, event.data.name!)
+      router.push('/tabs/create')
+    }
   } catch {
     // Error is set in the store
   }
 }
 </script>
+
+<template>
+  <UMain>
+    <UContainer class="flex min-h-screen justify-center pt-10">
+      <UAuthForm
+        title="Get in on the Tab"
+        icon="i-lucide-user"
+        :fields="fields"
+        :submit="{ label: submitLabel, block: true }"
+        :loading="authStore.isLoading"
+        class="max-w-md px-4 mt-4"
+        @submit="onSubmit"
+      >
+        <template #validation>
+          <UAlert v-if="authStore.error" color="error" :title="authStore.error" />
+        </template>
+        <template v-if="step === 'name'" #footer>
+          <UButton variant="ghost" block @click="step = 'email'">
+            Use a different email
+          </UButton>
+        </template>
+      </UAuthForm>
+    </UContainer>
+  </UMain>
+</template>
