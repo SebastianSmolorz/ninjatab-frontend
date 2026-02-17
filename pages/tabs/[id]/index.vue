@@ -111,13 +111,13 @@
         <!-- Pull tab with chevron -->
         <div class="flex justify-center">
           <div
-            class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 border-gray-200 dark:border-gray-700 select-none touch-none"
+            class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 border-gray-200 dark:border-primary select-none touch-none"
             @mousedown="startDrag"
             @touchstart="startDrag"
           >
             <UIcon
               :name="tabDetailsOpen ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
-              class="w-5 h-5 text-gray-400 transition-transform duration-200"
+              class="w-5 h-5 text-primary transition-transform duration-200"
               :class="{ 'translate-y-0.5': isDragging }"
             />
           </div>
