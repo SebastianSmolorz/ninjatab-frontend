@@ -79,6 +79,21 @@
           </UButton>
         </div>
       </div>
+    <article>
+      <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
+      <div class="flex flex-col mb-24">
+        <p>
+          Tab Ninja is an expense splitting app that helps groups track shared expenses. It makes it easy to split expenses between friends and see exactly who owes what.
+          It works great for smaller plans such as a night out or house share cost splitting, but it really shines when it comes to larger plans such as a summer holiday, festival or ski trip.
+        </p>
+        <h3 class="font-bold mt-2">A smarter way to track group expenses</h3>
+        <p>
+          Add bills in seconds, split expenses your way, and let Tab Ninja automatically calculate the simplest
+          settlement, reducing the number of payments needed so all debts are settled. It makes it easy to split expenses with friends without spreadsheets, group chat maths,
+          or awkward money conversations.
+        </p>
+        </div>
+    </article>
     </UContainer>
   </UMain>
 </template>
