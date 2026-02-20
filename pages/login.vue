@@ -1,18 +1,13 @@
 <script setup lang="ts">
 import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 
-const step = ref<'email' | 'name'>('email')
-const storedEmail = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
+const emailSent = ref(false)
 
-const fields = computed<AuthFormField[]>(() =>
-  step.value === 'email'
-    ? [{ name: 'email', type: 'email' as const, label: 'Email', placeholder: 'you@example.com', required: true }]
-    : [{ name: 'name', type: 'text' as const, label: 'What should we call you?', placeholder: 'Your name', required: true }],
-)
-
-const submitLabel = computed(() => step.value === 'email' ? 'Continue' : 'Get started')
+const fields: AuthFormField[] = [
+  { name: 'email', type: 'email' as const, label: 'Email', placeholder: 'you@example.com', required: true },
+]
 
 onMounted(() => {
   if (authStore.isAuthenticated) {
@@ -20,21 +15,11 @@ onMounted(() => {
   }
 })
 
-async function onSubmit(event: FormSubmitEvent<{ email?: string; name?: string }>) {
+async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
   authStore.clearError()
   try {
-    if (step.value === 'email') {
-      const result = await authStore.login(event.data.email!)
-      if (result === 'not_found') {
-        storedEmail.value = event.data.email!
-        step.value = 'name'
-      } else {
-        router.push('/tabs')
-      }
-    } else {
-      await authStore.register(storedEmail.value, event.data.name!)
-      router.push('/tabs/create')
-    }
+    await authStore.sendMagicLink(event.data.email)
+    emailSent.value = true
   } catch {
     // Error is set in the store
   }
@@ -44,22 +29,26 @@ async function onSubmit(event: FormSubmitEvent<{ email?: string; name?: string }
 <template>
   <UMain>
     <UContainer class="flex min-h-screen justify-center pt-10">
+      <div v-if="emailSent" class="max-w-md px-4 mt-4 text-center">
+        <UIcon name="i-lucide-mail-check" class="text-5xl text-primary mb-4" />
+        <h2 class="text-xl font-semibold mb-2">Check your email</h2>
+        <p class="text-gray-500">We've sent you a sign-in link. Click it to log in.</p>
+        <UButton variant="ghost" class="mt-6" @click="emailSent = false">
+          Try a different email
+        </UButton>
+      </div>
       <UAuthForm
+        v-else
         title="Get in on the Tab"
         icon="i-lucide-user"
         :fields="fields"
-        :submit="{ label: submitLabel, block: true }"
+        :submit="{ label: 'Send magic link', block: true }"
         :loading="authStore.isLoading"
         class="max-w-md px-4 mt-4"
         @submit="onSubmit"
       >
         <template #validation>
           <UAlert v-if="authStore.error" color="error" :title="authStore.error" />
-        </template>
-        <template v-if="step === 'name'" #footer>
-          <UButton variant="ghost" block @click="step = 'email'">
-            Use a different email
-          </UButton>
         </template>
       </UAuthForm>
     </UContainer>

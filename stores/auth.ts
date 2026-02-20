@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async login(email: string): Promise<{ user: AuthUser } | 'not_found'> {
+    async sendMagicLink(email: string): Promise<void> {
       this.loading = true
       this.error = null
 
@@ -67,37 +67,25 @@ export const useAuthStore = defineStore('auth', {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
 
-        const response = await fetch(`${baseURL}/auth/login`, {
+        const response = await fetch(`${baseURL}/auth/magic-link`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         })
 
-        if (response.status === 404) {
-          return 'not_found'
-        }
-
         if (!response.ok) {
-          const err = await response.json().catch(() => ({ detail: 'Login failed' }))
-          throw new Error(err.detail || `Login failed with status ${response.status}`)
+          const err = await response.json().catch(() => ({ detail: 'Failed to send magic link' }))
+          throw new Error(err.detail || `Failed with status ${response.status}`)
         }
-
-        const data: LoginResponse = await response.json()
-        this.token = data.access_token
-        this.refreshToken = data.refresh_token
-        this.user = data.user
-        this.persistToStorage()
-
-        return { user: data.user }
       } catch (error) {
-        this.error = error instanceof Error ? error.message : 'Login failed'
+        this.error = error instanceof Error ? error.message : 'Failed to send magic link'
         throw error
       } finally {
         this.loading = false
       }
     },
 
-    async register(email: string, name: string) {
+    async verifyMagicLink(token: string): Promise<void> {
       this.loading = true
       this.error = null
 
@@ -105,15 +93,15 @@ export const useAuthStore = defineStore('auth', {
         const config = useRuntimeConfig()
         const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
 
-        const response = await fetch(`${baseURL}/auth/register`, {
+        const response = await fetch(`${baseURL}/auth/verify-magic-link`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name }),
+          body: JSON.stringify({ token }),
         })
 
         if (!response.ok) {
-          const err = await response.json().catch(() => ({ detail: 'Registration failed' }))
-          throw new Error(err.detail || `Registration failed with status ${response.status}`)
+          const err = await response.json().catch(() => ({ detail: 'Invalid or expired link' }))
+          throw new Error(err.detail || `Verification failed with status ${response.status}`)
         }
 
         const data: LoginResponse = await response.json()
@@ -121,10 +109,8 @@ export const useAuthStore = defineStore('auth', {
         this.refreshToken = data.refresh_token
         this.user = data.user
         this.persistToStorage()
-
-        return data.user
       } catch (error) {
-        this.error = error instanceof Error ? error.message : 'Registration failed'
+        this.error = error instanceof Error ? error.message : 'Verification failed'
         throw error
       } finally {
         this.loading = false
