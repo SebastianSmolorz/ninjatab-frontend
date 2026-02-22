@@ -116,7 +116,7 @@
             @touchstart="startDrag"
           >
             <UIcon
-              :name="tabDetailsOpen ? 'i-heroicons-chevron-up' : 'i-heroicons-chevron-down'"
+              :name="tabDetailsOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
               class="w-5 h-5 text-primary transition-transform duration-200"
               :class="{ 'translate-y-0.5': isDragging }"
             />
