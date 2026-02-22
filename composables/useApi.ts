@@ -10,6 +10,7 @@ import type {
   UpdateBillData,
   PersonSpendingTotal,
   Settlement,
+  InviteTabInfo,
 } from '~/types'
 import { useAuthStore } from '~/stores/auth'
 
@@ -94,6 +95,15 @@ export const useApi = () => {
       markSettlementPaid: (settlementId: number) =>
         apiFetch<Settlement>(`/tabs/settlements/${settlementId}/mark-paid`, {
           method: 'POST',
+        }),
+
+      getInvite: (code: string) =>
+        apiFetch<InviteTabInfo>(`/tabs/invite/${code}`),
+
+      claimInvite: (code: string, data: { person_id: number; email: string }) =>
+        apiFetch<{ success: boolean }>(`/tabs/invite/${code}/claim`, {
+          method: 'POST',
+          body: JSON.stringify(data),
         }),
     },
 

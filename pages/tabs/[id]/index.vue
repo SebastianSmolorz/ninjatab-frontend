@@ -376,6 +376,8 @@ import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
 import type { PersonSpendingTotal, Currency } from '~/types'
 
+const toast = useToast()
+
 const route = useRoute()
 const router = useRouter()
 const tabStore = useTabStore()
@@ -417,6 +419,7 @@ const tabActions = computed(() => {
   const actions = []
   if (!tab.value?.is_settled) {
     actions.push({ label: 'Settle up', value: 'settle' })
+    actions.push({ label: 'Copy invite link', value: 'copy-invite' })
   }
   actions.push({ label: 'Archive', value: 'archive' })
   actions.push({ label: 'Delete', value: 'delete' })
@@ -511,6 +514,10 @@ const handleActionSelect = async (action: string) => {
     showSettleModal.value = true
   } else if (action === 'archive') {
     showArchiveModal.value = true
+  } else if (action === 'copy-invite') {
+    const url = `${window.location.origin}/invite/${tab.value?.invite_code}`
+    await navigator.clipboard.writeText(url)
+    toast.add({ title: 'Invite link copied!', icon: 'i-lucide-link' })
   }
   selectedAction.value = ''
 }

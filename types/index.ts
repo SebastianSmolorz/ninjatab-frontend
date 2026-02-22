@@ -91,6 +91,12 @@ export interface Tab extends TabListItem {
   balances: PersonBalance[]
   settlement_currency: Currency
   total_spent_gbp: number | null
+  invite_code: string
+}
+
+export interface InviteTabInfo {
+  tab_name: string
+  people: Array<{ id: number; name: string }>
 }
 
 export interface SimplifyResult {
