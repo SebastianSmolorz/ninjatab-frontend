@@ -286,6 +286,61 @@
       </div>
     </UContainer>
 
+    <!-- Settle Up Confirmation Modal -->
+    <UModal v-model:open="showSettleModal" title="Heads up, you're about to settle">
+      <template #content>
+        <div class="p-4">
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            What will happen now
+          </h3>
+          <ul class="space-y-2 text-gray-600 dark:text-gray-400 text-sm list-disc list-inside mb-6">
+            <li>You'll see exactly who owes how much to whom</li>
+            <li>You won't be able to add any more people to the tab</li>
+            <li>You won't be able to add any more bills</li>
+          </ul>
+          <div class="flex justify-end gap-2">
+            <UButton
+              label="Cancel"
+              variant="ghost"
+              @click="showSettleModal = false; selectedAction = ''"
+            />
+            <UButton
+              label="Settle up"
+              :loading="simplifyingTab"
+              @click="showSettleModal = false; settleTab()"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
+
+    <!-- Archive Tab Confirmation Modal -->
+    <UModal v-model:open="showArchiveModal" title="Heads up, you're about to archive">
+      <template #content>
+        <div class="p-4">
+          <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-3">
+            What will happen now
+          </h3>
+          <ul class="space-y-2 text-gray-600 dark:text-gray-400 text-sm list-disc list-inside mb-6">
+            <li>It will move to your archive tabs.</li>
+            <li>The tab will be closed and no longer active</li>
+            <li>You won't be able to add any more bills</li>
+          </ul>
+          <div class="flex justify-end gap-2">
+            <UButton
+              label="Cancel"
+              variant="ghost"
+              @click="showArchiveModal = false; selectedAction = ''"
+            />
+            <UButton
+              label="Archive"
+              @click="showArchiveModal = false; archiveTab()"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
+
     <!-- Delete Bill Modal -->
     <UModal v-model:open="showDeleteModal">
       <template #content>
@@ -331,6 +386,8 @@ const api = useApi()
 const simplifyingTab = ref(false)
 const personSpendingTotals = ref<PersonSpendingTotal[]>([])
 const showDeleteModal = ref(false)
+const showSettleModal = ref(false)
+const showArchiveModal = ref(false)
 const billToDelete = ref<number | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
@@ -451,9 +508,9 @@ const settleTab = async () => {
 
 const handleActionSelect = async (action: string) => {
   if (action === 'settle') {
-    await settleTab()
+    showSettleModal.value = true
   } else if (action === 'archive') {
-    await archiveTab()
+    showArchiveModal.value = true
   }
   selectedAction.value = ''
 }
