@@ -48,7 +48,8 @@
                 v-model="selectedAction"
                 :items="tabActions"
                 placeholder="Actions"
-                size="xl"
+                size="lg"
+                class="w-34"
                 @update:model-value="handleActionSelect"
                 @click.stop
               >
