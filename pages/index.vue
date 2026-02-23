@@ -25,7 +25,7 @@
         <div class="text-center mb-10">
           <h1 class="text-3xl md:text-4xl font-bold text-white leading-tight">
             Stick it on the tab<span
-              class="text-primary-400 transition-opacity duration-700"
+              class="text-primary-400 transition-opacity duration-700 animate-pulse"
               :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
             >.ninja</span>
           </h1>
