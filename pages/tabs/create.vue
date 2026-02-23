@@ -65,10 +65,7 @@
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Default Currency
                   </label>
-                  <USelectMenu
-                      v-model="formData.default_currency"
-                      :items="Object.values(Currency)"
-                  />
+                  <CurrencySelect v-model="formData.default_currency" />
                   <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     For creating new bills
                   </p>
@@ -78,10 +75,7 @@
                   <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Settlement Currency
                   </label>
-                  <USelectMenu
-                      v-model="formData.settlement_currency"
-                      :items="Object.values(Currency)"
-                  />
+                  <CurrencySelect v-model="formData.settlement_currency" />
                   <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     Currency you want to change hands at the end
                   </p>

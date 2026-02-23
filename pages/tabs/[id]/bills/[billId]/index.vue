@@ -40,11 +40,10 @@
               <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                 <span>{{ formatDate(bill.date) }}</span>
                 <span>•</span>
-                <USelect
+                <CurrencySelect
                   v-model="selectedCurrency"
-                  :items="currencyOptions"
                   size="xs"
-                  @change="updateCurrency"
+                  @update:model-value="updateCurrency"
                 />
               </div>
             </div>
@@ -232,11 +231,6 @@ const billId = computed(() => parseInt(route.params.billId as string))
 const bill = computed(() => billStore.currentBill)
 const loading = computed(() => billStore.isLoading)
 const error = computed(() => billStore.error)
-
-const currencyOptions = Object.values(Currency).map(c => ({
-  label: c,
-  value: c
-}))
 
 // Calculate person totals (sum of all their claims across line items)
 const personTotals = computed(() => {

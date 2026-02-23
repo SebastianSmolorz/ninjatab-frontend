@@ -132,11 +132,7 @@
               <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 w-auto">
                 Currency <span class="text-red-500">*</span>
               </label>
-              <USelect
-                v-model="formData.currency"
-                :items="currencyOptions"
-                size="lg"
-              />
+              <CurrencySelect v-model="formData.currency" size="lg" />
             </div>
           </div>
 
@@ -418,12 +414,6 @@ const splitModes = ref<Record<number, 'even' | 'custom'>>({})
 
 // Split values: splits[itemIndex][personId] = shareValue
 const splits = ref<Record<number, Record<number, number>>>({})
-
-// Currency options
-const currencyOptions = Object.values(Currency).map(c => ({
-  label: c,
-  value: c
-}))
 
 // Computed
 const tabId = computed(() => parseInt(route.params.id as string))

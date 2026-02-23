@@ -62,9 +62,8 @@
           <!-- Settlement Currency -->
           <div class="flex items-center gap-2">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
-            <USelect
+            <CurrencySelect
               v-model="selectedCurrency"
-              :items="currencyOptions"
               size="sm"
               @click.stop
               @update:model-value="updateSettlementCurrency"
@@ -403,14 +402,6 @@ const dragThreshold = 30 // pixels needed to trigger toggle
 
 // Currency dropdown
 const selectedCurrency = ref<Currency>()
-const currencyOptions = [
-  { label: 'USD', value: 'USD' },
-  { label: 'EUR', value: 'EUR' },
-  { label: 'GBP', value: 'GBP' },
-  { label: 'JPY', value: 'JPY' },
-  { label: 'CAD', value: 'CAD' },
-  { label: 'TRY', value: 'TRY' },
-]
 
 // Computed
 const tab = computed(() => tabStore.currentTab)

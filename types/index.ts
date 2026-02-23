@@ -5,7 +5,9 @@ export enum Currency {
   GBP = 'GBP',
   JPY = 'JPY',
   CAD = 'CAD',
-  TRY = 'TRY'
+  TRY = 'TRY',
+  PLN = 'PLN',
+  CZK = 'CZK',
 }
 
 export enum SplitType {
@@ -15,8 +17,6 @@ export enum SplitType {
 
 export enum BillStatus {
   OPEN = 'open',
-  ALL_CLAIMED = 'all_claimed',
-  ALL_PAID = 'all_paid',
   ARCHIVED = 'archived'
 }
 
