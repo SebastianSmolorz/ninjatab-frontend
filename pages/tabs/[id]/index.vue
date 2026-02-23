@@ -19,7 +19,7 @@
     <UContainer v-else-if="tab" class="py-8">
       <div class="space-y-6">
       <!-- Tab Info Card -->
-      <div class="relative cursor-pointer" @click="handleCardClick">
+      <div class="relative">
         <UCard variant="solid">
           <!-- Always visible header -->
           <div class="flex items-center justify-between gap-4">
@@ -58,7 +58,7 @@
           </div>
 
           <!-- Collapsible details -->
-          <div v-if="tabDetailsOpen" class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
+          <div v-if="tabDetailsOpen" class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-2">
           <!-- Settlement Currency -->
           <div class="flex items-center gap-2">
             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Settlement Currency:</span>
@@ -72,11 +72,11 @@
 
           <!-- People & Spending -->
           <div>
-            <div class="flex items-center justify-between">
+            <div class="flex items-baseline justify-between mb-3">
               <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
               <UButton
                 icon="i-lucide-clipboard-copy"
-                class="mt-3 mb-8 md:w-52 grow-0"
+                class="md:w-52 grow-0"
                 size="lg"
                 @click="handleActionSelect('copy-invite')"
                 block
@@ -126,7 +126,7 @@
         </UCard>
 
         <!-- Pull tab with chevron -->
-        <div class="flex justify-center">
+        <div class="flex justify-center cursor-pointer" @click="handleCardClick">
           <div
             class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 border-gray-200 dark:border-primary select-none touch-none"
             @mousedown="startDrag"
