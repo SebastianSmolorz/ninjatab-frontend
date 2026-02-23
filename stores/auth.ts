@@ -132,6 +132,9 @@ export const useAuthStore = defineStore('auth', {
 
         if (!response.ok) {
           this.clearAuth()
+          if (response.status === 401) {
+            await navigateTo('/login')
+          }
           return false
         }
 
