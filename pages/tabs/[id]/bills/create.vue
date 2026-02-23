@@ -476,7 +476,7 @@ const selectBillType = (type: 'single' | 'itemised') => {
 }
 
 const formatCurrency = (amount: number) => {
-  return `${formData.value.currency} ${amount.toFixed(2)}`
+  return `${getCurrencySymbol(formData.value.currency)}${amount.toFixed(2)}`
 }
 
 const nextStep = () => {

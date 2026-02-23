@@ -96,7 +96,7 @@
                 </div>
                 <div v-if="getPersonTotal(person.id)" class="text-right">
                   <div class="text-lg font-semibold text-blue-700 dark:text-blue-400">
-                    {{ tab.settlement_currency }} {{ formatCurrencyAmount(getPersonTotal(person.id)) }}
+                    {{ getCurrencySymbol(tab.settlement_currency) }}{{ formatCurrencyAmount(getPersonTotal(person.id)) }}
                   </div>
                   <div class="text-xs text-gray-500 dark:text-gray-400">
                     Total spent
@@ -138,7 +138,7 @@
               class="p-2 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800"
             >
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                Total group spend ({{ tab.settlement_currency }})
+                Total group spend ({{ getCurrencySymbol(tab.settlement_currency) }})
               </div>
               <div class="text-lg font-bold text-green-700 dark:text-green-400">
                 {{ formatCurrencyAmount(totalSpentInSettlement) }}
@@ -150,7 +150,7 @@
               class="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800"
             >
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                {{ currency }} spent
+                {{ getCurrencySymbol(currency) }} spent
               </div>
               <div class="text-lg font-bold text-blue-700 dark:text-blue-400">
                 {{ formatCurrencyAmount(total) }}
@@ -177,7 +177,7 @@
                 </span>
                 <span class="text-sm text-gray-500">pays</span>
                 <span class="font-bold" :class="settlement.paid ? 'text-gray-500 line-through' : 'text-green-700 dark:text-green-400'">
-                  {{ settlement.currency }} {{ settlement.amount }}
+                  {{ getCurrencySymbol(settlement.currency) }}{{ settlement.amount }}
                 </span>
                 <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-400" />
                 <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
@@ -251,7 +251,7 @@
               </div>
               <div class="flex items-center gap-3">
                 <div class="text-lg font-semibold text-gray-900 dark:text-white">
-                  {{ bill.currency }} {{ (bill.total_amount || 0) }}
+                  {{ getCurrencySymbol(bill.currency) }}{{ (bill.total_amount || 0) }}
                 </div>
                 <UButton
                   v-if="!tab.is_settled"

@@ -1,17 +1,4 @@
 <script setup lang="ts">
-import { Currency } from '~/types'
-
-const CURRENCY_OPTIONS = [
-  { value: Currency.USD, label: 'US Dollar',      symbol: '$'   },
-  { value: Currency.EUR, label: 'Euro',            symbol: '€'   },
-  { value: Currency.GBP, label: 'British Pound',   symbol: '£'   },
-  { value: Currency.JPY, label: 'Japanese Yen',    symbol: '¥'   },
-  { value: Currency.CAD, label: 'Canadian Dollar', symbol: 'C$' },
-  { value: Currency.TRY, label: 'Turkish Lira',    symbol: '₺'   },
-  { value: Currency.PLN, label: 'Polish Złoty',    symbol: 'zł'  },
-  { value: Currency.CZK, label: 'Czech Koruna',    symbol: 'Kč'  },
-]
-
 const props = defineProps<{
   modelValue: string | null
   size?: string

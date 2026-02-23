@@ -59,7 +59,7 @@
             <!-- Amount -->
             <div class="text-right flex-shrink-0">
               <span class="text-lg font-bold text-green-400">
-                {{ settlement.currency }} {{ settlement.amount }}
+                {{ getCurrencySymbol(settlement.currency) }}{{ settlement.amount }}
               </span>
             </div>
           </div>

@@ -48,7 +48,7 @@
               </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white">
-              {{ bill.currency }} {{ bill.total_amount }}
+              {{ getCurrencySymbol(bill.currency) }}{{ bill.total_amount }}
             </div>
           </div>
 
@@ -78,7 +78,7 @@
             >
               <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
               <span class="text-lg font-semibold text-gray-900 dark:text-white">
-                {{ bill.currency }} {{ formatCurrencyAmount(person.total) }}
+                {{ getCurrencySymbol(bill.currency) }}{{ formatCurrencyAmount(person.total) }}
               </span>
             </div>
           </div>
@@ -132,7 +132,7 @@
                   {{ item.description }}
                 </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ bill.currency }} {{ item.value }}
+                  {{ getCurrencySymbol(bill.currency) }}{{ item.value }}
                 </p>
               </div>
 
@@ -140,7 +140,7 @@
               <div v-if="!editMode">
                 <template v-if="isEvenSplit(item.person_claims, tabStore.currentTab?.people.length || 0)">
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Split evenly. All owe {{ bill.currency }} {{ (item.person_claims[0]?.calculated_amount || 0) }}
+                    Split evenly. All owe {{ getCurrencySymbol(bill.currency) }}{{ (item.person_claims[0]?.calculated_amount || 0) }}
                   </p>
                 </template>
                 <div v-else class="space-y-2">
@@ -155,7 +155,7 @@
                         {{ Math.floor(claim.split_value || 0) }} {{ item.split_type === 'shares' ? 'shares' : '' }}
                       </span>
                       <span class="font-medium text-gray-900 dark:text-white w-24 text-right">
-                        {{ bill.currency }} {{ (claim.calculated_amount || 0) }}
+                        {{ getCurrencySymbol(bill.currency) }}{{ (claim.calculated_amount || 0) }}
                       </span>
                     </div>
                   </div>
@@ -304,7 +304,7 @@ const getStatusColor = (status: BillStatus) => {
 
 const formatCurrency = (amount: number) => {
   if (!bill.value) return `${amount.toFixed(2)}`
-  return `${bill.value.currency} ${amount.toFixed(2)}`
+  return `${getCurrencySymbol(bill.value.currency)}${amount.toFixed(2)}`
 }
 
 const enterEditMode = () => {
