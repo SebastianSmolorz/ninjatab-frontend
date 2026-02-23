@@ -75,22 +75,28 @@
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div
-                v-for="person in tab.people"
+                v-for="person in tabPeople"
                 :key="person.id"
                 class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-lg"
               >
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div
+                      class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0"
+                      :class="{'dark:bg-primary-800': person?.user, 'dark:bg-gray-700': !person?.user}"
+                  >
                     <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
                       {{ person.name.charAt(0).toUpperCase() }}
                     </span>
                   </div>
-                  <div>
+                  <div class="min-w-0">
                     <div class="font-medium text-gray-900 dark:text-white">
                       {{ person.name }}
                     </div>
-                    <div v-if="person.email" class="text-sm text-gray-500 dark:text-gray-400">
-                      {{ person.email }}
+                    <div v-if="person?.user?.email" class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                      {{ person.user.email }}
+                    </div>
+                    <div v-else class="text-sm text-gray-500 dark:text-gray-400">
+                      Not joined
                     </div>
                   </div>
                 </div>
@@ -604,6 +610,13 @@ const endDrag = (e: MouseEvent | TouchEvent) => {
   document.removeEventListener('touchmove', onDrag)
   document.removeEventListener('touchend', endDrag)
 }
+
+const tabPeople = computed(() => {
+  if (tab.value && tab.value.people) {
+    return tab.value.people.sort((a, b) => a?.user ? -1 : 1)
+  }
+  return []
+})
 
 // Load tab and bills on mount
 onMounted(async () => {
