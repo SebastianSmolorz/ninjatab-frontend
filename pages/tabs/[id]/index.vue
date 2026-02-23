@@ -72,7 +72,18 @@
 
           <!-- People & Spending -->
           <div>
-            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
+              <UButton
+                icon="i-lucide-clipboard-copy"
+                class="mt-3 mb-8 md:w-52 grow-0"
+                size="lg"
+                @click="handleActionSelect('copy-invite')"
+                block
+              >
+                Copy invite link
+              </UButton>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div
                 v-for="person in tabPeople"
@@ -420,7 +431,7 @@ const tabActions = computed(() => {
     actions.push({ label: 'Copy invite link', value: 'copy-invite' })
   }
   actions.push({ label: 'Archive', value: 'archive' })
-  actions.push({ label: 'Delete', value: 'delete' })
+  // actions.push({ label: 'Delete', value: 'delete' })
   return actions
 })
 const loading = computed(() => tabStore.isLoading)
@@ -613,7 +624,7 @@ const endDrag = (e: MouseEvent | TouchEvent) => {
 
 const tabPeople = computed(() => {
   if (tab.value && tab.value.people) {
-    return tab.value.people.sort((a, b) => a?.user ? -1 : 1)
+    return tab.value.people.sort((a, b) => a.id < b.id ? -1 : 1).sort((a, b) => a?.user ? -1 : 1)
   }
   return []
 })
