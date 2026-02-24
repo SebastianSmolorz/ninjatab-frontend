@@ -368,7 +368,7 @@
     </UModal>
 
     <!-- Add Person Modal -->
-    <UModal v-model:open="showAddPersonModal" title="Add a person">
+    <UModal v-model:open="showAddPersonModal">
       <template #content>
         <div class="p-4 space-y-4">
           <div>
@@ -684,7 +684,7 @@ const endDrag = (e: MouseEvent | TouchEvent) => {
 
 const tabPeople = computed(() => {
   if (tab.value && tab.value.people) {
-    return tab.value.people.sort((a, b) => a.id < b.id ? -1 : 1).sort((a, b) => a?.user ? -1 : 1)
+    return [...tab.value.people].sort((a, b) => a.id < b.id ? -1 : 1).sort((a, b) => a?.user ? -1 : 1)
   }
   return []
 })
