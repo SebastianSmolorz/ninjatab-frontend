@@ -1,6 +1,7 @@
 import type {
   Tab,
   TabListItem,
+  TabPerson,
   CreateTabData,
   Bill,
   BillListItem,
@@ -102,6 +103,12 @@ export const useApi = () => {
 
       claimInvite: (code: string, data: { person_id: number; email: string }) =>
         apiFetch<{ success: boolean }>(`/tabs/invite/${code}/claim`, {
+          method: 'POST',
+          body: JSON.stringify(data),
+        }),
+
+      addPerson: (tabId: number, data: { name: string }) =>
+        apiFetch<TabPerson>(`/tabs/${tabId}/people`, {
           method: 'POST',
           body: JSON.stringify(data),
         }),

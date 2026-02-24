@@ -74,15 +74,24 @@
           <div>
             <div class="flex items-baseline justify-between mb-3">
               <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-4">People & Spending</h3>
-              <UButton
-                icon="i-lucide-clipboard-copy"
-                class="md:w-52 grow-0"
-                size="lg"
-                @click="handleActionSelect('copy-invite')"
-                block
-              >
-                Copy invite link
-              </UButton>
+              <div class="flex gap-2">
+                <UButton
+                  v-if="!tab.is_settled"
+                  icon="i-lucide-user-plus"
+                  size="lg"
+                  variant="outline"
+                  @click="showAddPersonModal = true"
+                >
+                  Add person
+                </UButton>
+                <UButton
+                  icon="i-lucide-clipboard-copy"
+                  size="lg"
+                  @click="handleActionSelect('copy-invite')"
+                >
+                  Copy invite link
+                </UButton>
+              </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div
@@ -358,6 +367,38 @@
       </template>
     </UModal>
 
+    <!-- Add Person Modal -->
+    <UModal v-model:open="showAddPersonModal" title="Add a person">
+      <template #content>
+        <div class="p-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Name
+            </label>
+            <UInput
+              v-model="newPersonName"
+              placeholder="Enter name"
+              size="lg"
+              @keyup.enter="addPerson"
+            />
+          </div>
+          <div class="flex justify-end gap-2">
+            <UButton
+              label="Cancel"
+              variant="ghost"
+              @click="showAddPersonModal = false; newPersonName = ''"
+            />
+            <UButton
+              label="Add"
+              :disabled="!newPersonName.trim()"
+              :loading="addingPerson"
+              @click="addPerson"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
+
     <!-- Delete Bill Modal -->
     <UModal v-model:open="showDeleteModal">
       <template #content>
@@ -407,6 +448,9 @@ const personSpendingTotals = ref<PersonSpendingTotal[]>([])
 const showDeleteModal = ref(false)
 const showSettleModal = ref(false)
 const showArchiveModal = ref(false)
+const showAddPersonModal = ref(false)
+const newPersonName = ref('')
+const addingPerson = ref(false)
 const billToDelete = ref<number | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
@@ -550,6 +594,22 @@ const markSettlementPaid = async (settlementId: number) => {
     await tabStore.fetchTabById(tab.value.id)
   } catch (error) {
     console.error('Failed to mark settlement as paid:', error)
+  }
+}
+
+const addPerson = async () => {
+  if (!newPersonName.value.trim() || !tab.value) return
+
+  addingPerson.value = true
+  try {
+    await api.tabs.addPerson(tab.value.id, { name: newPersonName.value.trim() })
+    await tabStore.fetchTabById(tab.value.id)
+    showAddPersonModal.value = false
+    newPersonName.value = ''
+  } catch (error) {
+    console.error('Failed to add person:', error)
+  } finally {
+    addingPerson.value = false
   }
 }
 
