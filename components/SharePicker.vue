@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Select who is involved<span v-if="hasAnySplits">. And select quantity they had.</span></p>
     <div class="flex flex-wrap gap-3">
       <div
         v-for="person in people"
@@ -8,9 +9,9 @@
       >
         <!-- Name button (toggles selection) -->
         <UButton
-          :variant="isSelected(person.id) ? 'solid' : 'outline'"
+          :variant="isSelected(person.id) ? 'subtle' : 'outline'"
+          :color="isSelected(person.id) ? 'primary' : 'secondary'"
           size="sm"
-          color="secondary"
           block
           @click="togglePerson(person.id)"
           class="w-26 h-12 justify-center"
@@ -22,7 +23,7 @@
         <div v-if="isSelected(person.id)" class="flex items-center gap-1 mt-1">
           <UButton
             variant="ghost"
-            size="xs"
+            size="md"
             icon="i-heroicons-minus"
             @click="decrement(person.id)"
           />
@@ -31,7 +32,7 @@
           </span>
           <UButton
             variant="ghost"
-            size="xs"
+            size="md"
             icon="i-heroicons-plus"
             @click="increment(person.id)"
           />
