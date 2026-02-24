@@ -113,7 +113,7 @@
                       :autofocus="index === formData.people.length - 1"
                       @keyup.enter="addPerson"
                   />
-                  <span v-if="index === 0" class="text-sm text-gray-500 dark:text-gray-400 shrink-0">(me)</span>
+                  <span v-if="index === 0" class="text-sm text-gray-500 dark:text-gray-400 shrink-0">(you)</span>
                   <UButton
                       v-if="formData.people.length > 1 && index !== 0"
                       @click="removePerson(index)"
@@ -264,12 +264,12 @@ const createTab = async () => {
   loading.value = true
 
   try {
-    // Filter out empty names; include user's email for the first person so TabPerson auto-links
+    // Filter out empty names; include user_id for the first person so TabPerson links to the logged-in user
     const validPeople = formData.value.people
         .filter(p => p.name.trim().length > 0)
         .map((p, index) => ({
           name: p.name.trim(),
-          ...(index === 0 && authStore.user?.email ? {email: authStore.user.email} : {})
+          ...(index === 0 && authStore.user?.id ? {user_id: authStore.user.id} : {})
         }))
 
     const newTab = await tabStore.createTab({

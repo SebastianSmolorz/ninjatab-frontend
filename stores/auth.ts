@@ -148,6 +148,27 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async fetchUser(): Promise<void> {
+      if (!this.token) return
+
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+
+        const response = await fetch(`${baseURL}/auth/me`, {
+          headers: { Authorization: `Bearer ${this.token}` },
+        })
+
+        if (!response.ok) return
+
+        const user: AuthUser = await response.json()
+        this.user = user
+        this.persistToStorage()
+      } catch {
+        // Silently fail — cached user remains
+      }
+    },
+
     logout() {
       this.clearAuth()
     },

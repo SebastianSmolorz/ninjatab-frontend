@@ -18,8 +18,11 @@
 const authStore = useAuthStore()
 const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
   authStore.initFromStorage()
+  if (authStore.isAuthenticated && !authStore.user?.first_name) {
+    await authStore.fetchUser()
+  }
 })
 
 const headerItems = computed(() => {

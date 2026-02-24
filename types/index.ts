@@ -47,6 +47,7 @@ export interface TabPerson {
 export interface TabPersonCreate {
   name: string
   email?: string
+  user_id?: number
 }
 
 // Tab interfaces
