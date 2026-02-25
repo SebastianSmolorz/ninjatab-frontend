@@ -65,9 +65,13 @@
             <CurrencySelect
               v-model="selectedCurrency"
               size="sm"
+              v-if="!tab.is_settled"
               @click.stop
               @update:model-value="updateSettlementCurrency"
             />
+            <p v-else>
+              {{ selectedCurrency }} ({{ getCurrencySymbol(selectedCurrency) }})
+            </p>
           </div>
 
           <!-- People & Spending -->
