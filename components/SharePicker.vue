@@ -59,22 +59,22 @@
 import { computed } from 'vue'
 
 interface Person {
-  id: number
+  id: string
   name: string
 }
 
 const props = defineProps<{
   people: Person[]
-  modelValue: Record<number, number>
+  modelValue: Record<string, number>
   itemValue: number
   formatCurrency: (amount: number) => string
 }>()
 
 const emit = defineEmits<{
-  'update:modelValue': [value: Record<number, number>]
+  'update:modelValue': [value: Record<string, number>]
 }>()
 
-const isSelected = (personId: number) => {
+const isSelected = (personId: string) => {
   return (props.modelValue[personId] || 0) > 0
 }
 
@@ -82,11 +82,11 @@ const hasAnySplits = computed(() => {
   return Object.values(props.modelValue).some(v => v > 0)
 })
 
-const updateValue = (personId: number, value: number) => {
+const updateValue = (personId: string, value: number) => {
   emit('update:modelValue', { ...props.modelValue, [personId]: value })
 }
 
-const togglePerson = (personId: number) => {
+const togglePerson = (personId: string) => {
   if (isSelected(personId)) {
     updateValue(personId, 0)
   } else {
@@ -94,18 +94,18 @@ const togglePerson = (personId: number) => {
   }
 }
 
-const increment = (personId: number) => {
+const increment = (personId: string) => {
   updateValue(personId, (props.modelValue[personId] || 0) + 1)
 }
 
-const decrement = (personId: number) => {
+const decrement = (personId: string) => {
   const current = props.modelValue[personId] || 0
   if (current > 0) {
     updateValue(personId, current - 1)
   }
 }
 
-const calculateAmount = (personId: number): string => {
+const calculateAmount = (personId: string): string => {
   const personShares = props.modelValue[personId] || 0
   const totalShares = Object.values(props.modelValue).reduce((sum, s) => sum + (s || 0), 0)
 

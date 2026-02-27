@@ -123,8 +123,8 @@ const confettiStyle = (i: number) => {
 }
 
 onMounted(async () => {
-  const id = parseInt(route.params.id as string)
-  if (isNaN(id)) {
+  const id = route.params.id as string
+  if (!id) {
     router.push('/')
     return
   }

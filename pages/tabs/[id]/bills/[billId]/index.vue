@@ -222,12 +222,12 @@ const tabStore = useTabStore()
 const editMode = ref(false)
 const savingsplits = ref(false)
 const splitModes = ref<Record<number, 'even' | 'custom'>>({})
-const splits = ref<Record<number, Record<number, number>>>({})
+const splits = ref<Record<number, Record<string, number>>>({})
 const selectedCurrency = ref<Currency>(Currency.GBP)
 
 // Computed
-const tabId = computed(() => parseInt(route.params.id as string))
-const billId = computed(() => parseInt(route.params.billId as string))
+const tabId = computed(() => route.params.id as string)
+const billId = computed(() => route.params.billId as string)
 const bill = computed(() => billStore.currentBill)
 const loading = computed(() => billStore.isLoading)
 const error = computed(() => billStore.error)
@@ -236,7 +236,7 @@ const error = computed(() => billStore.error)
 const personTotals = computed(() => {
   if (!bill.value) return []
 
-  const totals = new Map<number, { person_id: number, person_name: string, total: number }>()
+  const totals = new Map<string, { person_id: string, person_name: string, total: number }>()
 
   bill.value.line_items.forEach(lineItem => {
     lineItem.person_claims.forEach(claim => {
@@ -431,7 +431,7 @@ onMounted(async () => {
     await billStore.fetchBillById(billId.value)
 
     // Also load tab data if not already loaded
-    if (!tabStore.currentTab || tabStore.currentTab.id !== tabId.value) {
+    if (!tabStore.currentTab || String(tabStore.currentTab.id) !== tabId.value) {
       await tabStore.fetchTabById(tabId.value)
     }
   } catch (error) {

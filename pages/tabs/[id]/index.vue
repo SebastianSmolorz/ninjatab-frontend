@@ -455,7 +455,7 @@ const showArchiveModal = ref(false)
 const showAddPersonModal = ref(false)
 const newPersonName = ref('')
 const addingPerson = ref(false)
-const billToDelete = ref<number | null>(null)
+const billToDelete = ref<string | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
 const tabDetailsOpen = ref(false)
@@ -528,7 +528,7 @@ const formatDate = (dateStr: string) => {
   })
 }
 
-const getPersonTotal = (personId: number): number => {
+const getPersonTotal = (personId: string): number => {
   const personTotal = personSpendingTotals.value.find(p => p.person_id === personId)
   return personTotal ? Number(personTotal.total) : 0
 }
@@ -590,7 +590,7 @@ const archiveTab = async () => {
   }
 }
 
-const markSettlementPaid = async (settlementId: number) => {
+const markSettlementPaid = async (settlementId: string) => {
   if (!tab.value) return
 
   try {
@@ -617,7 +617,7 @@ const addPerson = async () => {
   }
 }
 
-const confirmDeleteBill = (billId: number) => {
+const confirmDeleteBill = (billId: string) => {
   billToDelete.value = billId
   showDeleteModal.value = true
 }
@@ -688,15 +688,15 @@ const endDrag = (e: MouseEvent | TouchEvent) => {
 
 const tabPeople = computed(() => {
   if (tab.value && tab.value.people) {
-    return [...tab.value.people].sort((a, b) => a.id < b.id ? -1 : 1).sort((a, b) => a?.user ? -1 : 1)
+    return [...tab.value.people].sort((a, b) => a.id.localeCompare(b.id)).sort((a, b) => a?.user ? -1 : 1)
   }
   return []
 })
 
 // Load tab and bills on mount
 onMounted(async () => {
-  const id = parseInt(route.params.id as string)
-  if (isNaN(id)) {
+  const id = route.params.id as string
+  if (!id) {
     router.push('/')
     return
   }

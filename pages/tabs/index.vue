@@ -109,7 +109,7 @@ const navigateToCreate = () => {
   router.push('/tabs/create')
 }
 
-const navigateToTab = (id: number) => {
+const navigateToTab = (id: string) => {
   router.push(`/tabs/${id}`)
 }
 

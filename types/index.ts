@@ -27,7 +27,7 @@ export enum SplitMode {
 
 // User interfaces
 export interface User {
-  id: number
+  id: string
   username: string
   email: string
   first_name: string
@@ -36,7 +36,7 @@ export interface User {
 
 // Tab Person interfaces
 export interface TabPerson {
-  id: number
+  id: string
   name: string
   email: string | null
   user: User | null
@@ -47,12 +47,12 @@ export interface TabPerson {
 export interface TabPersonCreate {
   name: string
   email?: string
-  user_id?: number
+  user_id?: string
 }
 
 // Tab interfaces
 export interface TabListItem {
-  id: number
+  id: string
   name: string
   description: string
   default_currency: Currency
@@ -64,19 +64,19 @@ export interface TabListItem {
 }
 
 export interface PersonBalance {
-  person_id: number
+  person_id: string
   person_name: string
   balance: number
 }
 
 export interface PersonSpendingTotal {
-  person_id: number
+  person_id: string
   person_name: string
   total: number
 }
 
 export interface Settlement {
-  id: number
+  id: string
   from_person: TabPerson
   to_person: TabPerson
   amount: number
@@ -97,7 +97,7 @@ export interface Tab extends TabListItem {
 
 export interface InviteTabInfo {
   tab_name: string
-  people: Array<{ id: number; name: string }>
+  people: Array<{ id: string; name: string }>
 }
 
 export interface SimplifyResult {
@@ -107,8 +107,8 @@ export interface SimplifyResult {
 
 // Line Item and Claim interfaces
 export interface PersonLineItemClaim {
-  id: number
-  person_id: number
+  id: string
+  person_id: string
   person_name: string
   split_value: number | null
   calculated_amount: number | null
@@ -118,7 +118,7 @@ export interface PersonLineItemClaim {
 }
 
 export interface LineItem {
-  id: number
+  id: string
   description: string
   value: number
   split_type: SplitType
@@ -129,7 +129,7 @@ export interface LineItem {
 
 // Bill interfaces
 export interface BillListItem {
-  id: number
+  id: string
   description: string
   currency: Currency
   status: BillStatus
@@ -157,7 +157,7 @@ export interface CreateTabData {
 }
 
 export interface PersonSplitCreate {
-  person_id: number
+  person_id: string
   split_value?: number
 }
 
@@ -169,27 +169,27 @@ export interface LineItemCreate {
 }
 
 export interface CreateBillData {
-  tab_id: number
+  tab_id: string
   description: string
   currency: Currency
-  creator_id: number
-  paid_by_id?: number
+  creator_id: string
+  paid_by_id?: string
   date?: string
   line_items: LineItemCreate[]
 }
 
 export interface PersonSplitSubmit {
-  person_id: number
+  person_id: string
   split_value: number | null
 }
 
 export interface LineItemSplitSubmit {
-  line_item_id: number
+  line_item_id: string
   person_splits: PersonSplitSubmit[]
 }
 
 export interface SubmitSplitsData {
-  bill_id: number
+  bill_id: string
   split_mode: SplitMode
   line_item_splits: LineItemSplitSubmit[]
 }
@@ -197,19 +197,19 @@ export interface SubmitSplitsData {
 export interface UpdateBillData {
   description?: string
   currency?: Currency
-  paid_by_id?: number
+  paid_by_id?: string
 }
 
-// Draft splits for UI state
+// Draft splits for UI state — keyed by string UUIDs
 export interface DraftSplits {
-  [lineItemId: number]: {
-    [personId: number]: number | null
+  [lineItemId: string]: {
+    [personId: string]: number | null
   }
 }
 
 // Auth types
 export interface AuthUser {
-  id: number
+  id: string
   email: string
   first_name: string
   last_name: string

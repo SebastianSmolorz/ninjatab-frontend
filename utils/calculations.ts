@@ -54,8 +54,8 @@ export function calculatePersonAmount(
  * @returns Total shares
  */
 export function calculateTotalShares(
-  lineItemId: number,
-  draftSplits: { [personId: number]: number | null }
+  lineItemId: string,
+  draftSplits: { [personId: string]: number | null }
 ): number {
   const splits = draftSplits || {}
   return Object.values(splits)
@@ -71,7 +71,7 @@ export function calculateTotalShares(
  */
 export function validateValueSplits(
   lineItem: LineItem,
-  draftSplits: { [personId: number]: number | null }
+  draftSplits: { [personId: string]: number | null }
 ): { valid: boolean; error?: string } {
   if (lineItem.split_type !== 'value') {
     return { valid: true }
@@ -96,7 +96,7 @@ export function validateValueSplits(
  * @param personId - ID of the person
  * @returns Total amount owed
  */
-export function calculatePersonTotalAcrossBills(bills: Bill[], personId: number): number {
+export function calculatePersonTotalAcrossBills(bills: Bill[], personId: string): number {
   let total = 0
 
   for (const bill of bills) {
@@ -118,7 +118,7 @@ export function calculatePersonTotalAcrossBills(bills: Bill[], personId: number)
  * @param personId - ID of the person
  * @returns Total amount paid
  */
-export function calculatePersonTotalPaid(bills: Bill[], personId: number): number {
+export function calculatePersonTotalPaid(bills: Bill[], personId: string): number {
   let total = 0
 
   for (const bill of bills) {
@@ -136,7 +136,7 @@ export function calculatePersonTotalPaid(bills: Bill[], personId: number): numbe
  * @param personId - ID of the person
  * @returns Net balance (positive means they're owed money, negative means they owe)
  */
-export function calculatePersonNetBalance(bills: Bill[], personId: number): number {
+export function calculatePersonNetBalance(bills: Bill[], personId: string): number {
   const paid = calculatePersonTotalPaid(bills, personId)
   const owed = calculatePersonTotalAcrossBills(bills, personId)
   return Math.round((paid - owed) * 100) / 100
@@ -153,8 +153,8 @@ export function calculateEvenSplitForAll(
   lineItemValue: number,
   people: TabPerson[],
   splitType: SplitType
-): { [personId: number]: number } {
-  const result: { [personId: number]: number } = {}
+): { [personId: string]: number } {
+  const result: { [personId: string]: number } = {}
 
   if (splitType === 'shares') {
     // Even shares: 1 share per person
@@ -193,24 +193,22 @@ export function formatCurrency(amount: number, currency: string): string {
  */
 export function calculateSplitPreview(
   lineItem: LineItem,
-  draftSplits: { [personId: number]: number | null }
-): { [personId: number]: number } {
-  const preview: { [personId: number]: number } = {}
+  draftSplits: { [personId: string]: number | null }
+): { [personId: string]: number } {
+  const preview: { [personId: string]: number } = {}
 
   if (lineItem.split_type === 'shares') {
     const totalShares = calculateTotalShares(lineItem.id, draftSplits)
 
-    Object.entries(draftSplits).forEach(([personIdStr, shares]) => {
+    Object.entries(draftSplits).forEach(([personId, shares]) => {
       if (shares !== null) {
-        const personId = parseInt(personIdStr)
         preview[personId] = calculateShareSplit(lineItem.value, shares, totalShares)
       }
     })
   } else {
     // VALUE split type
-    Object.entries(draftSplits).forEach(([personIdStr, value]) => {
+    Object.entries(draftSplits).forEach(([personId, value]) => {
       if (value !== null) {
-        const personId = parseInt(personIdStr)
         preview[personId] = Math.round(value * 100) / 100
       }
     })

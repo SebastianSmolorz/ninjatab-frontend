@@ -17,7 +17,7 @@ export const useTabStore = defineStore('tabs', {
   }),
 
   getters: {
-    tabById: (state) => (id: number) => {
+    tabById: (state) => (id: string) => {
       return state.tabs.find((tab) => tab.id === id)
     },
 
@@ -50,7 +50,7 @@ export const useTabStore = defineStore('tabs', {
       }
     },
 
-    async fetchTabById(id: number) {
+    async fetchTabById(id: string) {
       this.loading = true
       this.error = null
 
@@ -113,7 +113,7 @@ export const useTabStore = defineStore('tabs', {
       }
     },
 
-    async deleteTab(id: number) {
+    async deleteTab(id: string) {
       this.loading = true
       this.error = null
 

@@ -394,7 +394,7 @@ const billType = ref<'single' | 'itemised' | null>(null)
 const formData = ref({
   description: '',
   currency: Currency.GBP,
-  paid_by_id: null as number | null,
+  paid_by_id: null as string | null,
   line_items: [] as Array<{ description: string; value: number }>
 })
 
@@ -413,10 +413,10 @@ const singleExpense = ref({
 const splitModes = ref<Record<number, 'even' | 'custom'>>({})
 
 // Split values: splits[itemIndex][personId] = shareValue
-const splits = ref<Record<number, Record<number, number>>>({})
+const splits = ref<Record<number, Record<string, number>>>({})
 
 // Computed
-const tabId = computed(() => parseInt(route.params.id as string))
+const tabId = computed(() => route.params.id as string)
 
 const tab = computed(() => tabStore.currentTab)
 
@@ -454,7 +454,7 @@ const totalAmount = computed(() => {
 
 // Load tab data on mount
 onMounted(async () => {
-  if (!tabStore.currentTab || tabStore.currentTab.id !== tabId.value) {
+  if (!tabStore.currentTab || String(tabStore.currentTab.id) !== tabId.value) {
     await tabStore.fetchTabById(tabId.value)
   }
 

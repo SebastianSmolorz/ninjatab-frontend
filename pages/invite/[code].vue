@@ -7,9 +7,9 @@ const api = useApi()
 const code = route.params.code as string
 
 const tabName = ref('')
-const people = ref<Array<{ id: number; name: string }>>([])
+const people = ref<Array<{ id: string; name: string }>>([])
 const notFound = ref(false)
-const selectedPersonId = ref<number | null>(null)
+const selectedPersonId = ref<string | null>(null)
 const email = ref('')
 const submitting = ref(false)
 const emailSent = ref(false)

@@ -32,11 +32,11 @@ export const useBillStore = defineStore('bills', {
   }),
 
   getters: {
-    billById: (state) => (id: number) => {
+    billById: (state) => (id: string) => {
       return state.bills.find((bill) => bill.id === id)
     },
 
-    billsByTabId: (state) => (tabId: number) => {
+    billsByTabId: (state) => (tabId: string) => {
       return state.bills.filter((bill) => {
         // This would need the tab_id on BillListItem, or we fetch filtered
         // For now, we'll need to filter on the API side
@@ -74,7 +74,7 @@ export const useBillStore = defineStore('bills', {
       return true
     },
 
-    personTotalOwed: (state) => (personId: number): number => {
+    personTotalOwed: (state) => (personId: string): number => {
       if (!state.currentBill) return 0
 
       let total = 0
@@ -98,7 +98,7 @@ export const useBillStore = defineStore('bills', {
   },
 
   actions: {
-    async fetchBills(tabId?: number) {
+    async fetchBills(tabId?: string) {
       this.loading = true
       this.error = null
 
@@ -113,7 +113,7 @@ export const useBillStore = defineStore('bills', {
       }
     },
 
-    async fetchBillById(id: number) {
+    async fetchBillById(id: string) {
       this.loading = true
       this.error = null
 
@@ -177,7 +177,7 @@ export const useBillStore = defineStore('bills', {
       }
     },
 
-    async submitSplits(billId: number) {
+    async submitSplits(billId: string) {
       if (!this.currentBill) {
         throw new Error('No current bill selected')
       }
@@ -202,7 +202,7 @@ export const useBillStore = defineStore('bills', {
           const person_splits = Object.entries(splits)
             .filter(([_, value]) => value !== null && value > 0)
             .map(([personId, value]) => ({
-              person_id: parseInt(personId),
+              person_id: personId,
               split_value: value,
             }))
 
@@ -246,7 +246,7 @@ export const useBillStore = defineStore('bills', {
       }
     },
 
-    updateDraftSplit(lineItemId: number, personId: number, value: number | null) {
+    updateDraftSplit(lineItemId: string, personId: string, value: number | null) {
       if (!this.draftSplits[lineItemId]) {
         this.draftSplits[lineItemId] = {}
       }

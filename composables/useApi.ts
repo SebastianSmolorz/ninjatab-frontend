@@ -61,7 +61,7 @@ export const useApi = () => {
     tabs: {
       list: () => apiFetch<TabListItem[]>('/tabs/'),
 
-      get: (id: number) => apiFetch<Tab>(`/tabs/${id}`),
+      get: (id: string) => apiFetch<Tab>(`/tabs/${id}`),
 
       create: (data: CreateTabData) =>
         apiFetch<Tab>('/tabs/', {
@@ -69,31 +69,31 @@ export const useApi = () => {
           body: JSON.stringify(data),
         }),
 
-      update: (id: number, data: { settlement_currency?: string }) =>
+      update: (id: string, data: { settlement_currency?: string }) =>
         apiFetch<Tab>(`/tabs/${id}`, {
           method: 'PATCH',
           body: JSON.stringify(data),
         }),
 
-      delete: (id: number) =>
+      delete: (id: string) =>
         apiFetch<{ success: boolean }>(`/tabs/${id}`, {
           method: 'DELETE',
         }),
 
-      close: (id: number) =>
+      close: (id: string) =>
         apiFetch<Tab>(`/tabs/${id}/close`, {
           method: 'POST',
         }),
 
-      simplify: (id: number) =>
+      simplify: (id: string) =>
         apiFetch<SimplifyResult>(`/tabs/${id}/simplify`, {
           method: 'POST',
         }),
 
-      personTotals: (id: number) =>
+      personTotals: (id: string) =>
         apiFetch<PersonSpendingTotal[]>(`/tabs/${id}/person-totals`),
 
-      markSettlementPaid: (settlementId: number) =>
+      markSettlementPaid: (settlementId: string) =>
         apiFetch<Settlement>(`/tabs/settlements/${settlementId}/mark-paid`, {
           method: 'POST',
         }),
@@ -101,13 +101,13 @@ export const useApi = () => {
       getInvite: (code: string) =>
         apiFetch<InviteTabInfo>(`/tabs/invite/${code}`),
 
-      claimInvite: (code: string, data: { person_id: number; email: string }) =>
+      claimInvite: (code: string, data: { person_id: string; email: string }) =>
         apiFetch<{ success: boolean }>(`/tabs/invite/${code}/claim`, {
           method: 'POST',
           body: JSON.stringify(data),
         }),
 
-      addPerson: (tabId: number, data: { name: string }) =>
+      addPerson: (tabId: string, data: { name: string }) =>
         apiFetch<TabPerson>(`/tabs/${tabId}/people`, {
           method: 'POST',
           body: JSON.stringify(data),
@@ -116,12 +116,12 @@ export const useApi = () => {
 
     // Bill endpoints
     bills: {
-      list: (tabId?: number) =>
+      list: (tabId?: string) =>
         apiFetch<BillListItem[]>(
           `/bills/${tabId ? `?tab_id=${tabId}` : ''}`
         ),
 
-      get: (id: number) => apiFetch<Bill>(`/bills/${id}`),
+      get: (id: string) => apiFetch<Bill>(`/bills/${id}`),
 
       create: (data: CreateBillData) =>
         apiFetch<Bill>('/bills/', {
@@ -129,19 +129,19 @@ export const useApi = () => {
           body: JSON.stringify(data),
         }),
 
-      submitSplits: (id: number, data: SubmitSplitsData) =>
+      submitSplits: (id: string, data: SubmitSplitsData) =>
         apiFetch<Bill>(`/bills/${id}/submit-splits`, {
           method: 'POST',
           body: JSON.stringify(data),
         }),
 
-      update: (id: number, data: UpdateBillData) =>
+      update: (id: string, data: UpdateBillData) =>
         apiFetch<Bill>(`/bills/${id}`, {
           method: 'PATCH',
           body: JSON.stringify(data),
         }),
 
-      delete: (id: number) =>
+      delete: (id: string) =>
         apiFetch<{ success: boolean }>(`/bills/${id}`, {
           method: 'DELETE',
         }),
