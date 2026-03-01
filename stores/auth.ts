@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
-import type { AuthUser, LoginResponse, RefreshResponse } from '~/types'
+import type { AuthUser, LoginResponse } from '~/types'
 
-const STORAGE_KEY_TOKEN = 'ninjatab_access_token'
-const STORAGE_KEY_REFRESH = 'ninjatab_refresh_token'
-const STORAGE_KEY_USER = 'ninjatab_user'
+const COOKIE_USER = 'ninjatab_user'
+
+const COOKIE_OPTS = {
+  sameSite: 'lax' as const,
+  path: '/',
+  maxAge: 60 * 60 * 24 * 30, // 30 days
+}
 
 interface AuthState {
-  token: string | null
-  refreshToken: string | null
   user: AuthUser | null
   loading: boolean
   error: string | null
@@ -15,48 +17,28 @@ interface AuthState {
 
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
-    token: null,
-    refreshToken: null,
     user: null,
     loading: false,
     error: null,
   }),
 
   getters: {
-    isAuthenticated: (state): boolean => !!state.token && !!state.user,
+    isAuthenticated: (state): boolean => !!state.user,
     currentUser: (state): AuthUser | null => state.user,
     isLoading: (state): boolean => state.loading,
   },
 
   actions: {
-    initFromStorage() {
-      if (import.meta.server) return
-      const token = localStorage.getItem(STORAGE_KEY_TOKEN)
-      const refreshToken = localStorage.getItem(STORAGE_KEY_REFRESH)
-      const userStr = localStorage.getItem(STORAGE_KEY_USER)
-
-      if (token && userStr) {
-        this.token = token
-        this.refreshToken = refreshToken
-        try {
-          this.user = JSON.parse(userStr)
-        } catch {
-          this.clearAuth()
-        }
+    initFromCookie() {
+      const user = useCookie<AuthUser | null>(COOKIE_USER, COOKIE_OPTS)
+      if (user.value) {
+        this.user = user.value
       }
     },
 
-    persistToStorage() {
-      if (import.meta.server) return
-      if (this.token && this.user) {
-        localStorage.setItem(STORAGE_KEY_TOKEN, this.token)
-        localStorage.setItem(STORAGE_KEY_REFRESH, this.refreshToken || '')
-        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(this.user))
-      } else {
-        localStorage.removeItem(STORAGE_KEY_TOKEN)
-        localStorage.removeItem(STORAGE_KEY_REFRESH)
-        localStorage.removeItem(STORAGE_KEY_USER)
-      }
+    persistUser() {
+      const user = useCookie<AuthUser | null>(COOKIE_USER, COOKIE_OPTS)
+      user.value = this.user
     },
 
     async sendMagicLink(email: string): Promise<void> {
@@ -65,10 +47,11 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         const config = useRuntimeConfig()
-        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+        const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
 
         const response = await fetch(`${baseURL}/auth/magic-link`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email }),
         })
@@ -91,10 +74,11 @@ export const useAuthStore = defineStore('auth', {
 
       try {
         const config = useRuntimeConfig()
-        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+        const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
 
         const response = await fetch(`${baseURL}/auth/verify-magic-link`, {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         })
@@ -105,10 +89,8 @@ export const useAuthStore = defineStore('auth', {
         }
 
         const data: LoginResponse = await response.json()
-        this.token = data.access_token
-        this.refreshToken = data.refresh_token
         this.user = data.user
-        this.persistToStorage()
+        this.persistUser()
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Verification failed'
         throw error
@@ -118,16 +100,13 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async refreshAccessToken(): Promise<boolean> {
-      if (!this.refreshToken) return false
-
       try {
         const config = useRuntimeConfig()
-        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+        const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
 
         const response = await fetch(`${baseURL}/auth/refresh`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ refresh_token: this.refreshToken }),
+          credentials: 'include',
         })
 
         if (!response.ok) {
@@ -138,9 +117,6 @@ export const useAuthStore = defineStore('auth', {
           return false
         }
 
-        const data: RefreshResponse = await response.json()
-        this.token = data.access_token
-        this.persistToStorage()
         return true
       } catch {
         this.clearAuth()
@@ -149,36 +125,45 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async fetchUser(): Promise<void> {
-      if (!this.token) return
+      if (!this.user) return
 
       try {
         const config = useRuntimeConfig()
-        const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+        const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
 
         const response = await fetch(`${baseURL}/auth/me`, {
-          headers: { Authorization: `Bearer ${this.token}` },
+          credentials: 'include',
         })
 
         if (!response.ok) return
 
         const user: AuthUser = await response.json()
         this.user = user
-        this.persistToStorage()
+        this.persistUser()
       } catch {
         // Silently fail — cached user remains
       }
     },
 
-    logout() {
+    async logout() {
+      try {
+        const config = useRuntimeConfig()
+        const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
+
+        await fetch(`${baseURL}/auth/logout`, {
+          method: 'POST',
+          credentials: 'include',
+        })
+      } catch {
+        // Clear local state regardless
+      }
       this.clearAuth()
     },
 
     clearAuth() {
-      this.token = null
-      this.refreshToken = null
       this.user = null
       this.error = null
-      this.persistToStorage()
+      this.persistUser()
     },
 
     clearError() {

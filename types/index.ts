@@ -225,11 +225,5 @@ export interface AuthUser {
 }
 
 export interface LoginResponse {
-  access_token: string
-  refresh_token: string
   user: AuthUser
-}
-
-export interface RefreshResponse {
-  access_token: string
 }

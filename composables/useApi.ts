@@ -18,7 +18,7 @@ import { useAuthStore } from '~/stores/auth'
 
 export const useApi = () => {
   const config = useRuntimeConfig()
-  const baseURL = config.public.apiBaseUrl || 'http://127.0.0.1:8000/api'
+  const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
   const authStore = useAuthStore()
 
   const apiFetch = async <T>(
@@ -29,15 +29,15 @@ export const useApi = () => {
     try {
       const response = await fetch(`${baseURL}${endpoint}`, {
         ...options,
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          ...(authStore.token ? { Authorization: `Bearer ${authStore.token}` } : {}),
           ...options?.headers,
         },
       })
 
       if (!response.ok) {
-        if (response.status === 401 && !_isRetry && authStore.refreshToken) {
+        if (response.status === 401 && !_isRetry) {
           const refreshed = await authStore.refreshAccessToken()
           if (refreshed) {
             return apiFetch<T>(endpoint, options, true)

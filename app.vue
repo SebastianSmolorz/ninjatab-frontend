@@ -19,7 +19,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(async () => {
-  authStore.initFromStorage()
+  authStore.initFromCookie()
   if (authStore.isAuthenticated && !authStore.user?.first_name) {
     await authStore.fetchUser()
   }
@@ -44,8 +44,8 @@ const indexLinks = [
   }
 ]
 
-function handleLogout() {
-  authStore.logout()
+async function handleLogout() {
+  await authStore.logout()
   router.push('/login')
 }
 
