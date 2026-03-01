@@ -19,7 +19,6 @@ const authStore = useAuthStore()
 const router = useRouter()
 
 onMounted(async () => {
-  authStore.initFromCookie()
   if (authStore.isAuthenticated && !authStore.user?.first_name) {
     await authStore.fetchUser()
   }

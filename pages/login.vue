@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 
-const authStore = useAuthStore()
-if (authStore.isAuthenticated) {
-  navigateTo('/tabs', { replace: true })
-}
+definePageMeta({
+  middleware: 'guest',
+})
 
+const authStore = useAuthStore()
 const emailSent = ref(false)
 
 const fields: AuthFormField[] = [
