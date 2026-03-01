@@ -56,6 +56,10 @@ export const useAuthStore = defineStore('auth', {
           body: JSON.stringify({ email }),
         })
 
+        if (response.status === 429) {
+          throw new Error("You're doing that too often. Check your spam folder and give it a couple of minutes.")
+        }
+
         if (!response.ok) {
           const err = await response.json().catch(() => ({ detail: 'Failed to send magic link' }))
           throw new Error(err.detail || `Failed with status ${response.status}`)
