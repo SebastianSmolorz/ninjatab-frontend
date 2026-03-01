@@ -89,6 +89,7 @@
                   Add person
                 </UButton>
                 <UButton
+                  v-if="!tab.is_settled"
                   icon="i-lucide-clipboard-copy"
                   size="lg"
                   @click="handleActionSelect('copy-invite')"
