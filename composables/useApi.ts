@@ -12,6 +12,7 @@ import type {
   PersonSpendingTotal,
   Settlement,
   InviteTabInfo,
+  Contact,
 } from '~/types'
 import { useAuthStore } from '~/stores/auth'
 
@@ -41,6 +42,12 @@ export const useApi = () => {
           if (refreshed) {
             return apiFetch<T>(endpoint, options, true)
           }
+        }
+
+        if (response.status === 401) {
+          authStore.logout()
+          navigateTo('/login')
+          throw new Error('Session expired')
         }
 
         const error = await response.json().catch(() => ({ message: 'API request failed' }))
@@ -107,7 +114,10 @@ export const useApi = () => {
           body: JSON.stringify(data),
         }),
 
-      addPerson: (tabId: string, data: { name: string }) =>
+      contacts: (excludeTab?: string) =>
+        apiFetch<Contact[]>(`/tabs/contacts${excludeTab ? `?exclude_tab=${excludeTab}` : ''}`),
+
+      addPerson: (tabId: string, data: { name: string; user_id?: string }) =>
         apiFetch<TabPerson>(`/tabs/${tabId}/people`, {
           method: 'POST',
           body: JSON.stringify(data),

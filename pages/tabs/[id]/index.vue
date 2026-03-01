@@ -84,7 +84,7 @@
                   icon="i-lucide-user-plus"
                   size="lg"
                   variant="outline"
-                  @click="showAddPersonModal = true"
+                  @click="openAddPersonModal"
                 >
                   Add person
                 </UButton>
@@ -93,7 +93,7 @@
                   size="lg"
                   @click="handleActionSelect('copy-invite')"
                 >
-                  Copy invite link
+                  Copy join link
                 </UButton>
               </div>
             </div>
@@ -379,18 +379,19 @@
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Name
             </label>
-            <UInput
-              v-model="newPersonName"
-              placeholder="Enter name"
+            <PersonSelectMenu
+              :model-value="newPersonName ? { label: newPersonName, user_id: newPersonUserId } : null"
+              :contacts="contacts"
+              :loading="loadingContacts"
               size="lg"
-              @keyup.enter="addPerson"
+              @update:model-value="onAddPersonSelected"
             />
           </div>
           <div class="flex justify-end gap-2">
             <UButton
               label="Cancel"
               variant="ghost"
-              @click="showAddPersonModal = false; newPersonName = ''"
+              @click="showAddPersonModal = false; newPersonName = ''; newPersonUserId = undefined"
             />
             <UButton
               label="Add"
@@ -436,7 +437,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
-import type { PersonSpendingTotal, Currency } from '~/types'
+import type { PersonSpendingTotal, Currency, Contact } from '~/types'
 
 const toast = useToast()
 
@@ -454,7 +455,10 @@ const showSettleModal = ref(false)
 const showArchiveModal = ref(false)
 const showAddPersonModal = ref(false)
 const newPersonName = ref('')
+const newPersonUserId = ref<string | undefined>(undefined)
 const addingPerson = ref(false)
+const contacts = ref<Contact[]>([])
+const loadingContacts = ref(false)
 const billToDelete = ref<string | null>(null)
 const deletingBill = ref(false)
 const selectedAction = ref<string>('')
@@ -476,7 +480,7 @@ const tabActions = computed(() => {
   const actions = []
   if (!tab.value?.is_settled) {
     actions.push({ label: 'Settle up', value: 'settle' })
-    actions.push({ label: 'Copy invite link', value: 'copy-invite' })
+    actions.push({ label: 'Copy join link', value: 'copy-invite' })
   }
   actions.push({ label: 'Archive', value: 'archive' })
   // actions.push({ label: 'Delete', value: 'delete' })
@@ -601,15 +605,36 @@ const markSettlementPaid = async (settlementId: string) => {
   }
 }
 
+const openAddPersonModal = async () => {
+  showAddPersonModal.value = true
+  loadingContacts.value = true
+  try {
+    contacts.value = await api.tabs.contacts(tab.value?.id)
+  } catch {
+    contacts.value = []
+  } finally {
+    loadingContacts.value = false
+  }
+}
+
+const onAddPersonSelected = (item: { label: string; user_id?: string }) => {
+  newPersonName.value = item.label
+  newPersonUserId.value = item.user_id
+}
+
 const addPerson = async () => {
   if (!newPersonName.value.trim() || !tab.value) return
 
   addingPerson.value = true
   try {
-    await api.tabs.addPerson(tab.value.id, { name: newPersonName.value.trim() })
+    await api.tabs.addPerson(tab.value.id, {
+      name: newPersonName.value.trim(),
+      ...(newPersonUserId.value ? { user_id: newPersonUserId.value } : {}),
+    })
     await tabStore.fetchTabById(tab.value.id)
     showAddPersonModal.value = false
     newPersonName.value = ''
+    newPersonUserId.value = undefined
   } catch (error) {
     console.error('Failed to add person:', error)
   } finally {

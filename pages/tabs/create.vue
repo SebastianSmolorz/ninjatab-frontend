@@ -105,13 +105,22 @@
                     :key="index"
                     class="flex items-center gap-3"
                 >
+                  <!-- Person 0 is always "you" -->
                   <UInput
+                      v-if="index === 0"
                       v-model="person.name"
-                      :placeholder="`Person ${index + 1} name`"
+                      placeholder="Your name"
                       size="lg"
                       class="flex-1"
-                      :autofocus="index === formData.people.length - 1"
-                      @keyup.enter="addPerson"
+                  />
+                  <!-- Person 1+ uses PersonSelectMenu -->
+                  <PersonSelectMenu
+                      v-else
+                      :model-value="person.name ? { label: person.name, user_id: person.user_id } : null"
+                      :contacts="availableContacts(index)"
+                      size="lg"
+                      class="flex-1"
+                      @update:model-value="onPersonSelected(index, $event)"
                   />
                   <span v-if="index === 0" class="text-sm text-gray-500 dark:text-gray-400 shrink-0">(you)</span>
                   <UButton
@@ -196,27 +205,43 @@
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import {useRouter} from 'vue-router'
 import {useTabStore} from '~/stores/tabs'
 import {useAuthStore} from '~/stores/auth'
 import {Currency} from '~/types'
+import type {Contact} from '~/types'
 
 const router = useRouter()
 const tabStore = useTabStore()
 const authStore = useAuthStore()
+const api = useApi()
 
 // State
 const step = ref(1)
 const slideDirection = ref<'slide-left' | 'slide-right'>('slide-left')
 const loading = ref(false)
+const contacts = ref<Contact[]>([])
+
+interface PersonEntry {
+  name: string
+  user_id?: string
+}
 
 const formData = ref({
   name: '',
   description: '',
   default_currency: Currency.GBP,
   settlement_currency: Currency.GBP,
-  people: [{name: authStore.user?.first_name || ''}]
+  people: [{name: authStore.user?.first_name || ''} as PersonEntry]
+})
+
+onMounted(async () => {
+  try {
+    contacts.value = await api.tabs.contacts()
+  } catch {
+    // Contacts are optional — proceed without them
+  }
 })
 
 // Computed
@@ -237,6 +262,23 @@ const canCreate = computed(() => {
 })
 
 // Methods
+const availableContacts = (currentIndex: number) => {
+  // Exclude contacts already selected in other person slots
+  const selectedUserIds = new Set(
+    formData.value.people
+      .filter((p, i) => i !== currentIndex && p.user_id)
+      .map(p => p.user_id)
+  )
+  return contacts.value.filter(c => !selectedUserIds.has(c.user_id))
+}
+
+const onPersonSelected = (index: number, item: { label: string; user_id?: string }) => {
+  formData.value.people[index] = {
+    name: item.label,
+    user_id: item.user_id,
+  }
+}
+
 const nextStep = () => {
   if (!formData.value.name.trim()) return
   slideDirection.value = 'slide-left'
@@ -269,7 +311,8 @@ const createTab = async () => {
         .filter(p => p.name.trim().length > 0)
         .map((p, index) => ({
           name: p.name.trim(),
-          ...(index === 0 && authStore.user?.id ? {user_id: authStore.user.id} : {})
+          ...(index === 0 && authStore.user?.id ? {user_id: authStore.user.id} : {}),
+          ...(index !== 0 && p.user_id ? {user_id: p.user_id} : {}),
         }))
 
     const newTab = await tabStore.createTab({
@@ -284,7 +327,6 @@ const createTab = async () => {
     router.push(`/tabs/${newTab.id}`)
   } catch (error) {
     console.error('Failed to create tab:', error)
-    // TODO: Show error notification
   } finally {
     loading.value = false
   }

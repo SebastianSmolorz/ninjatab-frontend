@@ -10,7 +10,7 @@
         <!-- Name button (toggles selection) -->
         <UButton
           :variant="isSelected(person.id) ? 'subtle' : 'outline'"
-          :color="isSelected(person.id) ? 'primary' : 'secondary'"
+          :color="isSelected(person.id) ? 'primary' : 'neutral'"
           size="sm"
           block
           @click="togglePerson(person.id)"

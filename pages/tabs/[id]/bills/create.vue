@@ -378,11 +378,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { useBillStore } from '~/stores/bills'
 import { useTabStore } from '~/stores/tabs'
 import { Currency, SplitType, type LineItemCreate, type PersonSplitCreate } from '~/types'
+import { useAuthStore } from '~/stores/auth'
 
 const route = useRoute()
 const router = useRouter()
 const billStore = useBillStore()
 const tabStore = useTabStore()
+const authStore = useAuthStore()
 
 // State
 const step = ref(0)
@@ -463,9 +465,10 @@ onMounted(async () => {
     formData.value.currency = tab.value.default_currency as Currency
   }
 
-  // Auto-select first person as payer if not already selected
+  // Default "who paid" to the logged-in user's tab person, fallback to first person
   if (tab.value?.people && tab.value.people.length > 0 && !formData.value.paid_by_id) {
-    formData.value.paid_by_id = tab.value.people[0].id
+    const me = tab.value.people.find(p => p.user?.id === authStore.user?.id)
+    formData.value.paid_by_id = me?.id ?? tab.value.people[0].id
   }
 })
 
