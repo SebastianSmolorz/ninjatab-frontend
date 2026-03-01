@@ -2,18 +2,15 @@
 import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 
 const authStore = useAuthStore()
-const router = useRouter()
+if (authStore.isAuthenticated) {
+  navigateTo('/tabs', { replace: true })
+}
+
 const emailSent = ref(false)
 
 const fields: AuthFormField[] = [
   { name: 'email', type: 'email' as const, label: 'Email', placeholder: 'you@example.com', required: true },
 ]
-
-onMounted(() => {
-  if (authStore.isAuthenticated) {
-    router.replace('/tabs')
-  }
-})
 
 async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
   authStore.clearError()
