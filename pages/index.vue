@@ -95,6 +95,10 @@
         </div>
     </article>
     </UContainer>
+
+    <UFooter>
+      <UNavigationMenu :items="footerLinks" variant="link" />
+    </UFooter>
   </UMain>
 </template>
 
@@ -140,6 +144,11 @@ const benefits = [
     title: 'Fair and transparent pricing',
     description: 'Free for smaller tabs. £1 per person for unlimited. Added directly to the tab.'
   }
+]
+
+const footerLinks = [
+  { label: 'Contact Us', to: '/contact' },
+  { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
 ]
 
 useSeoMeta({
