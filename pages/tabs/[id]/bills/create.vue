@@ -380,6 +380,8 @@ import { useTabStore } from '~/stores/tabs'
 import { Currency, SplitType, type LineItemCreate, type PersonSplitCreate } from '~/types'
 import { useAuthStore } from '~/stores/auth'
 
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const router = useRouter()
 const billStore = useBillStore()

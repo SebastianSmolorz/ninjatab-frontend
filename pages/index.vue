@@ -100,12 +100,8 @@
 
 <script setup lang="ts">
 import type { PageFeatureProps } from '@nuxt/ui'
-import { useAuthStore } from '~/stores/auth'
 
-const authStore = useAuthStore()
-if (authStore.isAuthenticated) {
-  navigateTo('/tabs')
-}
+definePageMeta({ middleware: 'guest' })
 
 const features = ref<PageFeatureProps[]>([
   {

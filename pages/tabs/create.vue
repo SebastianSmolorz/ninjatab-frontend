@@ -212,6 +212,8 @@ import {useAuthStore} from '~/stores/auth'
 import {Currency} from '~/types'
 import type {Contact} from '~/types'
 
+definePageMeta({ middleware: 'auth' })
+
 const router = useRouter()
 const tabStore = useTabStore()
 const authStore = useAuthStore()

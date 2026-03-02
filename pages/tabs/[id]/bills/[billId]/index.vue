@@ -213,6 +213,8 @@ import { useTabStore } from '~/stores/tabs'
 import { Currency, type BillStatus } from '~/types'
 import { isEvenSplit } from '~/utils/calculations'
 
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const router = useRouter()
 const billStore = useBillStore()

@@ -440,6 +440,8 @@ import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
 import type { PersonSpendingTotal, Currency, Contact } from '~/types'
 
+definePageMeta({ middleware: 'auth' })
+
 const toast = useToast()
 
 const route = useRoute()

@@ -86,6 +86,8 @@ import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 
+definePageMeta({ middleware: 'auth' })
+
 const route = useRoute()
 const router = useRouter()
 const tabStore = useTabStore()
