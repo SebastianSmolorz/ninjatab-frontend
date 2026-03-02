@@ -28,11 +28,13 @@ const headerItems = computed(() => {
   if (authStore.isAuthenticated) {
     return [
       { label: 'Tabs', to: '/tabs' },
+      { label: 'Contact', to: '/contact' },
       { label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout },
     ]
   }
   return [
     { label: 'Login', to: '/login' },
+    { label: 'Contact', to: '/contact' },
   ]
 })
 
