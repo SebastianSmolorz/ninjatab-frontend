@@ -95,11 +95,13 @@
             </div>
             <div class="rounded-lg border border-gray-700 p-4 text-center">
               <p class="text-sm text-gray-400">Weekend trip (8 people)</p>
-              <p class="text-2xl font-bold">£8 <span class="text-sm font-normal text-gray-400">total</span></p>
+              <p class="text-2xl font-bold">£1 <span class="text-sm font-normal text-gray-400">per preson</span></p>
+              <p class="text-sm font-bold">£8 <span class="text-sm font-normal text-gray-400">total</span></p>
             </div>
             <div class="rounded-lg border border-gray-700 p-4 text-center">
-              <p class="text-sm text-gray-400">Large stag do (12 people)</p>
-              <p class="text-2xl font-bold">£12 <span class="text-sm font-normal text-gray-400">total</span></p>
+              <p class="text-sm text-gray-400">Large stag do (20 people)</p>
+              <p class="text-2xl font-bold">Still £1 <span class="text-sm font-normal text-gray-400">per preson</span></p>
+              <p class="text-sm font-bold">£20 <span class="text-sm font-normal text-gray-400">total</span></p>
             </div>
           </div>
           <p>That's often less than one round of drinks for removing hours of admin.</p>
