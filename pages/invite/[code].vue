@@ -76,7 +76,7 @@ async function onSubmit() {
         <!-- Loading -->
         <div v-if="loadingInvite" class="flex flex-col items-center py-12">
           <div class="flex justify-center mb-8">
-            <img src="/logo1-small.png" alt="NinjaTab" class="w-28" />
+            <img src="/logo.png" alt="NinjaTab" class="w-28" />
           </div>
           <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-primary-500 animate-spin" />
         </div>
@@ -103,7 +103,7 @@ async function onSubmit() {
         <template v-else>
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <img src="/logo1-small.png" alt="NinjaTab" class="w-28" />
+          <img src="/logo.png" alt="NinjaTab" class="w-28" />
         </div>
 
         <!-- Heading -->

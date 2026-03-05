@@ -1,6 +1,9 @@
 <template>
   <UApp>
-    <UHeader v-if="!isIndex" title="tab.ninja" to="/">
+    <UHeader v-if="!isIndex" to="/">
+      <template #title>
+        <img src="/logo1-small.png" alt="Tab Ninja logo" class="w-14" />
+      </template>
       <template #right>
         <UNavigationMenu :items="headerItems" class="hidden lg:flex" />
       </template>

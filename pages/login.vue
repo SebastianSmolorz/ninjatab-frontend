@@ -24,30 +24,57 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
 </script>
 
 <template>
-  <UMain>
-    <UContainer class="flex min-h-screen justify-center pt-10">
-      <div v-if="emailSent" class="max-w-md px-4 mt-4 text-center">
-        <UIcon name="i-lucide-mail-check" class="text-5xl text-primary mb-4" />
-        <h2 class="text-xl font-semibold mb-2">Check your email</h2>
-        <p class="text-gray-500">We've sent you a sign-in link. Click it to log in.</p>
-        <UButton variant="ghost" class="mt-6" @click="emailSent = false">
-          Try a different email
-        </UButton>
-      </div>
-      <UAuthForm
-        v-else
-        title="Get in on the Tab"
-        icon="i-lucide-user"
-        :fields="fields"
-        :submit="{ label: 'Send magic link', block: true }"
-        :loading="authStore.isLoading"
-        class="max-w-md px-4 mt-4"
-        @submit="onSubmit"
-      >
-        <template #validation>
-          <UAlert v-if="authStore.error" color="error" :title="authStore.error" />
+  <UMain class="bg-gray-900 min-h-screen flex flex-col">
+    <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
+      <div class="max-w-md w-full px-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+          <img src="/logo.png" alt="NinjaTab" class="w-28" />
+        </div>
+
+        <!-- Email sent confirmation -->
+        <div v-if="emailSent" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary-900/50 flex items-center justify-center">
+            <UIcon name="i-lucide-mail-check" class="text-3xl text-primary-400" />
+          </div>
+          <h2 class="text-xl font-semibold text-white mb-2">Check your email</h2>
+          <p class="text-gray-400 mb-6">We've sent you a magic sign-in link. Click it to log in.</p>
+          <UButton variant="ghost" color="neutral" @click="emailSent = false">
+            Try a different email
+          </UButton>
+        </div>
+
+        <!-- Login form -->
+        <template v-else>
+          <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-white mb-2">Get in on the Tab</h1>
+            <p class="text-gray-400">No passwords. We'll send a magic link to your email.</p>
+          </div>
+
+          <div class="bg-gray-800/60 rounded-xl border border-gray-700 p-6">
+            <UAlert v-if="authStore.error" color="error" :title="authStore.error" class="mb-4" />
+
+            <UAuthForm
+              :fields="fields"
+              :submit="{ label: 'Send magic link', block: true, size: 'lg' }"
+              :loading="authStore.isLoading"
+              @submit="onSubmit"
+            />
+          </div>
+
+          <div class="flex items-center gap-3 mt-6 text-sm text-gray-500 justify-center">
+            <div class="flex items-center gap-1.5">
+              <UIcon name="i-lucide-zap" class="w-4 h-4 text-primary-400" />
+              <span>No password needed</span>
+            </div>
+            <span class="text-gray-700">·</span>
+            <div class="flex items-center gap-1.5">
+              <UIcon name="i-lucide-shield-check" class="w-4 h-4 text-primary-400" />
+              <span>Secure login</span>
+            </div>
+          </div>
         </template>
-      </UAuthForm>
+      </div>
     </UContainer>
   </UMain>
 </template>
