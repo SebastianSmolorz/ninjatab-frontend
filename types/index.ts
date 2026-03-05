@@ -97,8 +97,10 @@ export interface Tab extends TabListItem {
 }
 
 export interface InviteTabInfo {
+  tab_id: string
   tab_name: string
   people: Array<{ id: string; name: string }>
+  user_already_on_tab: boolean
 }
 
 export interface SimplifyResult {
