@@ -54,7 +54,7 @@
             <UButton
               block
               size="xl"
-              class="font-bold text-black shadow-lg hover:shadow-xl transition-shadow text-lg py-4 border-2 border-green-800 bg-orange-400 hover:bg-orange-300 active:bg-orange-200"
+              class="cursor-pointer font-bold text-black shadow-lg hover:shadow-xl transition-shadow text-lg py-4 border-2 border-green-800 bg-orange-400 hover:bg-orange-300 active:bg-orange-200"
               @click="upgradeToPro"
             >
               Go Pro on this tab!
