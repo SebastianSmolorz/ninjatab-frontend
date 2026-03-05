@@ -57,6 +57,7 @@ export interface TabListItem {
   description: string
   default_currency: Currency
   is_settled: boolean
+  is_pro: boolean
   bill_count: number
   people_count: number
   created_at: string
