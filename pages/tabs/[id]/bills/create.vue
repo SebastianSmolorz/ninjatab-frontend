@@ -39,7 +39,15 @@
             </p>
           </div>
 
-          <div class="grid gap-4">
+          <div class="grid gap-4 relative">
+            <!-- Loading overlay when user clicked but limits still loading -->
+            <div
+              v-if="pendingBillType"
+              class="absolute inset-0 z-10 flex items-center justify-center bg-white/60 dark:bg-gray-900/60 rounded-lg"
+            >
+              <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-primary-500 animate-spin" />
+            </div>
+
             <div
               @click="selectBillType('single')"
               class="bg-white dark:bg-gray-800 rounded-lg border-2 border-gray-200 dark:border-gray-700 p-6 cursor-pointer hover:border-primary-500 transition-colors"
@@ -373,7 +381,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useBillStore } from '~/stores/bills'
 import { useTabStore } from '~/stores/tabs'
@@ -387,6 +395,7 @@ const router = useRouter()
 const billStore = useBillStore()
 const tabStore = useTabStore()
 const authStore = useAuthStore()
+const api = useApi()
 
 // State
 const step = ref(0)
@@ -394,6 +403,10 @@ const loading = ref(false)
 const showValidationError = ref(false)
 const showBillNameError = ref(false)
 const billType = ref<'single' | 'itemised' | null>(null)
+const canSingle = ref<boolean | null>(null)
+const canItemised = ref<boolean | null>(null)
+const limitsLoaded = computed(() => canSingle.value !== null && canItemised.value !== null)
+const pendingBillType = ref<'single' | 'itemised' | null>(null)
 
 const formData = ref({
   description: '',
@@ -462,6 +475,14 @@ onMounted(async () => {
     await tabStore.fetchTabById(tabId.value)
   }
 
+  // Check limits concurrently
+  api.tabs.canAddSingle(tabId.value)
+    .then(() => { canSingle.value = true })
+    .catch(() => { canSingle.value = false })
+  api.tabs.canAddItemised(tabId.value)
+    .then(() => { canItemised.value = true })
+    .catch(() => { canItemised.value = false })
+
   // Set default currency from tab
   if (tab.value?.default_currency) {
     formData.value.currency = tab.value.default_currency as Currency
@@ -475,10 +496,31 @@ onMounted(async () => {
 })
 
 // Methods
-const selectBillType = (type: 'single' | 'itemised') => {
+const proceedWithBillType = (type: 'single' | 'itemised') => {
+  const allowed = type === 'single' ? canSingle.value : canItemised.value
+  if (!allowed) {
+    router.push(`/tabs/${tabId.value}/upgrade`)
+    return
+  }
   billType.value = type
   step.value = 1
 }
+
+const selectBillType = (type: 'single' | 'itemised') => {
+  if (!limitsLoaded.value) {
+    pendingBillType.value = type
+    return
+  }
+  proceedWithBillType(type)
+}
+
+watch(limitsLoaded, (loaded) => {
+  if (loaded && pendingBillType.value) {
+    const type = pendingBillType.value
+    pendingBillType.value = null
+    proceedWithBillType(type)
+  }
+})
 
 const formatCurrency = (amount: number) => {
   return `${getCurrencySymbol(formData.value.currency)}${amount.toFixed(2)}`

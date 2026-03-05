@@ -114,6 +114,12 @@ export const useApi = () => {
           body: JSON.stringify(data),
         }),
 
+      canAddSingle: (tabId: string) =>
+        apiFetch<{ ok: boolean }>(`/tabs/${tabId}/can-add-single`),
+
+      canAddItemised: (tabId: string) =>
+        apiFetch<{ ok: boolean }>(`/tabs/${tabId}/can-add-itemised`),
+
       contacts: (excludeTab?: string) =>
         apiFetch<Contact[]>(`/tabs/contacts${excludeTab ? `?exclude_tab=${excludeTab}` : ''}`),
 
