@@ -8,6 +8,7 @@ const code = route.params.code as string
 
 const tabName = ref('')
 const people = ref<Array<{ id: string; name: string }>>([])
+const loadingInvite = ref(true)
 const notFound = ref(false)
 const selectedPersonId = ref<string | null>(null)
 const email = ref('')
@@ -22,6 +23,8 @@ onMounted(async () => {
     people.value = info.people
   } catch {
     notFound.value = true
+  } finally {
+    loadingInvite.value = false
   }
 })
 
@@ -46,59 +49,101 @@ async function onSubmit() {
 </script>
 
 <template>
-  <UMain>
-    <UContainer class="flex min-h-screen justify-center pt-10">
-      <div class="max-w-md w-full px-4 mt-4">
+  <UMain class="bg-gray-900 min-h-screen flex flex-col">
+    <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
+      <div class="max-w-md w-full px-4">
+        <!-- Logo -->
+        <div class="flex justify-center mb-8">
+          <img src="/logo1-small.png" alt="NinjaTab" class="w-28" />
+        </div>
+
+        <!-- Static heading -->
+        <div class="text-center mb-8">
+          <p class="text-primary-400 text-sm font-medium uppercase tracking-wide mb-2">You've been invited</p>
+          <h2 class="text-3xl font-bold text-white">Join</h2>
+          <h2 class="text-3xl font-bold text-primary-400 mb-2">
+            {{ tabName || '...' }}
+          </h2>
+          <p class="text-gray-400">
+            Pick your name and enter your email to start tracking shared expenses together.
+          </p>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="loadingInvite" class="flex justify-center py-12">
+          <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-primary-500 animate-spin" />
+        </div>
+
         <!-- Not found -->
-        <div v-if="notFound" class="text-center">
-          <UIcon name="i-lucide-link-2-off" class="text-5xl text-gray-400 mb-4" />
-          <h2 class="text-xl font-semibold mb-2">Invite link not found</h2>
-          <p class="text-gray-500">This invite link is invalid or has expired.</p>
+        <div v-else-if="notFound" class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-800 flex items-center justify-center">
+            <UIcon name="i-lucide-link-2-off" class="text-3xl text-gray-400" />
+          </div>
+          <h2 class="text-xl font-semibold text-white mb-2">Invite link not found</h2>
+          <p class="text-gray-400">This invite link is invalid or has expired.</p>
         </div>
 
         <!-- Success state -->
         <div v-else-if="emailSent" class="text-center">
-          <UIcon name="i-lucide-mail-check" class="text-5xl text-primary mb-4" />
-          <h2 class="text-xl font-semibold mb-2">Check your email</h2>
-          <p class="text-gray-500">We've sent you a sign-in link. Click it to log in.</p>
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary-900/50 flex items-center justify-center">
+            <UIcon name="i-lucide-mail-check" class="text-3xl text-primary-400" />
+          </div>
+          <h2 class="text-xl font-semibold text-white mb-2">Check your email</h2>
+          <p class="text-gray-400">We've sent you a magic sign-in link. Click it to join the tab.</p>
+        </div>
+
+        <!-- No unclaimed people -->
+        <div v-else-if="people.length === 0" class="bg-gray-800/60 rounded-xl border border-gray-700 p-6 text-center">
+          <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-gray-700 flex items-center justify-center">
+            <UIcon name="i-lucide-user-plus" class="text-xl text-gray-400" />
+          </div>
+          <p class="text-gray-300">
+            Let the organiser know that they need to add your name to the tab before you can join.
+          </p>
         </div>
 
         <!-- Invite form -->
-        <div v-else>
-          <h2 class="text-2xl font-bold mb-1">Join the tab</h2>
-          <p class="text-gray-500 mb-6">You've been invited to <strong>{{ tabName }}</strong>. Select your name and enter your email to join.</p>
+        <template v-else>
+          <div class="bg-gray-800/60 rounded-xl border border-gray-700 p-6">
+            <UAlert v-if="errorMessage" color="error" :title="errorMessage" class="mb-4" />
 
-          <UAlert v-if="errorMessage" color="error" :title="errorMessage" class="mb-4" />
+            <form class="space-y-5" @submit.prevent="onSubmit">
+              <UFormField label="Who are you?" required>
+                <USelect
+                  v-model="selectedPersonId"
+                  :items="personOptions"
+                  placeholder="Select your name"
+                  class="w-full"
+                  size="lg"
+                />
+              </UFormField>
 
-          <form class="space-y-4" @submit.prevent="onSubmit">
-            <UFormField label="Who are you?" required>
-              <USelect
-                v-model="selectedPersonId"
-                :items="personOptions"
-                placeholder="Select your name"
-                class="w-full"
-              />
-            </UFormField>
+              <UFormField label="Your email" required>
+                <UInput
+                  v-model="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  class="w-full"
+                  size="lg"
+                />
+              </UFormField>
 
-            <UFormField label="Your email" required>
-              <UInput
-                v-model="email"
-                type="email"
-                placeholder="you@example.com"
-                class="w-full"
-              />
-            </UFormField>
+              <UButton
+                type="submit"
+                block
+                size="lg"
+                :loading="submitting"
+                :disabled="!selectedPersonId || !email"
+              >
+                Join this tab
+              </UButton>
+            </form>
+          </div>
 
-            <UButton
-              type="submit"
-              block
-              :loading="submitting"
-              :disabled="!selectedPersonId || !email"
-            >
-              Send magic link
-            </UButton>
-          </form>
-        </div>
+          <p class="text-center text-xs text-gray-500 mt-4">
+            We'll send a magic link to your email. No password needed.
+          </p>
+        </template>
       </div>
     </UContainer>
   </UMain>
