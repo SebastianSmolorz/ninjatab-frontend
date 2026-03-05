@@ -12,7 +12,7 @@
         <!-- Heading -->
         <div class="space-y-3">
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-            You've hit a free Tab limit!
+            Keep the Tab going
           </h1>
         </div>
 
@@ -25,29 +25,29 @@
             <li class="flex items-start gap-3">
               <UIcon name="i-heroicons-banknotes" class="w-5 h-5 text-gray-400 mt-0.5"/>
               <div>
-                <span class="text-gray-900 dark:text-white font-medium">5 total expenses</span>
+                <span class="text-gray-900 dark:text-white font-medium">7 total expenses</span>
               </div>
             </li>
             <li class="flex items-start gap-3">
               <UIcon name="i-heroicons-receipt-percent" class="w-5 h-5 text-gray-400 mt-0.5"/>
               <div>
                 <span class="text-gray-900 dark:text-white font-medium">1 itemised bill</span>
-                <span class="text-gray-500 dark:text-gray-400"> max 12 items, not editable</span>
+                <span class="text-gray-500 dark:text-gray-400"> max 12 items</span>
               </div>
             </li>
           </ul>
         </div>
 
         <!-- Upgrade Card -->
-        <div class="bg-gradient-to-br from-primary-100 to-primary-300 rounded-xl p-6 shadow-xl space-y-5 border-gray-500 border-5">
+        <div class="bg-gradient-to-br from-primary-100 to-primary-300 rounded-xl p-6 shadow-xl space-y-5 border-orange-400 border-5">
           <div class="flex flex-col items-center gap-1 justify-center align-middle">
-            <h2 class="text-sm font-semibold text-gray-600 dark:text-gray-500 uppercase tracking-wide mb-1">Pro Tab</h2>
+            <h2 class="text-sm font-semibold text-black uppercase tracking-wide mb-1">Pro Tab</h2>
             <span class="text-6xl font-bold text-black">£1</span>
             <span class="text-primary-700 font-medium text-sm">per person</span>
           </div>
 
           <p class="text-sm text-primary-950">
-            That's it. We'll add this as a shared expense so you get paid back. Fair and square. <strong>No subscriptions</strong>
+            That's it. We'll add this as a <strong>shared expense</strong> so you get paid back. Fair and square. <strong>No subscriptions</strong>
           </p>
 
           <div class="pt-2">
@@ -61,10 +61,9 @@
             </UButton>
           </div>
 
-          <div class="flex flex-col sm:flex-row justify-between gap-2 sm:gap-0 text-sm text-primary-900">
-            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-lock-open" class="w-4 h-4"/> No limits</div>
+          <div class="flex flex-col sm:flex-row justify-around gap-2 sm:gap-0 text-sm text-primary-900">
+            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-lock-open" class="w-4 h-4"/> No expense limits</div>
             <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-camera" class="w-4 h-4"/> Receipt scanning</div>
-            <div class="flex items-center gap-1 justify-center"><UIcon name="i-heroicons-currency-pound" class="w-4 h-4"/> Currency conversion</div>
           </div>
         </div>
 
