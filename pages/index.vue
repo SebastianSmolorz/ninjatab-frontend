@@ -147,6 +147,8 @@ const benefits = [
 
 const footerLinks = [
   { label: 'Contact Us', to: '/contact' },
+  { label: 'Terms of Service', to: '/terms' },
+  { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
 ]
 
