@@ -28,7 +28,7 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
     <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
       <div class="max-w-md w-full px-4">
         <!-- Logo -->
-        <div class="flex justify-center mb-8">
+        <div v-if="!emailSent" class="flex justify-center mb-8">
           <img src="/logo.png" alt="NinjaTab" class="w-28" />
         </div>
 
@@ -66,11 +66,6 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
             <div class="flex items-center gap-1.5">
               <UIcon name="i-lucide-zap" class="w-4 h-4 text-primary-400" />
               <span>No password needed</span>
-            </div>
-            <span class="text-gray-700">·</span>
-            <div class="flex items-center gap-1.5">
-              <UIcon name="i-lucide-shield-check" class="w-4 h-4 text-primary-400" />
-              <span>Secure login</span>
             </div>
           </div>
         </template>

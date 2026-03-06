@@ -485,6 +485,9 @@ const tabActions = computed(() => {
     actions.push({ label: 'Settle up', value: 'settle' })
     actions.push({ label: 'Copy join link', value: 'copy-invite' })
   }
+  if (!tab.value?.is_pro) {
+    actions.push({ label: 'Upgrade to Pro', value: 'upgrade' })
+  }
   actions.push({ label: 'Archive', value: 'archive' })
   // actions.push({ label: 'Delete', value: 'delete' })
   return actions

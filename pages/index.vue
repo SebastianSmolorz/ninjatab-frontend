@@ -10,13 +10,13 @@
           @click="logoActive = !logoActive"
         >
           <img
-            src="/logo1-small.png"
-            alt="NinjaTab"
+            src="/logo.png"
+            alt="Tab Ninja logo"
             class="logo-base w-40"
           />
           <img
-            src="/logo1-small-hover.png"
-            alt="NinjaTab hover"
+            src="/logo-hover.png"
+            alt="Tab Ninja logo hover"
             class="logo-hover w-40 absolute top-0 left-0"
           />
         </div>
@@ -25,8 +25,7 @@
         <div class="text-center mb-10">
           <h1 class="text-3xl md:text-4xl font-bold text-white leading-tight">
             Stick it on the tab<span
-              class="text-primary-400 transition-opacity duration-700 animate-pulse"
-              :class="phase >= 1 ? 'opacity-100' : 'opacity-0'"
+              class="text-primary-400 animate-pulse [animation-duration:1.5s]"
             >.ninja</span>
           </h1>
         </div>

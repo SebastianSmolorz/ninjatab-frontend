@@ -108,7 +108,7 @@ async function onSubmit() {
 
         <!-- Heading -->
         <div class="text-center mb-8">
-          <p class="text-primary-400 text-sm font-medium uppercase tracking-wide mb-2">You've been invited to join</p>
+          <p class="text-primary-white text-sm font-medium uppercase tracking-wide mb-2">You've been invited to join</p>
           <h2 class="text-3xl font-bold text-primary-400 mb-2">
             {{ tabName }}
           </h2>
