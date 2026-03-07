@@ -151,14 +151,15 @@
         <!-- Pull tab with chevron -->
         <div class="flex justify-center cursor-pointer" @click="handleCardClick">
           <div
-            class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 border-gray-200 dark:border-primary select-none touch-none"
+            class="bg-white dark:bg-gray-800 px-6 py-1.5 rounded-b-lg shadow-sm border border-t-0 select-none touch-none"
+            :class="tab.is_pro ? 'border-orange-400' : 'border-gray-200 dark:border-primary'"
             @mousedown="startDrag"
             @touchstart="startDrag"
           >
             <UIcon
               :name="tabDetailsOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
-              class="w-5 h-5 text-primary transition-transform duration-200"
-              :class="{ 'translate-y-0.5': isDragging }"
+              class="w-5 h-5 transition-transform duration-200"
+              :class="[tab.is_pro ? 'text-orange-400' : 'text-primary', { 'translate-y-0.5': isDragging }]"
             />
           </div>
         </div>
