@@ -59,6 +59,7 @@
             :key="tab.id"
             :class="[
               'rounded-lg border p-6 transition-colors cursor-pointer',
+              tab.is_pro ? 'ring-2 ring-orange-400' : '',
               tab.is_settled
                 ? 'bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-800 opacity-60 hover:opacity-80'
                 : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-primary-500 dark:hover:border-primary-400'
@@ -69,12 +70,21 @@
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                 {{ tab.name }}
               </h3>
-              <UBadge v-if="tab.is_settled" color="neutral" variant="subtle">
-                Settled
-              </UBadge>
-              <UBadge v-else color="success" variant="subtle">
-                Open
-              </UBadge>
+              <div class="flex items-center gap-2">
+                <UBadge
+                  v-if="tab.is_pro"
+                  variant="subtle"
+                  class="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400"
+                >
+                  Pro
+                </UBadge>
+                <UBadge v-if="tab.is_settled" color="neutral" variant="subtle">
+                  Settled
+                </UBadge>
+                <UBadge v-else color="success" variant="subtle">
+                  Open
+                </UBadge>
+              </div>
             </div>
             <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               {{ tab.description }}
