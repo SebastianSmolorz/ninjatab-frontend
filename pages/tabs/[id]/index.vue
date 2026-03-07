@@ -20,21 +20,30 @@
       <div class="space-y-6">
       <!-- Tab Info Card -->
       <div class="relative">
-        <UCard variant="solid">
+        <UCard variant="solid" :class="tab.is_pro ? 'ring-2 ring-orange-400' : ''">
           <!-- Always visible header -->
           <div class="flex items-center justify-between gap-4">
             <div>
               <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ tab.name }}
               </h1>
-              <UBadge
-                :color="tab.is_settled ? 'neutral' : 'success'"
-                variant="subtle"
-                size="lg"
-                class="mt-2 mb-2"
-              >
-                {{ tab.is_settled ? 'Settled' : 'Open' }}
-              </UBadge>
+              <div class="flex items-center gap-2 mt-2 mb-2">
+                <UBadge
+                  :color="tab.is_settled ? 'neutral' : 'success'"
+                  variant="subtle"
+                  size="lg"
+                >
+                  {{ tab.is_settled ? 'Settled' : 'Open' }}
+                </UBadge>
+                <UBadge
+                  v-if="tab.is_pro"
+                  variant="subtle"
+                  size="lg"
+                  class="bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400"
+                >
+                  Pro
+                </UBadge>
+              </div>
               <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                 {{ tab.people?.length || 0 }} {{ tab.people?.length === 1 ? 'person' : 'people' }}
               </p>
@@ -585,6 +594,8 @@ const handleActionSelect = async (action: string) => {
     const url = `${window.location.origin}/invite/${tab.value?.invite_code}`
     await navigator.clipboard.writeText(url)
     toast.add({ title: 'Invite link copied!', icon: 'i-lucide-link' })
+  } else if (action === 'upgrade') {
+    router.push(`/tabs/${tab.value?.id}/upgrade`)
   }
   selectedAction.value = ''
 }

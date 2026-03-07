@@ -29,7 +29,7 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
       <div class="max-w-md w-full px-4">
         <!-- Logo -->
         <div v-if="!emailSent" class="flex justify-center mb-8">
-          <img src="/logo.png" alt="NinjaTab" class="w-28" />
+          <img src="/logo.png" alt="Tab Ninja logo" class="w-28" />
         </div>
 
         <!-- Email sent confirmation -->

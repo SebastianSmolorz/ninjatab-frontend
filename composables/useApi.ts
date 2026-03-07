@@ -128,6 +128,11 @@ export const useApi = () => {
           method: 'POST',
           body: JSON.stringify(data),
         }),
+
+      upgrade: (tabId: string) =>
+        apiFetch<{ success: boolean }>(`/tabs/${tabId}/upgrade`, {
+          method: 'POST',
+        }),
     },
 
     // Bill endpoints

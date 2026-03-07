@@ -4,16 +4,7 @@
       <div class="text-center space-y-8">
         <!-- Icon -->
         <div class="flex justify-center">
-          <div class="w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center">
-            <UIcon name="i-heroicons-lock-closed" class="w-10 h-10 text-primary-600 dark:text-primary-400"/>
-          </div>
-        </div>
-
-        <!-- Heading -->
-        <div class="space-y-3">
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-            Keep the Tab going
-          </h1>
+            <img src="/logo.png" alt="Tab Ninja logo" class="w-18 md:w-30 md:mt-12" />
         </div>
 
         <!-- Limitations Card -->
@@ -55,6 +46,7 @@
               block
               size="xl"
               class="cursor-pointer font-bold text-black shadow-lg hover:shadow-xl transition-shadow text-lg py-4 border-2 border-green-800 bg-orange-400 hover:bg-orange-300 active:bg-orange-200"
+              :loading="upgrading"
               @click="upgradeToPro"
             >
               Go Pro on this tab!
@@ -68,13 +60,20 @@
         </div>
 
         <!-- Back link -->
-        <div>
+        <div class="flex flex-row justify-between">
           <UButton
               variant="ghost"
               color="neutral"
               @click="goBack"
           >
             Maybe later, take me back
+          </UButton>
+          <UButton
+              variant="ghost"
+              color="neutral"
+              @click="goBack"
+          >
+            Settle the tab now
           </UButton>
         </div>
       </div>
@@ -89,12 +88,21 @@ definePageMeta({ middleware: 'auth' })
 
 const route = useRoute()
 const router = useRouter()
+const api = useApi()
 
-const tabId = computed(() => route.params.id)
+const tabId = computed(() => route.params.id as string)
+const upgrading = ref(false)
 
-const upgradeToPro = () => {
-  // TODO: Implement upgrade logic
-  console.log('Upgrading tab to pro:', tabId.value)
+const upgradeToPro = async () => {
+  upgrading.value = true
+  try {
+    await api.tabs.upgrade(tabId.value)
+    router.push(`/tabs/${tabId.value}/upgraded`)
+  } catch (error) {
+    console.error('Failed to upgrade tab:', error)
+  } finally {
+    upgrading.value = false
+  }
 }
 
 const goBack = () => {

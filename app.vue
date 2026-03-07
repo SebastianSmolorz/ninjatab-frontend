@@ -1,6 +1,6 @@
 <template>
   <UApp>
-    <UHeader v-if="!isIndex" to="/">
+    <UHeader v-if="!hideHeader" to="/">
       <template #title>
         <img src="/logo1-small.png" alt="Tab Ninja logo" class="w-14" />
       </template>
@@ -56,4 +56,5 @@ async function handleLogout() {
 const route = useRoute()
 
 const isIndex = computed(() => route.name === 'index')
+const hideHeader = computed(() => isIndex.value || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
 </script>
