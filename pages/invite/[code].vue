@@ -113,7 +113,7 @@ async function onSubmit() {
             {{ tabName }}
           </h2>
           <p class="text-gray-400">
-            Pick your name{{ isLoggedIn ? '' : ' and enter your email' }} to start tracking shared expenses together.
+            Pick your name and confirm your email to start tracking shared expenses together.
           </p>
         </div>
 
@@ -152,13 +152,14 @@ async function onSubmit() {
                 />
               </UFormField>
 
-              <UFormField v-if="!isLoggedIn" label="Your email" required>
+              <UFormField label="Your email" :help="isLoggedIn ? 'Is this not you? Press Log out at the top of the page.' : undefined" required>
                 <UInput
                   v-model="email"
                   type="email"
                   placeholder="you@example.com"
                   class="w-full"
                   size="lg"
+                  :disabled="isLoggedIn"
                 />
               </UFormField>
 
