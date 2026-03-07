@@ -105,26 +105,28 @@
                     :key="index"
                     class="flex items-center gap-3"
                 >
-                  <!-- Person 0 is always "you" -->
-                  <UInput
-                      v-if="index === 0"
-                      v-model="person.name"
-                      placeholder="Your name"
-                      size="lg"
-                      class="flex-1"
-                  />
-                  <!-- Person 1+ uses PersonSelectMenu -->
-                  <PersonSelectMenu
-                      v-else
-                      :model-value="person.name ? { label: person.name, user_id: person.user_id } : null"
-                      :contacts="availableContacts(index)"
-                      size="lg"
-                      class="flex-1"
-                      @update:model-value="onPersonSelected(index, $event)"
-                  />
-                  <span v-if="index === 0" class="text-sm text-gray-500 dark:text-gray-400 shrink-0">(you)</span>
+                  <div class="flex items-center gap-3 flex-1 min-w-0 px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                    <div
+                        class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0"
+                        :class="person.user_id || index === 0 ? 'dark:bg-primary-800' : 'dark:bg-gray-700'"
+                    >
+                      <span class="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                        {{ person.name ? person.name.charAt(0).toUpperCase() : '?' }}
+                      </span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <input
+                          v-model="person.name"
+                          :placeholder="index === 0 ? 'Your name' : 'Name'"
+                          class="w-full bg-transparent text-gray-900 dark:text-white outline-none placeholder-gray-400"
+                      />
+                      <p v-if="person.email" class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ person.email }}</p>
+                      <p v-else-if="index !== 0" class="text-xs text-gray-500 dark:text-gray-400 opacity-0">Not joined</p>
+                    </div>
+                    <span v-if="index === 0" class="text-xs text-gray-500 dark:text-gray-400 shrink-0">(you)</span>
+                  </div>
                   <UButton
-                      v-if="formData.people.length > 1 && index !== 0"
+                      v-if="index !== 0"
                       @click="removePerson(index)"
                       variant="ghost"
                       icon="i-heroicons-trash"
@@ -133,24 +135,19 @@
                 </div>
               </div>
 
-              <!-- Add person button -->
-              <UButton
-                  @click="addPerson"
-                  variant="outline"
-                  icon="i-heroicons-plus"
-                  block
-                  size="lg"
-              >
-                Add Another Person
-              </UButton>
+              <!-- New person input row -->
+              <PersonAddRow
+                  :contacts="availableContacts"
+                  @add="onAddPerson"
+              />
 
               <UAlert
                   v-if="formData.people.length < 1 || !hasValidPeople"
                   icon="i-heroicons-information-circle"
                   color="primary"
                   variant="soft"
-                  title="At least one person is required"
-                  description="Add at least one person with a name to continue"
+                  title="Add at least one other person"
+                  description="A tab needs at least one person besides you"
               />
               <UAlert
                   v-if="formData.people.length > 1 && hasDuplicateNames"
@@ -158,7 +155,7 @@
                   color="warning"
                   variant="soft"
                   title="Duplicated names"
-                  description="All names need to be unique"
+                  description="All names need to be unique. You can change them above."
               />
             </div>
           </UContainer>
@@ -228,6 +225,7 @@ const contacts = ref<Contact[]>([])
 interface PersonEntry {
   name: string
   user_id?: string
+  email?: string
 }
 
 const formData = ref({
@@ -235,7 +233,10 @@ const formData = ref({
   description: '',
   default_currency: Currency.GBP,
   settlement_currency: Currency.GBP,
-  people: [{name: authStore.user?.first_name || ''} as PersonEntry]
+  people: [{
+    name: authStore.user?.first_name || '',
+    email: authStore.user?.email,
+  } as PersonEntry]
 })
 
 onMounted(async () => {
@@ -248,7 +249,7 @@ onMounted(async () => {
 
 // Computed
 const hasValidPeople = computed(() => {
-  return formData.value.people.some(p => p.name.trim().length > 0)
+  return formData.value.people.slice(1).some(p => p.name.trim().length > 0)
 })
 
 const hasDuplicateNames = computed(() => {
@@ -264,21 +265,17 @@ const canCreate = computed(() => {
 })
 
 // Methods
-const availableContacts = (currentIndex: number) => {
-  // Exclude contacts already selected in other person slots
+const availableContacts = computed(() => {
   const selectedUserIds = new Set(
     formData.value.people
-      .filter((p, i) => i !== currentIndex && p.user_id)
+      .filter(p => p.user_id)
       .map(p => p.user_id)
   )
   return contacts.value.filter(c => !selectedUserIds.has(c.user_id))
-}
+})
 
-const onPersonSelected = (index: number, item: { label: string; user_id?: string }) => {
-  formData.value.people[index] = {
-    name: item.label,
-    user_id: item.user_id,
-  }
+const onAddPerson = (entry: PersonEntry) => {
+  formData.value.people.push(entry)
 }
 
 const nextStep = () => {
@@ -290,10 +287,6 @@ const nextStep = () => {
 const previousStep = () => {
   slideDirection.value = 'slide-right'
   step.value = 1
-}
-
-const addPerson = () => {
-  formData.value.people.push({name: ''})
 }
 
 const removePerson = (index: number) => {
