@@ -68,6 +68,13 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
               <span>No password needed</span>
             </div>
           </div>
+
+          <p class="mt-4 text-center text-xs text-gray-500">
+            By logging in, you agree to our
+            <NuxtLink to="/terms" class="underline hover:text-gray-300">Terms of Service</NuxtLink>
+            and
+            <NuxtLink to="/privacy" class="underline hover:text-gray-300">Privacy Policy</NuxtLink>.
+          </p>
         </template>
       </div>
     </UContainer>

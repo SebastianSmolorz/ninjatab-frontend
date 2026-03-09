@@ -3,7 +3,7 @@
 
 @layer base {
   :root {
-    --color-primary: 59 130 246; /* blue-500 */
+    --color-primary: 5 223 114; /* #05DF72 */
   }
 
   .dark {
