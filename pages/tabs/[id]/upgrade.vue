@@ -3,7 +3,7 @@
     <UContainer class="py-2 max-w-lg">
       <div class="text-center space-y-8">
         <!-- Icon -->
-        <div class="flex justify-center">
+        <div class="flex justify-center" v-if="!isNativeApp">
             <img src="/logo.png" alt="Tab Ninja logo" class="w-18 md:w-30 md:mt-12" />
         </div>
 
@@ -104,6 +104,8 @@ const upgradeToPro = async () => {
     upgrading.value = false
   }
 }
+
+const { isNativeApp } = useNativeApp()
 
 const goBack = () => {
   router.back()
