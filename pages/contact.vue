@@ -33,8 +33,8 @@
 const copied = ref(false)
 
 async function copyEmail() {
-  await navigator.clipboard.writeText('seb@tab.ninja')
-  copied.value = true
+  const ok = await copyToClipboard('seb@tab.ninja')
+  copied.value = ok
   setTimeout(() => { copied.value = false }, 2000)
 }
 

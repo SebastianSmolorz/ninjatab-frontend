@@ -593,8 +593,8 @@ const handleActionSelect = async (action: string) => {
     showArchiveModal.value = true
   } else if (action === 'copy-invite') {
     const url = `${window.location.origin}/invite/${tab.value?.invite_code}`
-    await navigator.clipboard.writeText(url)
-    toast.add({ title: 'Invite link copied!', icon: 'i-lucide-link' })
+    const ok = await copyToClipboard(url)
+    toast.add({ title: ok ? 'Invite link copied!' : 'Could not copy link', icon: 'i-lucide-link' })
   } else if (action === 'upgrade') {
     router.push(`/tabs/${tab.value?.id}/upgrade`)
   }

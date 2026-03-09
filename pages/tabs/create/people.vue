@@ -11,7 +11,7 @@
     </div>
 
     <!-- Step 2: Add People -->
-    <div class="flex-1 overflow-y-auto">
+    <div class="flex-1 overflow-y-auto pb-20">
       <UContainer class="py-8 max-w-2xl">
         <div class="space-y-6">
           <div>
@@ -87,7 +87,7 @@
     </div>
 
     <!-- Footer actions -->
-    <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 sticky bottom-0">
+    <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 fixed bottom-0 inset-x-0 z-10">
       <UContainer class="py-4 max-w-2xl">
         <div class="flex gap-3">
           <UButton
