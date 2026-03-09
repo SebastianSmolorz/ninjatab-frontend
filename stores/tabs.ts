@@ -5,6 +5,7 @@ interface TabState {
   tabs: TabListItem[]
   currentTab: Tab | null
   loading: boolean
+  fetched: boolean
   error: string | null
 }
 
@@ -13,6 +14,7 @@ export const useTabStore = defineStore('tabs', {
     tabs: [],
     currentTab: null,
     loading: false,
+    fetched: false,
     error: null,
   }),
 
@@ -47,6 +49,7 @@ export const useTabStore = defineStore('tabs', {
         throw error
       } finally {
         this.loading = false
+        this.fetched = true
       }
     },
 
@@ -150,6 +153,7 @@ export const useTabStore = defineStore('tabs', {
       this.tabs = []
       this.currentTab = null
       this.loading = false
+      this.fetched = false
       this.error = null
     },
   },

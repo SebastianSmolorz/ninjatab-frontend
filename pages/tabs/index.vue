@@ -113,7 +113,7 @@ const tabStore = useTabStore()
 
 // Computed
 const tabs = computed(() => tabStore.tabs)
-const loading = computed(() => tabStore.isLoading)
+const loading = computed(() => tabStore.isLoading || !tabStore.fetched)
 const error = computed(() => tabStore.error)
 
 // Methods
