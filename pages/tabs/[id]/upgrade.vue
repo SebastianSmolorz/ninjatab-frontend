@@ -108,6 +108,10 @@ const upgradeToPro = async () => {
 const { isNativeApp } = useNativeApp()
 
 const goBack = () => {
-  router.back()
+  if (isNativeApp.value && window.NinjaTabApp) {
+    window.NinjaTabApp.postMessage('close')
+  } else {
+    router.back()
+  }
 }
 </script>

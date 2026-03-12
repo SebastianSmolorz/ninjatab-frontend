@@ -18,7 +18,7 @@
         <UButton
           size="xl"
           block
-          :to="`/tabs/${tabId}`"
+          @click="goBack"
         >
           Back to tab
         </UButton>
@@ -31,5 +31,15 @@
 definePageMeta({ middleware: 'auth' })
 
 const route = useRoute()
+const router = useRouter()
 const tabId = computed(() => route.params.id as string)
+const { isNativeApp } = useNativeApp()
+
+const goBack = () => {
+  if (isNativeApp.value && window.NinjaTabApp) {
+    window.NinjaTabApp.postMessage('close')
+  } else {
+    router.push(`/tabs/${tabId.value}`)
+  }
+}
 </script>
