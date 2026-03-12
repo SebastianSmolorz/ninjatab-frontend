@@ -79,10 +79,32 @@ useSeoMeta({
           </ul>
           <p>We do not sell personal data.</p>
         </section>
+        <!-- 3 -->
+        <section>
+          <h2 class="text-xl font-semibold text-white">4. Images of receipts and bills</h2>
+
+          <p>Users may upload images of receipts or bills when recording expenses in a tab.</p>
+
+          <p>These images may be sent to a third-party processing service to help extract information such as totals,
+            items, or amounts from the receipt.</p>
+
+          <p>Receipt images may be stored on our servers so that they can be viewed or downloaded by participants of the
+            tab as part of the expense record.</p>
+
+          <p>We may also retain copies of uploaded images in order to diagnose technical issues, improve receipt
+            processing, and debug problems with the service.</p>
+
+          <p>Information extracted from receipt images may not always be accurate. Users are responsible for reviewing
+            and confirming any automatically extracted information before relying on it when recording expenses.</p>
+
+          <p>Users are responsible for the content of images they upload and should avoid including sensitive personal
+            information that is not relevant to recording the expense.</p>
+        </section>
+
 
         <!-- 4 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">4. Legal basis for processing</h2>
+          <h2 class="text-xl font-semibold text-white">5. Legal basis for processing</h2>
           <p>Under UK GDPR we process personal data on the following legal bases:</p>
           <ul>
             <li><strong class="text-white">Contract</strong> — To provide the Tab Ninja service requested by users.</li>
@@ -93,20 +115,20 @@ useSeoMeta({
 
         <!-- 5 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">5. Data sharing</h2>
+          <h2 class="text-xl font-semibold text-white">6. Data sharing</h2>
           <p>We share limited data with service providers that help us operate the service. These may include analytics providers and infrastructure providers.</p>
           <p>Service providers process data on our behalf and are required to protect it. We do not sell personal data to third parties.</p>
         </section>
 
         <!-- 6 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">6. International transfers</h2>
+          <h2 class="text-xl font-semibold text-white">7. International transfers</h2>
           <p>Some service providers may process data outside the United Kingdom. Where this occurs we rely on appropriate safeguards such as contractual protections or recognised data protection frameworks.</p>
         </section>
 
         <!-- 7 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">7. Data retention</h2>
+          <h2 class="text-xl font-semibold text-white">8. Data retention</h2>
           <p>We keep personal data for as long as it is necessary to operate the service. Account information and tab data may be retained while accounts remain active so that users can access and manage their tabs and expense history.</p>
           <p>Because tabs may involve multiple participants, removing one user's account may not remove all records of their participation in shared tabs.</p>
           <p>If you would like your data removed from the service, you can request deletion by contacting us at <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a>.</p>
@@ -114,7 +136,7 @@ useSeoMeta({
 
         <!-- 8 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">8. Your rights</h2>
+          <h2 class="text-xl font-semibold text-white">9. Your rights</h2>
           <p>Under UK GDPR you have the right to:</p>
           <ul>
             <li>Request access to the personal data we hold about you</li>
@@ -128,19 +150,19 @@ useSeoMeta({
 
         <!-- 9 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">9. Security</h2>
+          <h2 class="text-xl font-semibold text-white">10. Security</h2>
           <p>We take reasonable steps to protect personal data using secure infrastructure and access controls. However, no system can be completely secure.</p>
         </section>
 
         <!-- 10 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">10. Changes to this policy</h2>
+          <h2 class="text-xl font-semibold text-white">11. Changes to this policy</h2>
           <p>We may update this privacy policy occasionally. When we do, the date at the top of this page will be updated.</p>
         </section>
 
         <!-- 11 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">11. Contact</h2>
+          <h2 class="text-xl font-semibold text-white">12. Contact</h2>
           <p>For privacy-related questions please contact:</p>
           <p><a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a></p>
         </section>
