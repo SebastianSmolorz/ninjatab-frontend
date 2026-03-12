@@ -97,7 +97,7 @@ const upgradeToPro = async () => {
   upgrading.value = true
   try {
     await api.tabs.upgrade(tabId.value)
-    router.replace(`/tabs/${tabId.value}/upgraded`)
+    router.replace({ path: `/tabs/${tabId.value}/upgraded`, query: route.query })
   } catch (error) {
     console.error('Failed to upgrade tab:', error)
   } finally {
