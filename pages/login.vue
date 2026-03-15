@@ -4,6 +4,7 @@ import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
 definePageMeta({
   middleware: 'guest',
 })
+useSeoMeta({ title: 'Login - Tab.ninja' })
 
 const authStore = useAuthStore()
 const emailSent = ref(false)

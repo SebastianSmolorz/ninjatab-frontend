@@ -153,8 +153,8 @@ const footerLinks = [
 ]
 
 useSeoMeta({
-  title: 'Tab.ninja - Free app keep track of and settle shared costs',
-  description: 'Start a tab, add or scan receipts, simplify settling up.',
+  title: 'App to Split Trip Bills & Expenses Easily | Tab Ninja',
+  description: 'Split bills and expenses with Tab Ninja. Start a tab, add friends, scan receipts and simplify settling for trips, nights out and shared costs.',
 })
 
 onMounted(() => {

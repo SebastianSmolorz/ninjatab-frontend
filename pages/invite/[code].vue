@@ -2,6 +2,7 @@
 import { useAuthStore } from '~/stores/auth'
 
 definePageMeta({ auth: false })
+useSeoMeta({ title: 'Join a Tab - Tab.ninja' })
 
 const route = useRoute()
 const router = useRouter()
