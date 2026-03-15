@@ -569,6 +569,11 @@ const updateSettlementCurrency = async (currency: Currency) => {
 const settleTab = async () => {
   if (!tab.value) return
 
+  if (!bills.value || bills.value.length === 0) {
+    toast.add({ title: 'Add some bills before settling up', icon: 'i-lucide-alert-circle' })
+    return
+  }
+
   simplifyingTab.value = true
   try {
     // First close the tab
