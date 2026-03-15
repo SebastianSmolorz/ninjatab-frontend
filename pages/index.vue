@@ -125,7 +125,6 @@ const features = ref<PageFeatureProps[]>([
 ])
 
 const logoActive = ref(false)
-const phase = ref(0)
 
 const benefits = [
   {
@@ -155,10 +154,6 @@ const footerLinks = [
 useSeoMeta({
   title: 'App to Split Trip Bills & Expenses Easily | Tab Ninja',
   description: 'Split bills and expenses with Tab Ninja. Start a tab, add friends, scan receipts and simplify settling for trips, nights out and shared costs.',
-})
-
-onMounted(() => {
-  setTimeout(() => { phase.value = 1 }, 1000)
 })
 </script>
 
