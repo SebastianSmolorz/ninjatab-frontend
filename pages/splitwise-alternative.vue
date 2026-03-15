@@ -10,11 +10,6 @@
             If you're planning group trips, nights out, ski holidays, or stag/hen weekends. Tab Ninja is a modern
             expense splitting app built around real-world group chaos, not subscription lock-ins.
           </p>
-          <ul class="list-disc pl-6 space-y-1 font-medium">
-            <li>No monthly plan</li>
-            <li>No organiser punishment</li>
-          </ul>
-          <p class="text-primary font-semibold">Just £1 per person when the trip actually gets complicated.</p>
         </header>
 
         <USeparator />
@@ -27,13 +22,15 @@
             They leave because:
           </p>
           <ul class="list-disc pl-6 space-y-1">
-            <li>Free plans feel restrictive on bigger trips</li>
-            <li>Currency conversion is locked behind Pro</li>
-            <li>Subscriptions don't make sense for occasional travel</li>
+            <li>Daily bill adding limit feels restrictive</li>
+            <li>The experience is not as smooth as it possibly can be</li>
+            <li>Not enough currencies and currency conversion is locked behind Pro</li>
+            <li>Without a trip pass, only the subscriber gets Pro features so they end up adding all the bills</li>
+            <li>Subscriptions don't make sense for occasional travel and</li>
             <li>One person ends up paying for the whole group</li>
           </ul>
-          <p>If you're only splitting a few bills with a flatmate, most apps are fine.</p>
-          <p class="font-medium">If you're organising a 10–12 person weekend away? That's different.</p>
+          <p>If you're only splitting a few bills with a flatmate, most apps do ok.</p>
+          <p class="font-medium">If you're organising a big group holiday? That's different.</p>
         </section>
 
         <USeparator />
@@ -52,9 +49,14 @@
               </thead>
               <tbody class="divide-y divide-gray-800">
                 <tr>
-                  <td class="py-3 pr-4">Free for small plans</td>
+                  <td class="py-3 pr-4">Free for smaller plans</td>
                   <td class="py-3 pr-4 text-green-400">Yes</td>
                   <td class="py-3 text-yellow-400">Limited</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4">Receipt scanning</td>
+                  <td class="py-3 pr-4 text-green-400">One free per tab for anyone</td>
+                  <td class="py-3 text-red-400">Pro only (only subscriber)</td>
                 </tr>
                 <tr>
                   <td class="py-3 pr-4">Multi-currency support</td>
@@ -73,7 +75,7 @@
                 </tr>
                 <tr>
                   <td class="py-3 pr-4">Per-event pricing</td>
-                  <td class="py-3 pr-4 text-green-400">£1 per person</td>
+                  <td class="py-3 pr-4 text-green-400">£1 per person, split evenly</td>
                   <td class="py-3 text-red-400">No</td>
                 </tr>
               </tbody>
@@ -90,18 +92,17 @@
           <h2 class="text-2xl font-bold">Pricing That Matches Real Life</h2>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="rounded-lg border border-gray-700 p-4 text-center">
-              <p class="text-sm text-gray-400">Small dinner</p>
+              <p class="text-sm text-gray-400">A night out</p>
+              <p class="text-xs text-gray-400">Predrinks shop run, taxi, restaurant, taxi back</p>
               <p class="text-2xl font-bold text-green-400">Free</p>
             </div>
             <div class="rounded-lg border border-gray-700 p-4 text-center">
-              <p class="text-sm text-gray-400">Weekend trip (8 people)</p>
-              <p class="text-2xl font-bold">£1 <span class="text-sm font-normal text-gray-400">per preson</span></p>
-              <p class="text-sm font-bold">£8 <span class="text-sm font-normal text-gray-400">total</span></p>
+              <p class="text-sm text-gray-400">Long weekend trip (6 people)</p>
+              <p class="text-2xl font-bold">£1 <span class="text-sm font-normal text-gray-400">per person</span></p>
             </div>
             <div class="rounded-lg border border-gray-700 p-4 text-center">
-              <p class="text-sm text-gray-400">Large stag do (20 people)</p>
-              <p class="text-2xl font-bold">Still £1 <span class="text-sm font-normal text-gray-400">per preson</span></p>
-              <p class="text-sm font-bold">£20 <span class="text-sm font-normal text-gray-400">total</span></p>
+              <p class="text-sm text-gray-400">Large stag do abroad (20 people)</p>
+              <p class="text-2xl font-bold">Still just £1 <span class="text-sm font-normal text-gray-400">per person</span></p>
             </div>
           </div>
           <p>That's often less than one round of drinks for removing hours of admin.</p>
@@ -135,6 +136,7 @@
           <ul class="list-disc pl-6 space-y-1">
             <li>Uneven splits</li>
             <li>Item-level splits</li>
+            <li>Receipt scanning</li>
             <li>Live balances</li>
             <li>Automatic currency conversion</li>
             <li>Clean final settlement</li>

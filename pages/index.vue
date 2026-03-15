@@ -96,7 +96,13 @@
     </UContainer>
 
     <UFooter>
-      <UNavigationMenu :items="footerLinks" variant="link" />
+      <template #left>
+        <p class="text-muted text-sm">
+          Copyright Tab Ninja © {{ new Date().getFullYear() }}
+        </p>
+      </template>
+      <UNavigationMenu :items="footerLinks" variant="link" orientation="vertical" class="sm:hidden" />
+      <UNavigationMenu :items="footerLinks" variant="link" class="hidden sm:flex" />
     </UFooter>
   </UMain>
 </template>
