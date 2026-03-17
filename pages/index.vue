@@ -81,7 +81,7 @@
       <UPageCard
           icon="i-lucide-smartphone"
           spotlight
-          class="pb-6"
+          class="pb-6 mb-16"
           spotlight-color="primary"
           highlight
           highlight-color="primary"
