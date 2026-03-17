@@ -78,6 +78,15 @@
           </UButton>
         </div>
       </div>
+      <UPageCard
+          icon="smartphone"
+          spotlight
+          spotlight-color="primary"
+          highlight
+          highlight-color="primary"
+          title="App coming soon!"
+          description="Very soon Tab Ninja will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it!. Watch this space."
+      />
     <article>
       <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
       <div class="flex flex-col mb-24">
