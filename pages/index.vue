@@ -79,8 +79,9 @@
         </div>
       </div>
       <UPageCard
-          icon="smartphone"
+          icon="i-lucide-smartphone"
           spotlight
+          class="pb-6"
           spotlight-color="primary"
           highlight
           highlight-color="primary"
