@@ -1,53 +1,53 @@
 <template>
   <UMain class="bg-gray-900">
-    <UContainer>
-      <!-- Hero Section -->
-      <div class="flex flex-col items-center pt-16">
-        <!-- Logo with hover/click toggle -->
-        <div
-          class="logo-container relative mb-8 cursor-pointer select-none"
-          :class="{ 'logo-active': logoActive }"
-          @click="logoActive = !logoActive"
-        >
-          <img
-            src="/logo.png"
-            alt="Tab Ninja logo"
-            class="logo-base w-40"
-          />
-          <img
-            src="/logo-hover.png"
-            alt="Tab Ninja logo hover"
-            class="logo-hover w-40 absolute top-0 left-0"
-          />
+    <UHeader class="bg-gray-900 border-none">
+      <template #title>
+        <img src="/logo.png" alt="Tab Ninja logo" class="h-10 w-auto" />
+      </template>
+      <template>
+        <div class="flex items-center gap-2">
+          Download app:
+          <UButton icon="i-simple-icons-googleplay" variant="ghost" size="sm" class="hidden sm:flex" aria-label="Get it on Google Play" />
+          <UButton icon="i-simple-icons-apple" variant="ghost" size="sm" class="hidden sm:flex" aria-label="Download on the App Store" />
         </div>
-
-        <!-- Animated Tagline -->
-        <div class="text-center mb-10">
-          <h1 class="text-3xl md:text-4xl font-bold text-white leading-tight">
-            Stick it on the tab<span
-              class="text-primary-400 animate-pulse [animation-duration:1.5s]"
-            >.ninja</span>
-          </h1>
+      </template>
+      <template #right>
+        <div class="flex items-center gap-2">
+          <UButton to="/login" variant="ghost" size="sm">
+            More info
+          </UButton>
+          <UButton to="/login" variant="outline" size="sm">
+            Log in
+          </UButton>
         </div>
+      </template>
+    </UHeader>
 
-        <h2 class="text-gray-400 text-md max-w-lg text-center mb-10">
+    <!-- Hero Section — full viewport minus header, outside container -->
+    <div class="relative w-full overflow-hidden" style="height: calc(100svh - var(--ui-header-height));">
+      <img
+        src="/group.jpg"
+        alt="Friends enjoying a night out"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-black/55" />
+      <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 px-6 py-16 text-center">
+        <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+          Stick it on the tab<span class="text-primary-400 animate-pulse [animation-duration:1.5s]">.ninja</span>
+        </h1>
+        <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow bg-black/60">
           Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
-          No more maths.
-          This app makes settling shared costs a breeze.
+          No more maths. Settling shared costs made easy.
         </h2>
-
-        <!-- CTA Button -->
-        <div class="w-full max-w-sm">
-          <UButton
-            size="xl"
-            block
-            to="/login"
-          >
+        <div class="w-full max-w-xs">
+          <UButton size="xl" block to="/login">
             Open a free tab now
           </UButton>
         </div>
       </div>
+    </div>
 
+    <UContainer>
       <!-- Benefits Section -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 max-w-4xl mx-auto">
         <UPageFeature
