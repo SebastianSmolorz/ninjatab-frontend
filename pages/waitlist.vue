@@ -7,6 +7,10 @@ useSeoMeta({
 const config = useRuntimeConfig()
 const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
 
+onMounted(() => {
+  fetch(`${baseURL}/marketing/waitlist/pageview`, { method: 'POST' }).catch(() => {})
+})
+
 const email = ref('')
 const platform = ref<'ios' | 'android' | null>(null)
 const loading = ref(false)
