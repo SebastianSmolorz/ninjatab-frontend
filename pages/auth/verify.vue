@@ -18,7 +18,11 @@ onMounted(async () => {
 
   try {
     await authStore.verifyMagicLink(token)
-    router.replace('/tabs')
+    if (!authStore.user?.first_name) {
+      router.replace('/auth/setup-name')
+    } else {
+      router.replace('/tabs')
+    }
   } catch {
     failed.value = true
   } finally {

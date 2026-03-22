@@ -4,22 +4,10 @@
       <template #title>
         <img src="/logo.png" alt="Tab Ninja logo" class="h-10 w-auto" />
       </template>
-      <template>
-        <div class="flex items-center gap-2">
-          Download app:
-          <UButton icon="i-simple-icons-googleplay" variant="ghost" size="sm" class="hidden sm:flex" aria-label="Get it on Google Play" />
-          <UButton icon="i-simple-icons-apple" variant="ghost" size="sm" class="hidden sm:flex" aria-label="Download on the App Store" />
-        </div>
-      </template>
       <template #right>
-        <div class="flex items-center gap-2">
-          <UButton to="/login" variant="ghost" size="sm">
-            More info
-          </UButton>
-          <UButton to="/login" variant="outline" size="sm">
-            Log in
-          </UButton>
-        </div>
+        <UDropdownMenu :items="navItems">
+          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+        </UDropdownMenu>
       </template>
     </UHeader>
 
@@ -37,17 +25,20 @@
         </h1>
         <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow bg-black/60">
           Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
-          No more maths. Settling shared costs made easy.
         </h2>
         <div class="w-full max-w-xs">
           <UButton size="xl" block to="/login">
-            Open a free tab now
+            Get started now
           </UButton>
         </div>
       </div>
     </div>
 
     <UContainer>
+      <UPageSection
+        title="Less time splitting expenses. More time enjoying the trip."
+        :features="features"
+      />
       <!-- Benefits Section -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 max-w-4xl mx-auto">
         <UPageFeature
@@ -61,27 +52,10 @@
         >
         </UPageFeature>
       </div>
-
-      <UPageSection
-        title="Less time splitting expenses. More time enjoying the trip."
-        :features="features"
-      />
-
-      <div class="flex flex-col items-center mb-24">
-        <div class="w-full max-w-sm">
-          <UButton
-            size="xl"
-            block
-            to="/login"
-          >
-            Try it yourself
-          </UButton>
-        </div>
-      </div>
       <UPageCard
           icon="i-lucide-smartphone"
           spotlight
-          class="pb-6 mb-16"
+          class="pb-6 mb-16 mt-16"
           spotlight-color="primary"
           highlight
           highlight-color="primary"
@@ -118,9 +92,20 @@
 </template>
 
 <script setup lang="ts">
-import type { PageFeatureProps } from '@nuxt/ui'
+import type { PageFeatureProps, DropdownMenuItem } from '@nuxt/ui'
 
 definePageMeta({ middleware: 'guest' })
+
+const navItems: DropdownMenuItem[][] = [
+  [
+    { label: 'Log in', icon: 'i-lucide-log-in', to: '/login' },
+    { label: 'More info', icon: 'i-lucide-info', to: '/login' },
+  ],
+  [
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', disabled: true },
+    { label: 'App Store', icon: 'i-simple-icons-apple', disabled: true },
+  ],
+]
 
 const features = ref<PageFeatureProps[]>([
   {
