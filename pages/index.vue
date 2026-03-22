@@ -27,7 +27,7 @@
           Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
         </h2>
         <div class="w-full max-w-xs">
-          <UButton size="xl" block to="/login">
+          <UButton size="xl" block to="/waitlist">
             Get started now
           </UButton>
         </div>
@@ -99,11 +99,10 @@ definePageMeta({ middleware: 'guest' })
 const navItems: DropdownMenuItem[][] = [
   [
     { label: 'Log in', icon: 'i-lucide-log-in', to: '/login' },
-    { label: 'More info', icon: 'i-lucide-info', to: '/login' },
   ],
   [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', disabled: true },
-    { label: 'App Store', icon: 'i-simple-icons-apple', disabled: true },
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: '/waitlist' },
+    { label: 'App Store', icon: 'i-simple-icons-apple', to: '/waitlist' },
   ],
 ]
 
