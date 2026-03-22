@@ -1,6 +1,6 @@
 <template>
   <UMain class="bg-gray-900">
-    <UHeader class="bg-gray-900 border-none">
+    <UHeader class="bg-gray-900 border-none" :toggle="false">
       <template #title>
         <img src="/logo.png" alt="Tab Ninja logo" class="h-10 w-auto" />
       </template>
