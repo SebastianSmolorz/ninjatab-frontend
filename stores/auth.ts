@@ -149,6 +149,27 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async updateFirstName(firstName: string): Promise<void> {
+      const config = useRuntimeConfig()
+      const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
+
+      const response = await fetch(`${baseURL}/auth/me`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ first_name: firstName }),
+      })
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ detail: 'Failed to update name' }))
+        throw new Error(err.detail || `Failed with status ${response.status}`)
+      }
+
+      const user: AuthUser = await response.json()
+      this.user = user
+      this.persistUser()
+    },
+
     async logout() {
       try {
         const config = useRuntimeConfig()
