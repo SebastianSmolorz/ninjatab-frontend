@@ -3,6 +3,13 @@ useSeoMeta({
   title: 'Get Started - Tab.ninja',
   description: 'Start splitting group expenses now. Get the app or start now in browser.',
 })
+
+const config = useRuntimeConfig()
+const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
+
+onMounted(() => {
+  fetch(`${baseURL}/marketing/waitlist/pageview`, { method: 'POST' }).catch(() => {})
+})
 </script>
 
 <template>
