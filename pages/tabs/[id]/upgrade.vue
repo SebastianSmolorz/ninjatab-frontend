@@ -33,8 +33,8 @@
         <div class="bg-gradient-to-br from-primary-100 to-primary-300 rounded-xl p-6 shadow-xl space-y-5 border-orange-400 border-5">
           <div class="flex flex-col items-center gap-1 justify-center align-middle">
             <h2 class="text-sm font-semibold text-black uppercase tracking-wide mb-1">Pro Tab</h2>
-            <span class="text-6xl font-bold text-black">£1</span>
-            <span class="text-primary-700 font-medium text-sm">per person</span>
+            <span class="text-3xl font-semibold text-black/50 line-through">£1 per person</span>
+            <span class="text-6xl font-bold text-black">Free</span>
           </div>
 
           <p class="text-sm text-primary-950">
@@ -60,7 +60,7 @@
         </div>
 
         <!-- Back link -->
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-around">
           <UButton
               variant="ghost"
               color="neutral"
@@ -68,13 +68,13 @@
           >
             Maybe later, take me back
           </UButton>
-          <UButton
-              variant="ghost"
-              color="neutral"
-              @click="goBack"
-          >
-            Settle the tab now
-          </UButton>
+<!--          <UButton-->
+<!--              variant="ghost"-->
+<!--              color="neutral"-->
+<!--              @click="goBack"-->
+<!--          >-->
+<!--            Settle the tab now-->
+<!--          </UButton>-->
         </div>
       </div>
     </UContainer>
