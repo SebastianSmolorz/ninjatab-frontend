@@ -57,5 +57,5 @@ const route = useRoute()
 const { isNativeApp } = useNativeApp()
 
 const isIndex = computed(() => route.name === 'index')
-const hideHeader = computed(() => isNativeApp.value || isIndex.value || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
+const hideHeader = computed(() => isNativeApp.value || isIndex.value || route.name === 'join' || route.name === 'early-access' || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
 </script>

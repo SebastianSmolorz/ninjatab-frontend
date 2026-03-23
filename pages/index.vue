@@ -27,7 +27,7 @@
           Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
         </h2>
         <div class="w-full max-w-xs">
-          <UButton size="xl" block to="/waitlist">
+          <UButton size="xl" block to="/join">
             Get started now
           </UButton>
         </div>
@@ -59,9 +59,13 @@
           spotlight-color="primary"
           highlight
           highlight-color="primary"
-          title="App coming soon!"
-          description="Very soon Tab Ninja will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it!. Watch this space."
-      />
+          title="App is in early access"
+          description="Very soon Tab Ninja will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
+      >
+        <div>
+          <UButton to="/early-access" label="Join early access" class="p-3"/>
+        </div>
+      </UPageCard>
     <article>
       <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
       <div class="flex flex-col mb-24">
@@ -98,11 +102,11 @@ definePageMeta({ middleware: 'guest' })
 
 const navItems: DropdownMenuItem[][] = [
   [
-    { label: 'Log in', icon: 'i-lucide-log-in', to: '/login' },
+    { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
   ],
   [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: '/waitlist' },
-    { label: 'App Store', icon: 'i-simple-icons-apple', to: '/waitlist' },
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: '/join' },
+    { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
   ],
 ]
 

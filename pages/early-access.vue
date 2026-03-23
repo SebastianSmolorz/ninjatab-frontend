@@ -53,7 +53,7 @@ async function onSubmit() {
     <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
       <div class="max-w-md w-full px-4">
         <div class="flex justify-center mb-8">
-          <img src="/logo.png" alt="Tab Ninja logo" class="w-28" />
+          <img src="/logo.png" alt="Tab Ninja logo" class="w-24" />
         </div>
 
         <!-- Success state -->
@@ -68,8 +68,9 @@ async function onSubmit() {
         <!-- Form -->
         <template v-else>
           <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-white mb-2">Get early access</h1>
-            <p class="text-gray-400">The Tab.ninja mobile app is coming soon. Join the waitlist and be first in line.</p>
+            <h1 class="text-3xl font-bold text-white mb-2">Early access</h1>
+            <p class="text-gray-400">The Tab Ninja mobile app is in early access mode.</p>
+            <p class="text-gray-400">Drop your email to get an invite.</p>
           </div>
 
           <div class="bg-gray-800/60 rounded-xl border border-gray-700 p-6 space-y-5">
@@ -132,5 +133,6 @@ async function onSubmit() {
         </template>
       </div>
     </UContainer>
+    <MarketingFooter />
   </UMain>
 </template>
