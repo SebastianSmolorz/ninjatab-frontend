@@ -13,11 +13,15 @@
 
     <!-- Hero Section — full viewport minus header, outside container -->
     <div class="relative w-full overflow-hidden" style="height: calc(100svh - var(--ui-header-height));">
-      <img
-        src="/group.jpg"
-        alt="Friends enjoying a night out"
-        class="absolute inset-0 w-full h-full object-cover"
-      />
+      <picture>
+        <source srcset="/group.webp" type="image/webp" />
+        <img
+          src="/group-optimised.jpg"
+          alt="Friends enjoying on a holiday"
+          fetchpriority="high"
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+      </picture>
       <div class="absolute inset-0 bg-black/55" />
       <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 px-6 py-16 text-center">
         <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
