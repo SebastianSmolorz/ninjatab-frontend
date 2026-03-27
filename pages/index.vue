@@ -22,18 +22,20 @@
           class="absolute inset-0 w-full h-full object-cover"
         />
       </picture>
-      <div class="absolute inset-0 bg-black/55" />
-      <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 px-6 py-16 text-center">
-        <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
-          Stick it on the tab<span class="text-primary-400 animate-pulse [animation-duration:1.5s]">.ninja</span>
-        </h1>
-        <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow bg-black/60">
-          Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
-        </h2>
-        <div class="w-full max-w-xs">
-          <UButton size="xl" block to="/join">
-            Get started now
-          </UButton>
+      <div class="absolute inset-0 " />
+      <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 py-16 text-center">
+        <div class="flex flex-col items-center gap-6 bg-black/70 rounded-2xl px-8 py-5">
+          <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+            Stick it on the tab<span class="text-primary-400 animate-pulse [animation-duration:1.5s]">.ninja</span>
+          </h1>
+          <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow">
+            Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
+          </h2>
+          <div class="w-full max-w-xs">
+            <UButton size="xl" block to="/join">
+              Get started now
+            </UButton>
+          </div>
         </div>
       </div>
     </div>
