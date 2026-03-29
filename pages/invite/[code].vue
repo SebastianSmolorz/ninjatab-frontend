@@ -2,7 +2,16 @@
 import { useAuthStore } from '~/stores/auth'
 
 definePageMeta({ auth: false })
-useSeoMeta({ title: 'Join a Tab - Tab.ninja' })
+
+const tabName = ref('')
+
+useSeoMeta({
+  title: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
+  ogTitle: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
+  ogDescription: 'Click to join the tab and start tracking shared expenses together.',
+  ogImage: 'https://tab.ninja/logo-120.png',
+  twitterCard: 'summary',
+})
 
 const route = useRoute()
 const router = useRouter()
@@ -12,7 +21,6 @@ const authStore = useAuthStore()
 const code = route.params.code as string
 
 const tabId = ref('')
-const tabName = ref('')
 const people = ref<Array<{ id: string; name: string }>>([])
 const loadingInvite = ref(true)
 const notFound = ref(false)
