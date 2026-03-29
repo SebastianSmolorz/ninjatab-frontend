@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["Q34XUY48KD.ninja.tab.app"],
+        "components": [
+          { "/": "/tabs/*" },
+          { "/": "/auth/*" },
+          { "/": "/invite/*" }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ninja.tab.app",
+      "sha256_cert_fingerprints": [
+        "B6:EE:CF:94:A6:24:32:C5:72:48:5B:E4:7F:58:71:DE:F8:10:3F:02:56:32:97:9B:7B:97:42:45:BD:AA:D8:D2"
+      ]
+    }
+  }
+]
