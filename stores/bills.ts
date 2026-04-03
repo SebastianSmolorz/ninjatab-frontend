@@ -104,7 +104,8 @@ export const useBillStore = defineStore('bills', {
 
       try {
         const api = useApi()
-        this.bills = await api.bills.list(tabId)
+        const page = await api.bills.list(tabId)
+        this.bills = page.items
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Failed to fetch bills'
         throw error

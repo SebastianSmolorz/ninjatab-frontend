@@ -13,6 +13,7 @@ import type {
   Settlement,
   InviteTabInfo,
   Contact,
+  CursorPage,
 } from '~/types'
 import { useAuthStore } from '~/stores/auth'
 
@@ -66,7 +67,8 @@ export const useApi = () => {
   return {
     // Tab endpoints
     tabs: {
-      list: () => apiFetch<TabListItem[]>('/tabs/'),
+      list: (cursor?: string) =>
+        apiFetch<CursorPage<TabListItem>>(`/tabs/${cursor ? `?cursor=${cursor}` : ''}`),
 
       get: (id: string) => apiFetch<Tab>(`/tabs/${id}`),
 
@@ -137,10 +139,13 @@ export const useApi = () => {
 
     // Bill endpoints
     bills: {
-      list: (tabId?: string) =>
-        apiFetch<BillListItem[]>(
-          `/bills/${tabId ? `?tab_id=${tabId}` : ''}`
-        ),
+      list: (tabId?: string, cursor?: string) => {
+        const params = new URLSearchParams()
+        if (tabId) params.set('tab_id', tabId)
+        if (cursor) params.set('cursor', cursor)
+        const qs = params.toString()
+        return apiFetch<CursorPage<BillListItem>>(`/bills/${qs ? `?${qs}` : ''}`)
+      },
 
       get: (id: string) => apiFetch<Bill>(`/bills/${id}`),
 

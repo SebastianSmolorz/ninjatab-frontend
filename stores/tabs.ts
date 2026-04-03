@@ -43,7 +43,8 @@ export const useTabStore = defineStore('tabs', {
 
       try {
         const api = useApi()
-        this.tabs = await api.tabs.list()
+        const page = await api.tabs.list()
+        this.tabs = page.items
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Failed to fetch tabs'
         throw error
