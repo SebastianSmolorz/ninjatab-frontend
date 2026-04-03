@@ -24,7 +24,7 @@
           <!-- Always visible header -->
           <div class="flex items-center justify-between gap-4">
             <div>
-              <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+              <h1 class="text-2xl font-bold text-gray-900 dark:text-white line-clamp-3">
                 {{ tab.name }}
               </h1>
               <div class="flex items-center gap-2 mt-2 mb-2">
@@ -123,7 +123,7 @@
                     </span>
                   </div>
                   <div class="min-w-0">
-                    <div class="font-medium text-gray-900 dark:text-white">
+                    <div class="font-medium text-gray-900 dark:text-white truncate">
                       {{ person.name }}
                     </div>
                     <div v-if="person?.user?.email" class="text-sm text-gray-500 dark:text-gray-400 truncate">
@@ -213,20 +213,20 @@
                     {{ settlement.from_person.name.charAt(0).toUpperCase() }}
                   </span>
                 </div>
-                <span class="font-medium text-gray-900 dark:text-white text-sm">
+                <span class="font-medium text-gray-900 dark:text-white text-sm truncate max-w-[120px]">
                   {{ settlement.from_person.name }}
                 </span>
-                <span class="text-sm text-gray-500">pays</span>
-                <span class="font-bold" :class="settlement.paid ? 'text-gray-500 line-through' : 'text-green-700 dark:text-green-400'">
+                <span class="text-sm text-gray-500 flex-shrink-0">pays</span>
+                <span class="font-bold flex-shrink-0" :class="settlement.paid ? 'text-gray-500 line-through' : 'text-green-700 dark:text-green-400'">
                   {{ getCurrencySymbol(settlement.currency) }}{{ settlement.amount }}
                 </span>
-                <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-400" />
+                <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
                   <span class="text-xs font-semibold text-primary-700 dark:text-primary-300">
                     {{ settlement.to_person.name.charAt(0).toUpperCase() }}
                   </span>
                 </div>
-                <span class="font-medium text-gray-900 dark:text-white text-sm">
+                <span class="font-medium text-gray-900 dark:text-white text-sm truncate max-w-[120px]">
                   {{ settlement.to_person.name }}
                 </span>
               </div>
@@ -279,13 +279,13 @@
           >
             <div class="flex items-start justify-between">
               <div class="flex-1 cursor-pointer" @click="router.push(`/tabs/${tab.id}/bills/${bill.id}`)">
-                <h4 class="font-medium text-gray-900 dark:text-white">
+                <h4 class="font-medium text-gray-900 dark:text-white truncate">
                   {{ bill.description }}
                 </h4>
                 <div class="flex items-center gap-2 mt-1 text-sm text-gray-500 dark:text-gray-400">
                   <span v-if="bill.date">{{ formatDate(bill.date) }}</span>
                   <span v-if="bill.paid_by">•</span>
-                  <span v-if="bill.paid_by" class="text-primary-600 dark:text-primary-400">
+                  <span v-if="bill.paid_by" class="text-primary-600 dark:text-primary-400 truncate">
                     Paid by {{ bill.paid_by.name }}
                   </span>
                 </div>

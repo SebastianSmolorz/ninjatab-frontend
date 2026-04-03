@@ -68,7 +68,7 @@
               @click="navigateToTab(tab.id)"
             >
               <div class="flex items-start justify-between mb-2">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white line-clamp-3">
                   {{ tab.name }}
                 </h3>
                 <div class="flex items-center gap-2">
@@ -87,7 +87,7 @@
                   </UBadge>
                 </div>
               </div>
-              <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p v-if="tab.description" class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                 {{ tab.description }}
               </p>
               <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
