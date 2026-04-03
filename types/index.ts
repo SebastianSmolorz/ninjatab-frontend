@@ -91,6 +91,8 @@ export interface Tab extends TabListItem {
   settlements: Settlement[]
   settlement_currency: Currency
   settlement_currency_settled_total: number | null
+  totals_by_currency: Record<string, number>
+  group_spend: number | null
   invite_code: string
 }
 

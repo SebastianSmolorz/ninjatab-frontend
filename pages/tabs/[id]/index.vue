@@ -256,7 +256,7 @@
                 Bills
               </h3>
               <UBadge color="gray" variant="subtle">
-                {{ bills?.length || 0 }}
+                {{ tab.bill_count }}
               </UBadge>
             </div>
             <UButton
@@ -515,29 +515,20 @@ const loading = computed(() => tabStore.isLoading)
 const error = computed(() => tabStore.error)
 const bills = computed(() => billStore.bills)
 
-// Calculate total spent per currency
+// Total spent per currency from backend
 const totalSpentByCurrency = computed(() => {
-  if (!bills.value) return {}
-
-  const totals: Record<string, number> = {}
-
-  bills.value.forEach(bill => {
-    const currency = bill.currency
-    const amount = Number(bill.total_amount) || 0
-
-    if (!totals[currency]) {
-      totals[currency] = 0
-    }
-    totals[currency] += amount
-  })
-
-  return totals
+  return tab.value?.totals_by_currency ?? {}
 })
 
-// Get total spent in settlement currency from backend
+// Group spend in settlement currency from backend
 const totalSpentInSettlement = computed(() => {
-  if (!tab.value?.settlement_currency_settled_total) return null
-  return Number(tab.value.settlement_currency_settled_total)
+  if (tab.value?.is_settled && tab.value?.settlement_currency_settled_total != null) {
+    return Number(tab.value.settlement_currency_settled_total)
+  }
+  if (tab.value?.group_spend != null) {
+    return Number(tab.value.group_spend)
+  }
+  return null
 })
 
 // Helper functions
