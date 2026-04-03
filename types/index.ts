@@ -64,12 +64,6 @@ export interface TabListItem {
   updated_at: string
 }
 
-export interface PersonBalance {
-  person_id: string
-  person_name: string
-  balance: number
-}
-
 export interface PersonSpendingTotal {
   person_id: string
   person_name: string
@@ -90,9 +84,8 @@ export interface Settlement {
 export interface Tab extends TabListItem {
   people: TabPerson[]
   settlements: Settlement[]
-  balances: PersonBalance[]
   settlement_currency: Currency
-  total_spent_gbp: number | null
+  settlement_currency_settled_total: number | null
   invite_code: string
 }
 

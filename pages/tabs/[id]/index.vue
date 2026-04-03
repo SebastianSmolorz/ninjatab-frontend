@@ -527,8 +527,8 @@ const totalSpentByCurrency = computed(() => {
 
 // Get total spent in settlement currency from backend
 const totalSpentInSettlement = computed(() => {
-  if (!tab.value?.total_spent_gbp) return null
-  return Number(tab.value.total_spent_gbp)
+  if (!tab.value?.settlement_currency_settled_total) return null
+  return Number(tab.value.settlement_currency_settled_total)
 })
 
 // Helper functions
