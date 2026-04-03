@@ -306,8 +306,17 @@
           </div>
         </div>
 
+        <div v-if="billStore.nextCursor" class="flex justify-center pt-4">
+          <UButton
+            :loading="billStore.loadingMore"
+            @click="billStore.fetchMoreBills(tab.id)"
+          >
+            Load more
+          </UButton>
+        </div>
+
         <!-- Empty state -->
-        <div v-else class="flex flex-col gap-7 text-center py-8 text-gray-500 dark:text-gray-400">
+        <div v-else-if="!bills || bills.length === 0" class="flex flex-col gap-7 text-center py-8 text-gray-500 dark:text-gray-400">
           <div>
             No bills yet. Add your first expense to get started.
           </div>

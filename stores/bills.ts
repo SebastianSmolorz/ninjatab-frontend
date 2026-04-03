@@ -16,7 +16,9 @@ interface BillState {
   bills: BillListItem[]
   currentBill: Bill | null
   loading: boolean
+  loadingMore: boolean
   error: string | null
+  nextCursor: string | null
   splitMode: SplitMode
   draftSplits: DraftSplits
 }
@@ -26,7 +28,9 @@ export const useBillStore = defineStore('bills', {
     bills: [],
     currentBill: null,
     loading: false,
+    loadingMore: false,
     error: null,
+    nextCursor: null,
     splitMode: 'even' as SplitMode,
     draftSplits: {},
   }),
@@ -106,11 +110,29 @@ export const useBillStore = defineStore('bills', {
         const api = useApi()
         const page = await api.bills.list(tabId)
         this.bills = page.items
+        this.nextCursor = page.next_cursor
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Failed to fetch bills'
         throw error
       } finally {
         this.loading = false
+      }
+    },
+
+    async fetchMoreBills(tabId?: string) {
+      if (!this.nextCursor) return
+      this.loadingMore = true
+
+      try {
+        const api = useApi()
+        const page = await api.bills.list(tabId, this.nextCursor)
+        this.bills.push(...page.items)
+        this.nextCursor = page.next_cursor
+      } catch (error) {
+        this.error = error instanceof Error ? error.message : 'Failed to load more bills'
+        throw error
+      } finally {
+        this.loadingMore = false
       }
     },
 
@@ -344,7 +366,9 @@ export const useBillStore = defineStore('bills', {
       this.bills = []
       this.currentBill = null
       this.loading = false
+      this.loadingMore = false
       this.error = null
+      this.nextCursor = null
       this.splitMode = 'even' as SplitMode
       this.draftSplits = {}
     },

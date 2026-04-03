@@ -5,7 +5,9 @@ interface TabState {
   tabs: TabListItem[]
   currentTab: Tab | null
   loading: boolean
+  loadingMore: boolean
   fetched: boolean
+  nextCursor: string | null
   error: string | null
 }
 
@@ -14,7 +16,9 @@ export const useTabStore = defineStore('tabs', {
     tabs: [],
     currentTab: null,
     loading: false,
+    loadingMore: false,
     fetched: false,
+    nextCursor: null,
     error: null,
   }),
 
@@ -45,12 +49,30 @@ export const useTabStore = defineStore('tabs', {
         const api = useApi()
         const page = await api.tabs.list()
         this.tabs = page.items
+        this.nextCursor = page.next_cursor
       } catch (error) {
         this.error = error instanceof Error ? error.message : 'Failed to fetch tabs'
         throw error
       } finally {
         this.loading = false
         this.fetched = true
+      }
+    },
+
+    async fetchMoreTabs() {
+      if (!this.nextCursor) return
+      this.loadingMore = true
+
+      try {
+        const api = useApi()
+        const page = await api.tabs.list(this.nextCursor)
+        this.tabs.push(...page.items)
+        this.nextCursor = page.next_cursor
+      } catch (error) {
+        this.error = error instanceof Error ? error.message : 'Failed to load more tabs'
+        throw error
+      } finally {
+        this.loadingMore = false
       }
     },
 
@@ -154,7 +176,9 @@ export const useTabStore = defineStore('tabs', {
       this.tabs = []
       this.currentTab = null
       this.loading = false
+      this.loadingMore = false
       this.fetched = false
+      this.nextCursor = null
       this.error = null
     },
   },
