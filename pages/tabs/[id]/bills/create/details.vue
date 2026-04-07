@@ -76,11 +76,12 @@
                   Total
                 </label>
                 <UInput
-                  v-model.number="draft.singleExpense.value"
-                  type="number"
-                  step="0.01"
+                  v-model="singleExpenseDisplay"
+                  type="text"
+                  inputmode="decimal"
                   placeholder="0.00"
                   size="lg"
+                  @blur="onSingleExpenseBlur"
                 />
               </div>
             </div>
@@ -106,9 +107,9 @@
                   Total
                 </label>
                 <UInput
-                  v-model.number="newLineItem.value"
-                  type="number"
-                  step="0.01"
+                  v-model="newLineItemDisplay"
+                  type="text"
+                  inputmode="decimal"
                   placeholder="0.00"
                   size="lg"
                   @keyup.enter="addLineItem"
@@ -144,7 +145,7 @@
                   <span class="flex-1 mx-2 border-b border-dotted border-gray-300"></span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span class="text-black font-medium whitespace-nowrap">{{ formatCurrency(item.value) }}</span>
+                  <span class="text-black font-medium whitespace-nowrap">{{ formatMinorCurrency(item.value, draft.currency) }}</span>
                   <UButton
                     @click="removeLineItem(index)"
                     variant="ghost"
@@ -161,7 +162,7 @@
               <div class="flex items-center justify-between">
                 <span class="text-black font-bold uppercase text-sm">Total</span>
                 <span class="text-lg font-bold text-black">
-                  {{ formatCurrency(totalAmount) }}
+                  {{ formatMinorCurrency(totalAmount, draft.currency) }}
                 </span>
               </div>
             </div>
@@ -221,10 +222,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillDraftStore } from '~/stores/billDraft'
+import { parseDisplayToMinor, formatMinorCurrency } from '~/utils/currency'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -244,7 +246,20 @@ if (!draft.billType) {
 const showValidationError = ref(false)
 const showBillNameError = ref(false)
 
+// Text display state for inputs (users type display strings, stored as minor units)
+const singleExpenseDisplay = ref('')
+const newLineItemDisplay = ref('')
 const newLineItem = ref({ description: '', value: 0 })
+
+const onSingleExpenseBlur = () => {
+  draft.singleExpense.value = parseDisplayToMinor(singleExpenseDisplay.value, draft.currency)
+}
+
+// When currency changes, re-parse the current display text for the new currency
+watch(() => draft.currency, () => {
+  draft.singleExpense.value = parseDisplayToMinor(singleExpenseDisplay.value, draft.currency)
+  newLineItem.value.value = parseDisplayToMinor(newLineItemDisplay.value, draft.currency)
+})
 
 const peopleOptions = computed(() => {
   if (!tab.value?.people) return []
@@ -258,9 +273,11 @@ const canProceedToSplits = computed(() => {
   const hasBasicFields = draft.currency && draft.paid_by_id !== null
 
   if (draft.billType === 'single') {
+    // Ensure latest display value is parsed before checking
+    const parsedValue = parseDisplayToMinor(singleExpenseDisplay.value, draft.currency)
     return hasBasicFields &&
       draft.singleExpense.description.trim().length > 0 &&
-      draft.singleExpense.value > 0
+      parsedValue > 0
   } else {
     return hasBasicFields &&
       draft.description.trim().length > 0 &&
@@ -274,22 +291,20 @@ const totalAmount = computed(() => {
   return draft.line_items.reduce((sum, item) => sum + item.value, 0)
 })
 
-const formatCurrency = (amount: number) => {
-  return `${getCurrencySymbol(draft.currency)}${amount.toFixed(2)}`
-}
-
 const addLineItem = () => {
-  if (!newLineItem.value.description.trim() || newLineItem.value.value <= 0) return
+  const parsedValue = parseDisplayToMinor(newLineItemDisplay.value, draft.currency)
+  if (!newLineItem.value.description.trim() || parsedValue <= 0) return
 
   showValidationError.value = false
   showBillNameError.value = false
 
   draft.line_items.unshift({
     description: newLineItem.value.description.trim(),
-    value: newLineItem.value.value
+    value: parsedValue
   })
 
   newLineItem.value.description = ''
+  newLineItemDisplay.value = ''
   newLineItem.value.value = 0
 }
 
@@ -315,9 +330,10 @@ const goNext = () => {
 
   // For single expense, populate line_items before moving to splits
   if (draft.billType === 'single') {
+    const parsedValue = parseDisplayToMinor(singleExpenseDisplay.value, draft.currency)
     draft.line_items = [{
       description: draft.singleExpense.description.trim(),
-      value: draft.singleExpense.value
+      value: parsedValue
     }]
   }
 

@@ -73,6 +73,7 @@ export interface PersonSpendingTotal {
   person_id: string
   person_name: string
   total: number
+  total_display?: string
 }
 
 export interface Settlement {
@@ -80,6 +81,7 @@ export interface Settlement {
   from_person: TabPerson
   to_person: TabPerson
   amount: number
+  amount_display?: string
   currency: Currency
   paid: boolean
   created_at: string
@@ -114,7 +116,9 @@ export interface PersonLineItemClaim {
   person_id: string
   person_name: string
   split_value: number | null
+  split_value_display?: string | null
   calculated_amount: number | null
+  calculated_amount_display?: string | null
   has_claimed: boolean
   created_at: string
   updated_at: string
@@ -124,6 +128,7 @@ export interface LineItem {
   id: string
   description: string
   value: number
+  value_display?: string
   split_type: SplitType
   person_claims: PersonLineItemClaim[]
   created_at: string
@@ -138,6 +143,7 @@ export interface BillListItem {
   status: BillStatus
   date: string
   total_amount: number
+  total_amount_display?: string
   paid_by: TabPerson | null
   created_at: string
 }

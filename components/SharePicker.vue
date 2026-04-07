@@ -111,7 +111,7 @@ const calculateAmount = (personId: string): string => {
 
   if (totalShares === 0 || personShares === 0) return props.formatCurrency(0)
 
-  const amount = (props.itemValue * personShares) / totalShares
+  const amount = Math.round((props.itemValue * personShares) / totalShares)
   return props.formatCurrency(amount)
 }
 </script>

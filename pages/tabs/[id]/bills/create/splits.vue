@@ -34,7 +34,7 @@
                   {{ item.description }}
                 </h3>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ formatCurrency(item.value) }}
+                  {{ formatMinorCurrency(item.value, draft.currency) }}
                 </p>
               </div>
 
@@ -109,6 +109,7 @@ import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
 import { useBillDraftStore } from '~/stores/billDraft'
 import { SplitType, type LineItemCreate, type PersonSplitCreate } from '~/types'
+import { formatMinorCurrency } from '~/utils/currency'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -128,9 +129,7 @@ if (draft.line_items.length === 0) {
   navigateTo(`/tabs/${tabId.value}/bills/create`, { replace: true })
 }
 
-const formatCurrency = (amount: number) => {
-  return `${getCurrencySymbol(draft.currency)}${amount.toFixed(2)}`
-}
+const formatCurrency = (amount: number) => formatMinorCurrency(amount, draft.currency)
 
 const setSplitMode = (itemIndex: number, mode: 'even' | 'custom') => {
   draft.splitModes[itemIndex] = mode

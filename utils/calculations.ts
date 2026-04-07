@@ -1,4 +1,5 @@
 import type { Bill, LineItem, PersonLineItemClaim, TabPerson, SplitType } from '~/types'
+import { minorToDisplay, formatMinorCurrency } from '~/utils/currency'
 
 /**
  * Check if a line item's claims represent an even split.
@@ -11,11 +12,11 @@ export function isEvenSplit(claims: PersonLineItemClaim[], totalPeople: number):
 }
 
 /**
- * Calculate the amount a person owes for a line item based on shares
- * @param lineItemValue - Total value of the line item
+ * Calculate the amount a person owes for a line item based on shares.
+ * @param lineItemValue - Total value in minor units
  * @param personShares - Number of shares this person has
  * @param totalShares - Total shares across all people
- * @returns Calculated amount rounded to 2 decimal places
+ * @returns Calculated amount in minor units (integer)
  */
 export function calculateShareSplit(
   lineItemValue: number,
@@ -23,16 +24,15 @@ export function calculateShareSplit(
   totalShares: number
 ): number {
   if (totalShares === 0) return 0
-  const amount = (lineItemValue * personShares) / totalShares
-  return Math.round(amount * 100) / 100
+  return Math.round((lineItemValue * personShares) / totalShares)
 }
 
 /**
- * Calculate the amount a person owes for a line item based on split type
+ * Calculate the amount a person owes for a line item based on split type.
  * @param lineItem - The line item
- * @param personSplitValue - The person's split value (shares or direct value)
+ * @param personSplitValue - The person's split value (shares count or minor units for VALUE type)
  * @param totalShares - Total shares (only used for SHARES split type)
- * @returns Calculated amount rounded to 2 decimal places
+ * @returns Calculated amount in minor units
  */
 export function calculatePersonAmount(
   lineItem: LineItem,
@@ -42,16 +42,13 @@ export function calculatePersonAmount(
   if (lineItem.split_type === 'shares') {
     return calculateShareSplit(lineItem.value, personSplitValue, totalShares)
   } else {
-    // VALUE split type - direct value
-    return Math.round(personSplitValue * 100) / 100
+    // VALUE split type - already in minor units
+    return personSplitValue
   }
 }
 
 /**
- * Calculate total shares for a line item from draft splits
- * @param lineItemId - ID of the line item
- * @param draftSplits - Current draft splits state
- * @returns Total shares
+ * Calculate total shares for a line item from draft splits.
  */
 export function calculateTotalShares(
   lineItemId: string,
@@ -64,14 +61,12 @@ export function calculateTotalShares(
 }
 
 /**
- * Validate that splits for a VALUE type line item don't exceed the line item value
- * @param lineItem - The line item
- * @param draftSplits - Current draft splits for this line item
- * @returns Validation result with error message if invalid
+ * Validate that splits for a VALUE type line item don't exceed the line item value.
  */
 export function validateValueSplits(
   lineItem: LineItem,
-  draftSplits: { [personId: string]: number | null }
+  draftSplits: { [personId: string]: number | null },
+  currency: string
 ): { valid: boolean; error?: string } {
   if (lineItem.split_type !== 'value') {
     return { valid: true }
@@ -83,7 +78,7 @@ export function validateValueSplits(
   if (total > lineItem.value) {
     return {
       valid: false,
-      error: `Total split (${total.toFixed(2)}) exceeds line item value (${lineItem.value.toFixed(2)})`,
+      error: `Total split (${minorToDisplay(total, currency)}) exceeds line item value (${minorToDisplay(lineItem.value, currency)})`,
     }
   }
 
@@ -91,10 +86,7 @@ export function validateValueSplits(
 }
 
 /**
- * Calculate the total amount a person owes across all bills
- * @param bills - Array of bills
- * @param personId - ID of the person
- * @returns Total amount owed
+ * Calculate the total amount a person owes across all bills (in minor units).
  */
 export function calculatePersonTotalAcrossBills(bills: Bill[], personId: string): number {
   let total = 0
@@ -109,14 +101,11 @@ export function calculatePersonTotalAcrossBills(bills: Bill[], personId: string)
     }
   }
 
-  return Math.round(total * 100) / 100
+  return total
 }
 
 /**
- * Calculate the total amount a person has paid across all bills
- * @param bills - Array of bills
- * @param personId - ID of the person
- * @returns Total amount paid
+ * Calculate the total amount a person has paid across all bills (in minor units).
  */
 export function calculatePersonTotalPaid(bills: Bill[], personId: string): number {
   let total = 0
@@ -127,24 +116,21 @@ export function calculatePersonTotalPaid(bills: Bill[], personId: string): numbe
     }
   }
 
-  return Math.round(total * 100) / 100
+  return total
 }
 
 /**
- * Calculate net balance for a person (what they paid - what they owe)
- * @param bills - Array of bills
- * @param personId - ID of the person
- * @returns Net balance (positive means they're owed money, negative means they owe)
+ * Calculate net balance for a person in minor units (positive = owed money, negative = owes).
  */
 export function calculatePersonNetBalance(bills: Bill[], personId: string): number {
   const paid = calculatePersonTotalPaid(bills, personId)
   const owed = calculatePersonTotalAcrossBills(bills, personId)
-  return Math.round((paid - owed) * 100) / 100
+  return paid - owed
 }
 
 /**
- * Calculate even split values for all people
- * @param lineItemValue - Total value of the line item
+ * Calculate even split values for all people.
+ * @param lineItemValue - Total value in minor units
  * @param people - Array of people to split among
  * @param splitType - Type of split ('shares' or 'value')
  * @returns Map of person ID to split value
@@ -157,13 +143,12 @@ export function calculateEvenSplitForAll(
   const result: { [personId: string]: number } = {}
 
   if (splitType === 'shares') {
-    // Even shares: 1 share per person
     people.forEach((person) => {
       result[person.id] = 1
     })
   } else {
-    // Even value: divide total by number of people
-    const valuePerPerson = Math.round((lineItemValue / people.length) * 100) / 100
+    // Even value split: divide minor units equally, rounding down
+    const valuePerPerson = Math.round(lineItemValue / people.length)
     people.forEach((person) => {
       result[person.id] = valuePerPerson
     })
@@ -173,23 +158,15 @@ export function calculateEvenSplitForAll(
 }
 
 /**
- * Format currency amount for display
- * @param amount - Amount to format
- * @param currency - Currency code
- * @returns Formatted string
+ * Format minor unit currency amount for display.
  */
 export function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: currency,
-  }).format(amount)
+  return formatMinorCurrency(amount, currency)
 }
 
 /**
- * Calculate preview of what each person will owe based on draft splits
- * @param lineItem - The line item
- * @param draftSplits - Current draft splits
- * @returns Map of person ID to calculated amount
+ * Calculate preview of what each person will owe based on draft splits.
+ * Returns values in minor units.
  */
 export function calculateSplitPreview(
   lineItem: LineItem,
@@ -206,10 +183,10 @@ export function calculateSplitPreview(
       }
     })
   } else {
-    // VALUE split type
+    // VALUE split type - values are already in minor units
     Object.entries(draftSplits).forEach(([personId, value]) => {
       if (value !== null) {
-        preview[personId] = Math.round(value * 100) / 100
+        preview[personId] = value
       }
     })
   }

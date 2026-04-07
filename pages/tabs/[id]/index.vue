@@ -136,7 +136,7 @@
                 </div>
                 <div v-if="getPersonTotal(person.id)" class="text-right">
                   <div class="text-lg font-semibold text-blue-700 dark:text-blue-400">
-                    {{ getCurrencySymbol(tab.settlement_currency) }}{{ formatCurrencyAmount(getPersonTotal(person.id)) }}
+                    {{ formatMinorCurrency(getPersonTotal(person.id), tab.settlement_currency) }}
                   </div>
                   <div class="text-xs text-gray-500 dark:text-gray-400">
                     Total spent
@@ -182,7 +182,7 @@
                 Total group spend ({{ getCurrencySymbol(tab.settlement_currency) }})
               </div>
               <div class="text-lg font-bold text-green-700 dark:text-green-400">
-                {{ formatCurrencyAmount(totalSpentInSettlement) }}
+                {{ formatCurrencyAmount(totalSpentInSettlement, tab.settlement_currency) }}
               </div>
             </div>
             <div
@@ -194,7 +194,7 @@
                 {{ getCurrencySymbol(currency) }} spent
               </div>
               <div class="text-lg font-bold text-blue-700 dark:text-blue-400">
-                {{ formatCurrencyAmount(total) }}
+                {{ formatCurrencyAmount(total, currency) }}
               </div>
             </div>
           </div>
@@ -218,7 +218,7 @@
                 </span>
                 <span class="text-sm text-gray-500 flex-shrink-0">pays</span>
                 <span class="font-bold flex-shrink-0" :class="settlement.paid ? 'text-gray-500 line-through' : 'text-green-700 dark:text-green-400'">
-                  {{ getCurrencySymbol(settlement.currency) }}{{ settlement.amount }}
+                  {{ formatMinorCurrency(settlement.amount, settlement.currency) }}
                 </span>
                 <UIcon name="i-heroicons-arrow-right" class="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center flex-shrink-0">
@@ -292,7 +292,7 @@
               </div>
               <div class="flex items-center gap-3">
                 <div class="text-lg font-semibold text-gray-900 dark:text-white">
-                  {{ getCurrencySymbol(bill.currency) }}{{ (bill.total_amount || 0) }}
+                  {{ formatMinorCurrency(bill.total_amount || 0, bill.currency) }}
                 </div>
                 <UButton
                   v-if="!tab.is_settled"
@@ -458,6 +458,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
 import { useBillStore } from '~/stores/bills'
 import type { PersonSpendingTotal, Currency, Contact } from '~/types'
+import { formatMinorCurrency, minorToDisplay } from '~/utils/currency'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -532,11 +533,8 @@ const totalSpentInSettlement = computed(() => {
 })
 
 // Helper functions
-const formatCurrencyAmount = (amount: number) => {
-  return amount.toLocaleString('en-GB', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })
+const formatCurrencyAmount = (amount: number, currency: string) => {
+  return minorToDisplay(amount, currency)
 }
 
 const formatDate = (dateStr: string) => {

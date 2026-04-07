@@ -11,6 +11,7 @@ import type {
   SplitType,
   LineItemSplitSubmit,
 } from '~/types'
+import { minorToDisplay } from '~/utils/currency'
 
 interface BillState {
   bills: BillListItem[]
@@ -325,7 +326,7 @@ export const useBillStore = defineStore('bills', {
           const total = splitValues.reduce((sum, val) => sum + val, 0)
           if (total > lineItem.value) {
             errors.push(
-              `Line item "${lineItem.description}": split total (${total}) exceeds value (${lineItem.value})`
+              `Line item "${lineItem.description}": split total exceeds value`
             )
           }
         }

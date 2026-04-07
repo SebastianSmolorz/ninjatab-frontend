@@ -59,7 +59,7 @@
             <!-- Amount -->
             <div class="text-right flex-shrink-0">
               <span class="text-lg font-bold text-green-400">
-                {{ getCurrencySymbol(settlement.currency) }}{{ settlement.amount }}
+                {{ formatMinorCurrency(settlement.amount, settlement.currency) }}
               </span>
             </div>
           </div>
@@ -85,6 +85,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTabStore } from '~/stores/tabs'
+import { formatMinorCurrency } from '~/utils/currency'
 
 definePageMeta({ middleware: 'auth' })
 

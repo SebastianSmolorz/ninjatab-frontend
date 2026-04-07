@@ -48,7 +48,7 @@
               </div>
             </div>
             <div class="text-3xl font-bold text-gray-900 dark:text-white">
-              {{ getCurrencySymbol(bill.currency) }}{{ bill.total_amount }}
+              {{ formatMinorCurrency(bill.total_amount, bill.currency) }}
             </div>
           </div>
 
@@ -78,7 +78,7 @@
             >
               <span class="font-medium text-gray-900 dark:text-white">{{ person.person_name }}</span>
               <span class="text-lg font-semibold text-gray-900 dark:text-white">
-                {{ getCurrencySymbol(bill.currency) }}{{ formatCurrencyAmount(person.total) }}
+                {{ formatMinorCurrency(person.total, bill.currency) }}
               </span>
             </div>
           </div>
@@ -132,7 +132,7 @@
                   {{ item.description }}
                 </h4>
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ getCurrencySymbol(bill.currency) }}{{ item.value }}
+                  {{ formatMinorCurrency(item.value, bill.currency) }}
                 </p>
               </div>
 
@@ -140,7 +140,7 @@
               <div v-if="!editMode">
                 <template v-if="isEvenSplit(item.person_claims, tabStore.currentTab?.people.length || 0)">
                   <p class="text-sm text-gray-500 dark:text-gray-400">
-                    Split evenly. All owe {{ getCurrencySymbol(bill.currency) }}{{ (item.person_claims[0]?.calculated_amount || 0) }}
+                    Split evenly. All owe {{ formatMinorCurrency(item.person_claims[0]?.calculated_amount || 0, bill.currency) }}
                   </p>
                 </template>
                 <div v-else class="space-y-2">
@@ -155,7 +155,7 @@
                         {{ Math.floor(claim.split_value || 0) }} {{ item.split_type === 'shares' ? 'shares' : '' }}
                       </span>
                       <span class="font-medium text-gray-900 dark:text-white w-24 text-right">
-                        {{ getCurrencySymbol(bill.currency) }}{{ (claim.calculated_amount || 0) }}
+                        {{ formatMinorCurrency(claim.calculated_amount || 0, bill.currency) }}
                       </span>
                     </div>
                   </div>
@@ -187,7 +187,7 @@
                   v-if="splitModes[itemIndex] === 'custom'"
                   :people="tabStore.currentTab?.people || []"
                   :model-value="splits[itemIndex]"
-                  :item-value="typeof item.value === 'number' ? item.value : parseFloat(String(item.value)) || 0"
+                  :item-value="item.value"
                   :format-currency="formatCurrency"
                   @update:model-value="splits[itemIndex] = $event"
                 />
@@ -212,6 +212,7 @@ import { useBillStore } from '~/stores/bills'
 import { useTabStore } from '~/stores/tabs'
 import { Currency, type BillStatus } from '~/types'
 import { isEvenSplit } from '~/utils/calculations'
+import { formatMinorCurrency, minorToDisplay } from '~/utils/currency'
 
 definePageMeta({ middleware: 'auth' })
 
@@ -268,11 +269,8 @@ watch(bill, (newBill) => {
 }, { immediate: true })
 
 // Helper functions
-const formatCurrencyAmount = (amount: number) => {
-  return amount.toLocaleString('en-GB', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  })
+const formatCurrencyAmount = (amount: number, currency: string) => {
+  return minorToDisplay(amount, currency)
 }
 
 const formatDate = (dateStr: string) => {
@@ -305,8 +303,8 @@ const getStatusColor = (status: BillStatus) => {
 }
 
 const formatCurrency = (amount: number) => {
-  if (!bill.value) return `${amount.toFixed(2)}`
-  return `${getCurrencySymbol(bill.value.currency)}${amount.toFixed(2)}`
+  if (!bill.value) return String(amount)
+  return formatMinorCurrency(amount, bill.value.currency)
 }
 
 const enterEditMode = () => {
