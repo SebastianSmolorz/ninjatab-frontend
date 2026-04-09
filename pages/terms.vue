@@ -12,7 +12,7 @@ useSeoMeta({
     <UContainer class="max-w-3xl py-12 px-4">
       <div class="mb-10">
         <h1 class="text-3xl font-bold text-white mb-2">Terms of Service</h1>
-        <p class="text-sm text-gray-500">Last updated: 6 March 2026</p>
+        <p class="text-sm text-gray-500">Last updated: 9 April 2026</p>
       </div>
 
       <div class="space-y-10 text-gray-300 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
@@ -62,11 +62,23 @@ useSeoMeta({
             <li>You will not use the service to harass, impersonate, or misrepresent others</li>
           </ul>
           <p>Tab Ninja simply records and calculates expenses. We do not guarantee the accuracy of user-entered data. Users are responsible for verifying expenses and balances within their group.</p>
+          <h3 class="text-lg font-medium text-white mt-4">Tab lifecycle</h3>
+          <p>A tab is intended to cover a single shared event or trip, such as a holiday, a group meal, or a shared purchase. Tabs are not intended to remain open indefinitely.</p>
+          <p>Under normal circumstances, a tab may be closed automatically approximately 30 days after the first expense is added. You should ensure that any outstanding balances are reviewed and settled before this time. We will aim to give notice before a tab is automatically closed.</p>
+        </section>
+
+        <!-- 4b -->
+        <section>
+          <h2 class="text-xl font-semibold text-white">5. User content and uploaded images</h2>
+          <p>You may upload images (such as photos of receipts or bills) when recording expenses. By uploading an image you grant Tab Ninja a limited licence to store, display, and process that image for the purpose of providing the service to you and the other participants of your tab.</p>
+          <p>You are responsible for the content of any images you upload. You must not upload images that contain content that is illegal, offensive, or that violates the rights of others.</p>
+          <p>Uploaded images may be processed by an AI service (Mistral) to extract expense information such as totals or itemised amounts. This processing may not always be accurate. You are responsible for reviewing and confirming any automatically extracted information.</p>
+          <p>We do not claim ownership of your uploaded content. You may request deletion of your data at any time by contacting us.</p>
         </section>
 
         <!-- 5 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">5. Tab organisers and responsibility</h2>
+          <h2 class="text-xl font-semibold text-white">6. Tab organisers and responsibility</h2>
           <p>The person who creates a tab (the organiser) is responsible for managing that tab. This includes:</p>
           <ul>
             <li>Inviting participants</li>
@@ -80,7 +92,7 @@ useSeoMeta({
 
         <!-- 6 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">6. Calculation of balances</h2>
+          <h2 class="text-xl font-semibold text-white">7. Calculation of balances</h2>
           <p>Tab Ninja automatically calculates how expenses may be split between participants based on the information entered by users. These calculations are provided for convenience only.</p>
           <p>While we aim to ensure the calculations work correctly, we do not guarantee that balances or totals are accurate, especially if:</p>
           <ul>
@@ -94,14 +106,14 @@ useSeoMeta({
 
         <!-- 7 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">7. Payments between users</h2>
+          <h2 class="text-xl font-semibold text-white">8. Payments between users</h2>
           <p>Tab Ninja does not handle payments. Any money exchanged between participants happens outside the platform and is the responsibility of the users involved.</p>
           <p>Tab Ninja is not responsible for disputes between users regarding payments or expenses.</p>
         </section>
 
         <!-- 8 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">8. Disputes between participants</h2>
+          <h2 class="text-xl font-semibold text-white">9. Disputes between participants</h2>
           <p>Tab Ninja is a tool for recording shared expenses and calculating suggested balances. We are not involved in payments between users and we do not verify the accuracy of expenses recorded in a tab.</p>
           <p>Any payments between participants happen outside the platform and are the responsibility of the individuals involved. If a dispute arises about:</p>
           <ul>
@@ -114,52 +126,43 @@ useSeoMeta({
 
         <!-- 9 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">9. Free and paid features</h2>
+          <h2 class="text-xl font-semibold text-white">10. Free and paid features</h2>
           <p>Some parts of the service may be free, while others may require payment. If payment is required:</p>
           <ul>
             <li>The price will be clearly displayed before purchase</li>
             <li>Payments are generally non-refundable unless required by law</li>
           </ul>
           <p>We may change pricing or introduce new features in the future.</p>
+          <h3 class="text-lg font-medium text-white mt-4">Fair usage (Pro)</h3>
+          <p>Pro plans may include unlimited expenses as a feature. "Unlimited" refers to normal personal or group use — for example, recording expenses for trips, meals, or shared purchases with a small group of people.</p>
+          <p>You must not use a Pro plan to:</p>
+          <ul>
+            <li>Automate the creation of large numbers of expenses</li>
+            <li>Use the service on behalf of many unrelated groups or as a commercial reseller</li>
+            <li>Circumvent per-tab or per-account limits that would otherwise apply</li>
+          </ul>
+          <p>We reserve the right to limit, restrict, or terminate accounts that we believe are misusing unlimited features or acting in a way that is inconsistent with normal personal use.</p>
         </section>
 
         <!-- 10 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">10. Acceptable use</h2>
-          <p>You agree not to use Tab Ninja to:</p>
+          <h2 class="text-xl font-semibold text-white">11. Acceptable use</h2>
+          <p>You must use Tab Ninja responsibly and lawfully. You agree not to:</p>
           <ul>
             <li>Break any laws</li>
-            <li>Upload malicious code</li>
-            <li>Interfere with the service</li>
+            <li>Upload malicious code or attempt to interfere with or overload the service</li>
             <li>Scrape or copy the service at scale</li>
-            <li>Attempt to access accounts that are not yours</li>
-            <li>Abuse or harass other users</li>
-          </ul>
-          <p>We may suspend or terminate accounts that violate these rules.</p>
-        </section>
-
-        <!-- 11 -->
-        <section>
-          <h2 class="text-xl font-semibold text-white">11. Abuse of the service</h2>
-          <p>You must use Tab Ninja responsibly. You agree not to use the service to:</p>
-          <ul>
+            <li>Attempt to access accounts or data that are not yours</li>
             <li>Add people to tabs in a misleading, abusive, or harassing way</li>
             <li>Send unwanted or spam invitations to email addresses</li>
             <li>Impersonate other people</li>
             <li>Create tabs for fraudulent or deceptive purposes</li>
-            <li>Attempt to disrupt or overload the service</li>
-            <li>Access accounts or data that do not belong to you</li>
+            <li>Attempt to circumvent any limits imposed on free or paid plans</li>
           </ul>
-          <p>We may investigate suspected abuse and may take action including:</p>
-          <ul>
-            <li>Removing content</li>
-            <li>Restricting access to certain features</li>
-            <li>Suspending or terminating accounts</li>
-          </ul>
-          <p>We may also limit invitations, tabs, or other activity if we believe the service is being used in a harmful or abusive way.</p>
+          <p>We may investigate suspected violations and take action including removing content, restricting features, closing tabs, or suspending or terminating accounts. We reserve the right to terminate any tab or account that we reasonably believe is abusing the service or attempting to circumvent its limits.</p>
         </section>
 
-        <!-- 12 -->
+        <!-- 11 -->
         <section>
           <h2 class="text-xl font-semibold text-white">12. Availability of the service</h2>
           <p>We aim to keep Tab Ninja available and reliable. However:</p>
@@ -171,15 +174,27 @@ useSeoMeta({
           <p>We do not guarantee uninterrupted access.</p>
         </section>
 
-        <!-- 13 -->
+        <!-- 12 -->
         <section>
           <h2 class="text-xl font-semibold text-white">13. Data and privacy</h2>
           <p>Your use of the service is also governed by our Privacy Policy, which explains how we collect and use data.</p>
         </section>
 
+        <!-- 13 -->
+        <section>
+          <h2 class="text-xl font-semibold text-white">14. App store distribution</h2>
+          <p>Tab Ninja may be distributed through third-party app stores such as the Apple App Store and Google Play Store. When you download or use Tab Ninja through these platforms, the following applies:</p>
+          <ul>
+            <li>These terms are between you and Tab Ninja Ltd. only. Apple Inc. and Google LLC are not parties to these terms and have no obligation to provide maintenance, support, warranty, or liability coverage for the app.</li>
+            <li>Apple and Google are not responsible for any claims you or a third party may have relating to the app, including product liability claims, consumer protection claims, or intellectual property infringement claims.</li>
+            <li>Your use of the app must also comply with the applicable app store's terms of service.</li>
+            <li>Apple and Google are third-party beneficiaries of these terms and may enforce them against you.</li>
+          </ul>
+        </section>
+
         <!-- 14 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">14. Intellectual property</h2>
+          <h2 class="text-xl font-semibold text-white">15. Intellectual property</h2>
           <p>The Tab Ninja service, website, and software are owned by Tab Ninja. You may use the service for personal use, but you may not:</p>
           <ul>
             <li>Copy, reverse engineer, redistribute, or commercially exploit the service without permission</li>
@@ -188,7 +203,7 @@ useSeoMeta({
 
         <!-- 15 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">15. Limitation of liability</h2>
+          <h2 class="text-xl font-semibold text-white">16. Limitation of liability</h2>
           <p>Tab Ninja is provided "as is". To the maximum extent permitted by law:</p>
           <ul>
             <li>We are not liable for financial losses resulting from the use of the service</li>
@@ -200,31 +215,33 @@ useSeoMeta({
 
         <!-- 16 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">16. Termination</h2>
+          <h2 class="text-xl font-semibold text-white">17. Termination</h2>
           <p>We may suspend or terminate access to the service if:</p>
           <ul>
             <li>These terms are violated</li>
-            <li>The service is abused</li>
+            <li>The service is abused or limits are circumvented</li>
+            <li>A tab or account shows signs of misuse or activity inconsistent with these terms</li>
             <li>We decide to discontinue the service</li>
           </ul>
+          <p>We reserve the right to close individual tabs without closing an account where we believe a tab is being used in a way that violates these terms.</p>
           <p>Users may stop using the service at any time.</p>
         </section>
 
         <!-- 17 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">17. Changes to these terms</h2>
+          <h2 class="text-xl font-semibold text-white">18. Changes to these terms</h2>
           <p>We may update these Terms of Service occasionally. If changes are significant we will update the date at the top of the document. Continued use of the service means you accept the updated terms.</p>
         </section>
 
         <!-- 18 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">18. Governing law</h2>
+          <h2 class="text-xl font-semibold text-white">19. Governing law</h2>
           <p>These terms are governed by the laws of England and Wales. Any disputes will be handled by courts in that jurisdiction.</p>
         </section>
 
         <!-- 19 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">19. Contact</h2>
+          <h2 class="text-xl font-semibold text-white">20. Contact</h2>
           <p>If you have questions about these terms, contact us at:</p>
           <p><a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a></p>
         </section>

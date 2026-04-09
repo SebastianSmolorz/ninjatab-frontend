@@ -5,11 +5,6 @@ definePageMeta({ auth: false })
 
 const tabName = ref('')
 
-// const isIOS = computed(() => {
-//   if (import.meta.server) return false
-//   return /iPhone|iPad|iPod/.test(navigator.userAgent)
-// })
-
 useSeoMeta({
   title: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
   ogTitle: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
@@ -38,20 +33,16 @@ const errorMessage = ref('')
 const isLoggedIn = computed(() => authStore.isAuthenticated)
 
 onMounted(async () => {
-  // if (isIOS.value) {
-  //   window.location.href = `ninjatab://invite/${code}`
-  // }
-
   try {
     const info = await api.tabs.getInvite(code)
     tabId.value = info.tab_id
     tabName.value = info.tab_name
     people.value = info.people
 
-    // if (info.user_already_on_tab) {
-    //   router.replace(`/tabs/${info.tab_id}`)
-    //   return
-    // }
+    if (info.user_already_on_tab) {
+      router.replace(`/tabs/${info.tab_id}`)
+      return
+    }
 
     if (isLoggedIn.value && authStore.user?.email) {
       email.value = authStore.user.email

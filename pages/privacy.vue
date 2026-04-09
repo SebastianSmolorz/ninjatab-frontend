@@ -12,7 +12,7 @@ useSeoMeta({
     <UContainer class="max-w-3xl py-12 px-4">
       <div class="mb-10">
         <h1 class="text-3xl font-bold text-white mb-2">Privacy Policy</h1>
-        <p class="text-sm text-gray-500">Last updated: 6 March 2026</p>
+        <p class="text-sm text-gray-500">Last updated: 9 April 2026</p>
       </div>
 
       <div class="space-y-10 text-gray-300 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
@@ -62,7 +62,7 @@ useSeoMeta({
             <li>Approximate location</li>
             <li>Interactions with the site</li>
           </ul>
-          <p>We currently use Google Analytics and PostHog. These tools help us monitor performance, understand how the service is used, and improve the product.</p>
+          <p>On the web we use Google Analytics and PostHog. On the mobile app we use PostHog for analytics and Sentry for crash and error reporting. Sentry may collect device information, app version, and a stack trace when the app encounters an error.</p>
         </section>
 
         <!-- 3 -->
@@ -85,7 +85,9 @@ useSeoMeta({
 
           <p>Users may upload images of receipts or bills when recording expenses in a tab.</p>
 
-          <p>These images may be sent to a third-party processing service to help extract information such as totals,
+          <p>When using the mobile app, you may be prompted to grant access to your device's <strong class="text-white">camera</strong> (to take a photo of a receipt) and your device's <strong class="text-white">photo library or files</strong> (to select an existing image). These permissions are used solely to allow you to upload receipt images when recording expenses. We do not access your camera or photo library for any other purpose.</p>
+
+          <p>These images may be sent to Mistral, an AI service, to help extract information such as totals,
             items, or amounts from the receipt.</p>
 
           <p>Receipt images may be stored on our servers so that they can be viewed or downloaded by participants of the
@@ -102,9 +104,21 @@ useSeoMeta({
         </section>
 
 
+        <!-- device permissions -->
+        <section>
+          <h2 class="text-xl font-semibold text-white">5. Device permissions (mobile app)</h2>
+          <p>The Tab Ninja mobile app may request the following device permissions:</p>
+          <ul>
+            <li><strong class="text-white">Camera</strong> — to take photos of receipts or bills when recording an expense.</li>
+            <li><strong class="text-white">Photo library / storage</strong> — to select existing images from your device when uploading a receipt.</li>
+            <li><strong class="text-white">Internet access</strong> — to communicate with Tab Ninja servers.</li>
+          </ul>
+          <p>You can revoke any permission at any time through your device settings. Revoking camera or photo library access will prevent you from uploading receipt images but will not affect other features.</p>
+        </section>
+
         <!-- 4 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">5. Legal basis for processing</h2>
+          <h2 class="text-xl font-semibold text-white">6. Legal basis for processing</h2>
           <p>Under UK GDPR we process personal data on the following legal bases:</p>
           <ul>
             <li><strong class="text-white">Contract</strong> — To provide the Tab Ninja service requested by users.</li>
@@ -115,20 +129,27 @@ useSeoMeta({
 
         <!-- 5 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">6. Data sharing</h2>
-          <p>We share limited data with service providers that help us operate the service. These may include analytics providers and infrastructure providers.</p>
+          <h2 class="text-xl font-semibold text-white">7. Data sharing</h2>
+          <p>We share limited data with service providers that help us operate the service, including:</p>
+          <ul>
+            <li><strong class="text-white">Mistral</strong> — receipt image processing (AI extraction of expense data)</li>
+            <li><strong class="text-white">Google Analytics</strong> — web analytics</li>
+            <li><strong class="text-white">PostHog</strong> — product analytics (web and mobile)</li>
+            <li><strong class="text-white">Sentry</strong> — crash and error reporting (mobile app)</li>
+            <li>Infrastructure and hosting providers</li>
+          </ul>
           <p>Service providers process data on our behalf and are required to protect it. We do not sell personal data to third parties.</p>
         </section>
 
         <!-- 6 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">7. International transfers</h2>
+          <h2 class="text-xl font-semibold text-white">8. International transfers</h2>
           <p>Some service providers may process data outside the United Kingdom. Where this occurs we rely on appropriate safeguards such as contractual protections or recognised data protection frameworks.</p>
         </section>
 
         <!-- 7 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">8. Data retention</h2>
+          <h2 class="text-xl font-semibold text-white">9. Data retention</h2>
           <p>We keep personal data for as long as it is necessary to operate the service. Account information and tab data may be retained while accounts remain active so that users can access and manage their tabs and expense history.</p>
           <p>Because tabs may involve multiple participants, removing one user's account may not remove all records of their participation in shared tabs.</p>
           <p>If you would like your data removed from the service, you can request deletion by contacting us at <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a>.</p>
@@ -136,7 +157,7 @@ useSeoMeta({
 
         <!-- 8 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">9. Your rights</h2>
+          <h2 class="text-xl font-semibold text-white">10. Your rights</h2>
           <p>Under UK GDPR you have the right to:</p>
           <ul>
             <li>Request access to the personal data we hold about you</li>
@@ -150,19 +171,25 @@ useSeoMeta({
 
         <!-- 9 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">10. Security</h2>
-          <p>We take reasonable steps to protect personal data using secure infrastructure and access controls. However, no system can be completely secure.</p>
+          <h2 class="text-xl font-semibold text-white">11. Children's privacy</h2>
+          <p>Tab Ninja is not directed at children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us at <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a> and we will delete it.</p>
         </section>
 
         <!-- 10 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">11. Changes to this policy</h2>
-          <p>We may update this privacy policy occasionally. When we do, the date at the top of this page will be updated.</p>
+          <h2 class="text-xl font-semibold text-white">12. Security</h2>
+          <p>We take reasonable steps to protect personal data using secure infrastructure and access controls. Data is transmitted using encrypted connections (HTTPS/TLS). However, no system can be completely secure.</p>
         </section>
 
         <!-- 11 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">12. Contact</h2>
+          <h2 class="text-xl font-semibold text-white">13. Changes to this policy</h2>
+          <p>We may update this privacy policy occasionally. When we do, the date at the top of this page will be updated.</p>
+        </section>
+
+        <!-- 12 -->
+        <section>
+          <h2 class="text-xl font-semibold text-white">14. Contact</h2>
           <p>For privacy-related questions please contact:</p>
           <p><a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a></p>
         </section>
