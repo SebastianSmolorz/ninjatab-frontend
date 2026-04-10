@@ -9,7 +9,7 @@ useSeoMeta({
   title: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
   ogTitle: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
   ogDescription: 'Click to join the tab and start tracking shared expenses together.',
-  ogImage: 'https://tab.ninja/logo-120.png',
+  ogImage: 'https://tab.ninja/logo.png',
   twitterCard: 'summary',
 })
 
@@ -17,6 +17,7 @@ const route = useRoute()
 const router = useRouter()
 const api = useApi()
 const authStore = useAuthStore()
+const { isNativeApp } = useNativeApp()
 
 const code = route.params.code as string
 
@@ -29,8 +30,13 @@ const email = ref('')
 const submitting = ref(false)
 const emailSent = ref(false)
 const errorMessage = ref('')
+const dismissed = ref(false)
 
 const isLoggedIn = computed(() => authStore.isAuthenticated)
+
+function getTheApp() {
+  router.push('/early-access')
+}
 
 onMounted(async () => {
   try {
@@ -80,7 +86,7 @@ async function onSubmit() {
 
 <template>
   <UMain class="bg-gray-900 min-h-screen flex flex-col">
-    <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
+    <UContainer class="flex-1 flex items-start justify-center pt-12 pb-24">
       <div class="max-w-md w-full px-4">
         <!-- Loading -->
         <div v-if="loadingInvite" class="flex flex-col items-center py-12">
@@ -192,4 +198,33 @@ async function onSubmit() {
       </div>
     </UContainer>
   </UMain>
+
+  <!-- App open banner -->
+  <div
+    v-if="!isNativeApp && !dismissed"
+    class="fixed bottom-0 left-0 right-0 z-50 bg-primary"
+    style="padding-bottom: env(safe-area-inset-bottom)"
+  >
+    <div class="flex items-center gap-3 px-4 py-3 max-w-2xl mx-auto">
+      <img src="/logo.png" alt="Tab Ninja logo" class="w-9 h-9 shrink-0 rounded-[5px]" style="background-color: #101828" />
+      <div class="flex-1 min-w-0">
+        <p class="text-black text-sm font-semibold leading-tight">Tab Ninja</p>
+        <p class="text-black text-xs leading-tight">Better on the app</p>
+      </div>
+      <button
+        class="shrink-0 rounded-lg px-3 py-1.5 text-sm font-semibold text-white"
+        style="background-color: #101828"
+        @click="getTheApp"
+      >
+        Get the App
+      </button>
+      <button
+        class="text-black p-1 shrink-0"
+        aria-label="Dismiss"
+        @click="dismissed = true"
+      >
+        <UIcon name="i-lucide-x" class="w-4 h-4" />
+      </button>
+    </div>
+  </div>
 </template>
