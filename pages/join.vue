@@ -26,24 +26,6 @@ onMounted(() => {
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Browser option -->
-          <NuxtLink
-            to="/login"
-            class="group flex flex-col gap-4 p-6 rounded-xl border border-gray-700 bg-gray-800/60 hover:border-primary hover:bg-gray-800 transition-colors"
-          >
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-              <UIcon name="i-lucide-monitor" class="text-2xl text-primary" />
-            </div>
-            <div>
-              <h2 class="text-lg font-semibold text-white mb-1">Start in browser now</h2>
-              <p class="text-sm text-gray-400">No download needed. Open a tab and start splitting expenses right now.</p>
-            </div>
-            <div class="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary">
-              Get started
-              <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-1" />
-            </div>
-          </NuxtLink>
-
           <!-- Mobile app option -->
           <NuxtLink
             to="/early-access"
@@ -58,6 +40,24 @@ onMounted(() => {
             </div>
             <div class="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary">
               Join early access
+              <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-1" />
+            </div>
+          </NuxtLink>
+
+          <!-- Browser option -->
+          <NuxtLink
+            to="/login"
+            class="group flex flex-col gap-4 p-6 rounded-xl border border-gray-700 bg-gray-800/60 hover:border-primary hover:bg-gray-800 transition-colors"
+          >
+            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+              <UIcon name="i-lucide-monitor" class="text-2xl text-primary" />
+            </div>
+            <div>
+              <h2 class="text-lg font-semibold text-white mb-1">Start in browser</h2>
+              <p class="text-sm text-gray-400">No download needed. Open a tab and start splitting expenses right now.</p>
+            </div>
+            <div class="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary">
+              Get started
               <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-1" />
             </div>
           </NuxtLink>
