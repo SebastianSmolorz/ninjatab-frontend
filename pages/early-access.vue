@@ -63,14 +63,10 @@ const platform = ref<'ios' | 'android' | null>(null)
           </template>
 
           <template v-else-if="platform === 'android'">
-            <p class="text-sm text-gray-400">Make sure you're <span class="text-white font-bold">signed into your Google account</span> in this browser <span class="text-white font-bold">or copy the URL into Chrome.</span></p>
-            <p class="text-sm text-gray-400">1. Click the button below</p>
-            <p class="text-sm text-gray-400">2. Click <span class="text-white font-bold">"Join Group"</span></p>
-            <p class="text-sm text-gray-400">3. Follow the link in the group conversation to download</p>
             <UButton
               size="lg"
               block
-              to="https://groups.google.com/g/tab-ninja-early"
+              to="https://play.google.com/store/apps/details?id=ninja.tab.app"
               target="_blank"
               trailing-icon="i-lucide-arrow-right"
             >
