@@ -4,7 +4,7 @@
       <div class="text-center space-y-8">
         <!-- Icon -->
         <div class="flex justify-center" v-if="!isNativeApp">
-            <img src="/logo.png" alt="Tab Ninja logo" class="w-18 md:w-30 md:mt-12" />
+            <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-18 md:w-30 md:mt-12" />
         </div>
 
         <!-- Limitations Card -->

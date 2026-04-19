@@ -2,7 +2,7 @@
   <UMain class="bg-gray-900">
     <UHeader class="bg-gray-900 border-none" :toggle="false">
       <template #title>
-        <img src="/logo.png" alt="Tab Ninja logo" class="h-10 w-auto" />
+        <img src="/logo-v2.png" alt="Tab Ninja logo" class="h-10 w-auto" />
       </template>
       <template #right>
         <UDropdownMenu :items="navItems">

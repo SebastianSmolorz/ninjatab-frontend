@@ -33,7 +33,7 @@ async function onSubmit() {
     <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
       <div class="max-w-md w-full px-4">
         <div class="flex justify-center mb-8">
-          <img src="/logo.png" alt="Tab Ninja logo" class="w-28" />
+          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-28" />
         </div>
 
         <div class="text-center mb-8">

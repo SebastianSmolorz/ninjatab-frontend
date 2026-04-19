@@ -9,7 +9,7 @@ useSeoMeta({
   title: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
   ogTitle: () => tabName.value ? `You've been invited to join ${tabName.value}` : 'Join a Tab – Tab Ninja',
   ogDescription: 'Click to join the tab and start tracking shared expenses together.',
-  ogImage: 'https://tab.ninja/logo.png',
+  ogImage: 'https://tab.ninja/logo-v2.png',
   twitterCard: 'summary',
 })
 
@@ -91,7 +91,7 @@ async function onSubmit() {
         <!-- Loading -->
         <div v-if="loadingInvite" class="flex flex-col items-center py-12">
           <div class="flex justify-center mb-8">
-            <img src="/logo.png" alt="Tab Ninja logo" class="w-28" />
+            <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-28" />
           </div>
           <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 text-primary-500 animate-spin" />
         </div>
@@ -118,7 +118,7 @@ async function onSubmit() {
         <template v-else>
         <!-- Logo -->
         <div class="flex justify-center mb-8">
-          <img src="/logo.png" alt="Tab Ninja logo" class="w-28" />
+          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-28" />
         </div>
 
         <!-- Heading -->
@@ -206,7 +206,7 @@ async function onSubmit() {
     style="padding-bottom: env(safe-area-inset-bottom)"
   >
     <div class="flex items-center gap-3 px-4 py-3 max-w-2xl mx-auto">
-      <img src="/logo.png" alt="Tab Ninja logo" class="w-9 h-9 shrink-0 rounded-[5px]" style="background-color: #101828" />
+      <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-9 h-9 shrink-0 rounded-[5px]" style="background-color: #101828" />
       <div class="flex-1 min-w-0">
         <p class="text-black text-sm font-semibold leading-tight">Tab Ninja</p>
         <p class="text-black text-xs leading-tight">Better on the app</p>

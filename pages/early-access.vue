@@ -12,7 +12,7 @@ const platform = ref<'ios' | 'android' | null>(null)
     <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
       <div class="max-w-md w-full px-4">
         <div class="flex justify-center mb-8">
-          <img src="/logo.png" alt="Tab Ninja logo" class="w-24" />
+          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-24" />
         </div>
 
         <div class="text-center mb-8">

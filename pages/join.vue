@@ -17,7 +17,7 @@ onMounted(() => {
     <UContainer class="flex-1 flex items-center justify-center overflow-hidden">
       <div class="w-full max-w-2xl px-4">
         <div class="flex justify-center mb-4">
-          <img src="/logo.png" alt="Tab Ninja logo" class="w-24" />
+          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-24" />
         </div>
 
         <div class="text-center mb-6">
