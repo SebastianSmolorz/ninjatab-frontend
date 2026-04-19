@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { AuthFormField, FormSubmitEvent } from '@nuxt/ui'
-
 definePageMeta({
   middleware: 'guest',
 })
@@ -8,15 +6,12 @@ useSeoMeta({ title: 'Login - Tab.ninja' })
 
 const authStore = useAuthStore()
 const emailSent = ref(false)
+const email = ref('')
 
-const fields: AuthFormField[] = [
-  { name: 'email', type: 'email' as const, label: 'Email', placeholder: 'you@example.com', required: true },
-]
-
-async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
+async function onSubmit() {
   authStore.clearError()
   try {
-    await authStore.sendMagicLink(event.data.email)
+    await authStore.sendMagicLink(email.value)
     emailSent.value = true
   } catch {
     // Error is set in the store
@@ -55,12 +50,27 @@ async function onSubmit(event: FormSubmitEvent<{ email: string }>) {
           <div class="bg-gray-800/60 rounded-xl border border-gray-700 p-6">
             <UAlert v-if="authStore.error" color="error" :title="authStore.error" class="mb-4" />
 
-            <UAuthForm
-              :fields="fields"
-              :submit="{ label: 'Send magic link', block: true, size: 'lg' }"
-              :loading="authStore.isLoading"
-              @submit="onSubmit"
-            />
+            <form class="space-y-4" @submit.prevent="onSubmit">
+              <UFormField label="Email" name="email">
+                <UInput
+                  v-model="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  size="lg"
+                  class="w-full"
+                  autocomplete="email"
+                />
+              </UFormField>
+              <UButton
+                type="submit"
+                block
+                size="lg"
+                :disabled="!email"
+                :loading="authStore.isLoading"
+              >
+                Send magic link
+              </UButton>
+            </form>
           </div>
 
           <div class="flex items-center gap-3 mt-6 text-sm text-gray-500 justify-center">
