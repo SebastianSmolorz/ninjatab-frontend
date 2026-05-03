@@ -2,8 +2,8 @@
 definePageMeta({ auth: false })
 
 useSeoMeta({
-  title: 'Privacy Policy - Tab Ninja',
-  description: 'Privacy Policy for Tab Ninja, the shared expense splitting app.',
+  title: 'Privacy Policy - Ninja Tab',
+  description: 'Privacy Policy for Ninja Tab, the shared expense splitting app.',
 })
 </script>
 
@@ -17,14 +17,14 @@ useSeoMeta({
 
       <div class="space-y-10 text-gray-300 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
         <p>
-          This privacy policy explains how Tab Ninja collects and uses information when you use the service.
-          Tab Ninja helps groups track and split shared expenses such as trips, nights out, or shared purchases.
+          This privacy policy explains how Ninja Tab collects and uses information when you use the service.
+          Ninja Tab helps groups track and split shared expenses such as trips, nights out, or shared purchases.
         </p>
 
         <!-- 1 -->
         <section>
           <h2 class="text-xl font-semibold text-white">1. Who we are</h2>
-          <p>Tab Ninja is operated by Tab Ninja Ltd., based in the United Kingdom.</p>
+          <p>Ninja Tab is operated by Ninja Tab Ltd., based in the United Kingdom.</p>
           <p>If you have any questions about this policy or how we handle your data, contact us at: <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a></p>
         </section>
 
@@ -70,7 +70,7 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">3. How we use your information</h2>
           <p>We use the information we collect to:</p>
           <ul>
-            <li>Provide the Tab Ninja service</li>
+            <li>Provide the Ninja Tab service</li>
             <li>Allow users to create and manage shared expense tabs</li>
             <li>Authenticate users</li>
             <li>Improve reliability and performance</li>
@@ -107,11 +107,11 @@ useSeoMeta({
         <!-- device permissions -->
         <section>
           <h2 class="text-xl font-semibold text-white">5. Device permissions (mobile app)</h2>
-          <p>The Tab Ninja mobile app may request the following device permissions:</p>
+          <p>The Ninja Tab mobile app may request the following device permissions:</p>
           <ul>
             <li><strong class="text-white">Camera</strong> — to take photos of receipts or bills when recording an expense.</li>
             <li><strong class="text-white">Photo library / storage</strong> — to select existing images from your device when uploading a receipt.</li>
-            <li><strong class="text-white">Internet access</strong> — to communicate with Tab Ninja servers.</li>
+            <li><strong class="text-white">Internet access</strong> — to communicate with Ninja Tab servers.</li>
           </ul>
           <p>You can revoke any permission at any time through your device settings. Revoking camera or photo library access will prevent you from uploading receipt images but will not affect other features.</p>
         </section>
@@ -121,7 +121,7 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">6. Legal basis for processing</h2>
           <p>Under UK GDPR we process personal data on the following legal bases:</p>
           <ul>
-            <li><strong class="text-white">Contract</strong> — To provide the Tab Ninja service requested by users.</li>
+            <li><strong class="text-white">Contract</strong> — To provide the Ninja Tab service requested by users.</li>
             <li><strong class="text-white">Legitimate interests</strong> — To operate, analyse, and improve the service.</li>
             <li><strong class="text-white">Consent</strong> — Where required for analytics or cookies.</li>
           </ul>
@@ -172,7 +172,7 @@ useSeoMeta({
         <!-- 9 -->
         <section>
           <h2 class="text-xl font-semibold text-white">11. Children's privacy</h2>
-          <p>Tab Ninja is not directed at children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us at <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a> and we will delete it.</p>
+          <p>Ninja Tab is not directed at children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us at <a href="mailto:seb@tab.ninja" class="text-primary-400 hover:underline">seb@tab.ninja</a> and we will delete it.</p>
         </section>
 
         <!-- 10 -->

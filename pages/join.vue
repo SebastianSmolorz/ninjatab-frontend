@@ -17,12 +17,12 @@ onMounted(() => {
     <UContainer class="flex-1 flex items-center justify-center overflow-hidden">
       <div class="w-full max-w-2xl px-4">
         <div class="flex justify-center mb-4">
-          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-24" />
+          <img src="/logo-v2.png" alt="Ninja Tab logo" class="w-24" />
         </div>
 
         <div class="text-center mb-6">
           <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3">Ready to split?</h1>
-          <p class="text-gray-400">Use Tab Ninja right now in your browser, or get early access to the mobile app.</p>
+          <p class="text-gray-400">Use Ninja Tab right now in your browser, or get early access to the mobile app.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

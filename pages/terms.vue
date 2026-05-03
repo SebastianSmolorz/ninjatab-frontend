@@ -2,8 +2,8 @@
 definePageMeta({ auth: false })
 
 useSeoMeta({
-  title: 'Terms of Service - Tab Ninja',
-  description: 'Terms of Service for Tab Ninja, the shared expense splitting app.',
+  title: 'Terms of Service - Ninja Tab',
+  description: 'Terms of Service for Ninja Tab, the shared expense splitting app.',
 })
 </script>
 
@@ -17,24 +17,24 @@ useSeoMeta({
 
       <div class="space-y-10 text-gray-300 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
         <p>
-          These Terms of Service govern your use of Tab Ninja. By using Tab Ninja you agree to these terms.
+          These Terms of Service govern your use of Ninja Tab. By using Ninja Tab you agree to these terms.
           If you do not agree, please do not use the service.
         </p>
 
         <!-- 1 -->
         <section>
-          <h2 class="text-xl font-semibold text-white">1. About Tab Ninja</h2>
+          <h2 class="text-xl font-semibold text-white">1. About Ninja Tab</h2>
           <p>
-            Tab Ninja is a tool that helps groups track and split shared expenses such as trips, nights out, or shared purchases.
+            Ninja Tab is a tool that helps groups track and split shared expenses such as trips, nights out, or shared purchases.
             The service allows users to create "tabs", record expenses, and calculate how costs should be shared between participants.
           </p>
-          <p>Tab Ninja does not process payments or transfer money between users.</p>
+          <p>Ninja Tab does not process payments or transfer money between users.</p>
         </section>
 
         <!-- 2 -->
         <section>
           <h2 class="text-xl font-semibold text-white">2. Eligibility</h2>
-          <p>You must be at least 18 years old to use Tab Ninja. By using the service you confirm that:</p>
+          <p>You must be at least 18 years old to use Ninja Tab. By using the service you confirm that:</p>
           <ul>
             <li>You are legally able to enter into agreements</li>
             <li>The information you provide is accurate</li>
@@ -61,7 +61,7 @@ useSeoMeta({
             <li>You have permission to include other participants if their email address is used</li>
             <li>You will not use the service to harass, impersonate, or misrepresent others</li>
           </ul>
-          <p>Tab Ninja simply records and calculates expenses. We do not guarantee the accuracy of user-entered data. Users are responsible for verifying expenses and balances within their group.</p>
+          <p>Ninja Tab simply records and calculates expenses. We do not guarantee the accuracy of user-entered data. Users are responsible for verifying expenses and balances within their group.</p>
           <h3 class="text-lg font-medium text-white mt-4">Tab lifecycle</h3>
           <p>A tab is intended to cover a single shared event or trip, such as a holiday, a group meal, or a shared purchase. Tabs are not intended to remain open indefinitely.</p>
           <p>Under normal circumstances, a tab may be closed automatically approximately 30 days after the first expense is added. You should ensure that any outstanding balances are reviewed and settled before this time. We will aim to give notice before a tab is automatically closed.</p>
@@ -70,7 +70,7 @@ useSeoMeta({
         <!-- 4b -->
         <section>
           <h2 class="text-xl font-semibold text-white">5. User content and uploaded images</h2>
-          <p>You may upload images (such as photos of receipts or bills) when recording expenses. By uploading an image you grant Tab Ninja a limited licence to store, display, and process that image for the purpose of providing the service to you and the other participants of your tab.</p>
+          <p>You may upload images (such as photos of receipts or bills) when recording expenses. By uploading an image you grant Ninja Tab a limited licence to store, display, and process that image for the purpose of providing the service to you and the other participants of your tab.</p>
           <p>You are responsible for the content of any images you upload. You must not upload images that contain content that is illegal, offensive, or that violates the rights of others.</p>
           <p>Uploaded images may be processed by an AI service (Mistral) to extract expense information such as totals or itemised amounts. This processing may not always be accurate. You are responsible for reviewing and confirming any automatically extracted information.</p>
           <p>We do not claim ownership of your uploaded content. You may request deletion of your data at any time by contacting us.</p>
@@ -87,13 +87,13 @@ useSeoMeta({
             <li>Updating or correcting information if needed</li>
           </ul>
           <p>Organisers should ensure that participants are aware they have been added to a tab and that expense information is reasonably accurate.</p>
-          <p>Participants should review expenses and balances themselves before making or requesting payments. Tab Ninja does not verify the identity of participants or confirm whether expenses are legitimate. Any disagreements or disputes regarding expenses or balances must be resolved directly between the participants.</p>
+          <p>Participants should review expenses and balances themselves before making or requesting payments. Ninja Tab does not verify the identity of participants or confirm whether expenses are legitimate. Any disagreements or disputes regarding expenses or balances must be resolved directly between the participants.</p>
         </section>
 
         <!-- 6 -->
         <section>
           <h2 class="text-xl font-semibold text-white">7. Calculation of balances</h2>
-          <p>Tab Ninja automatically calculates how expenses may be split between participants based on the information entered by users. These calculations are provided for convenience only.</p>
+          <p>Ninja Tab automatically calculates how expenses may be split between participants based on the information entered by users. These calculations are provided for convenience only.</p>
           <p>While we aim to ensure the calculations work correctly, we do not guarantee that balances or totals are accurate, especially if:</p>
           <ul>
             <li>Expenses are entered incorrectly</li>
@@ -101,27 +101,27 @@ useSeoMeta({
             <li>Currencies or conversions are used</li>
             <li>Itemised bills are entered inaccurately</li>
           </ul>
-          <p>Users are responsible for reviewing and confirming any balances before settling payments with other participants. Tab Ninja is not responsible for financial losses or disputes resulting from incorrect calculations or incorrect data entered by users.</p>
+          <p>Users are responsible for reviewing and confirming any balances before settling payments with other participants. Ninja Tab is not responsible for financial losses or disputes resulting from incorrect calculations or incorrect data entered by users.</p>
         </section>
 
         <!-- 7 -->
         <section>
           <h2 class="text-xl font-semibold text-white">8. Payments between users</h2>
-          <p>Tab Ninja does not handle payments. Any money exchanged between participants happens outside the platform and is the responsibility of the users involved.</p>
-          <p>Tab Ninja is not responsible for disputes between users regarding payments or expenses.</p>
+          <p>Ninja Tab does not handle payments. Any money exchanged between participants happens outside the platform and is the responsibility of the users involved.</p>
+          <p>Ninja Tab is not responsible for disputes between users regarding payments or expenses.</p>
         </section>
 
         <!-- 8 -->
         <section>
           <h2 class="text-xl font-semibold text-white">9. Disputes between participants</h2>
-          <p>Tab Ninja is a tool for recording shared expenses and calculating suggested balances. We are not involved in payments between users and we do not verify the accuracy of expenses recorded in a tab.</p>
+          <p>Ninja Tab is a tool for recording shared expenses and calculating suggested balances. We are not involved in payments between users and we do not verify the accuracy of expenses recorded in a tab.</p>
           <p>Any payments between participants happen outside the platform and are the responsibility of the individuals involved. If a dispute arises about:</p>
           <ul>
             <li>Whether an expense is valid</li>
             <li>How an expense was split</li>
             <li>Whether someone has paid or been repaid</li>
           </ul>
-          <p>the participants must resolve the issue directly with each other. Tab Ninja is not responsible for mediating or resolving disputes between users and cannot guarantee that participants will repay amounts shown in the service.</p>
+          <p>the participants must resolve the issue directly with each other. Ninja Tab is not responsible for mediating or resolving disputes between users and cannot guarantee that participants will repay amounts shown in the service.</p>
         </section>
 
         <!-- 9 -->
@@ -147,7 +147,7 @@ useSeoMeta({
         <!-- 10 -->
         <section>
           <h2 class="text-xl font-semibold text-white">11. Acceptable use</h2>
-          <p>You must use Tab Ninja responsibly and lawfully. You agree not to:</p>
+          <p>You must use Ninja Tab responsibly and lawfully. You agree not to:</p>
           <ul>
             <li>Break any laws</li>
             <li>Upload malicious code or attempt to interfere with or overload the service</li>
@@ -165,7 +165,7 @@ useSeoMeta({
         <!-- 11 -->
         <section>
           <h2 class="text-xl font-semibold text-white">12. Availability of the service</h2>
-          <p>We aim to keep Tab Ninja available and reliable. However:</p>
+          <p>We aim to keep Ninja Tab available and reliable. However:</p>
           <ul>
             <li>The service may occasionally be unavailable</li>
             <li>Features may change</li>
@@ -183,9 +183,9 @@ useSeoMeta({
         <!-- 13 -->
         <section>
           <h2 class="text-xl font-semibold text-white">14. App store distribution</h2>
-          <p>Tab Ninja may be distributed through third-party app stores such as the Apple App Store and Google Play Store. When you download or use Tab Ninja through these platforms, the following applies:</p>
+          <p>Ninja Tab may be distributed through third-party app stores such as the Apple App Store and Google Play Store. When you download or use Ninja Tab through these platforms, the following applies:</p>
           <ul>
-            <li>These terms are between you and Tab Ninja Ltd. only. Apple Inc. and Google LLC are not parties to these terms and have no obligation to provide maintenance, support, warranty, or liability coverage for the app.</li>
+            <li>These terms are between you and Ninja Tab Ltd. only. Apple Inc. and Google LLC are not parties to these terms and have no obligation to provide maintenance, support, warranty, or liability coverage for the app.</li>
             <li>Apple and Google are not responsible for any claims you or a third party may have relating to the app, including product liability claims, consumer protection claims, or intellectual property infringement claims.</li>
             <li>Your use of the app must also comply with the applicable app store's terms of service.</li>
             <li>Apple and Google are third-party beneficiaries of these terms and may enforce them against you.</li>
@@ -195,7 +195,7 @@ useSeoMeta({
         <!-- 14 -->
         <section>
           <h2 class="text-xl font-semibold text-white">15. Intellectual property</h2>
-          <p>The Tab Ninja service, website, and software are owned by Tab Ninja. You may use the service for personal use, but you may not:</p>
+          <p>The Ninja Tab service, website, and software are owned by Ninja Tab. You may use the service for personal use, but you may not:</p>
           <ul>
             <li>Copy, reverse engineer, redistribute, or commercially exploit the service without permission</li>
           </ul>
@@ -204,7 +204,7 @@ useSeoMeta({
         <!-- 15 -->
         <section>
           <h2 class="text-xl font-semibold text-white">16. Limitation of liability</h2>
-          <p>Tab Ninja is provided "as is". To the maximum extent permitted by law:</p>
+          <p>Ninja Tab is provided "as is". To the maximum extent permitted by law:</p>
           <ul>
             <li>We are not liable for financial losses resulting from the use of the service</li>
             <li>We are not responsible for disputes between users</li>

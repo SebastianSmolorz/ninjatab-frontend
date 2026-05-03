@@ -2,7 +2,7 @@
   <UApp>
     <UHeader v-if="!hideHeader" to="/">
       <template #title>
-        <img src="/logo1-small-120.png" alt="Tab Ninja logo" class="w-14" />
+        <img src="/logo1-small-120.png" alt="Ninja Tab logo" class="w-14" />
       </template>
       <template #right>
         <UNavigationMenu :items="headerItems" class="hidden lg:flex" />

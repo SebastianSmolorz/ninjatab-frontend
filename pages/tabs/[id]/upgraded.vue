@@ -3,7 +3,7 @@
     <UContainer class="max-w-lg">
       <div class="text-center space-y-8">
         <div class="flex justify-center">
-          <img src="/logo-v2.png" alt="Tab Ninja" class="w-28" />
+          <img src="/logo-v2.png" alt="Ninja Tab" class="w-28" />
         </div>
 
         <div class="space-y-3">
@@ -11,7 +11,7 @@
             This one is on us
           </h1>
           <p class="text-gray-600 dark:text-gray-400">
-            As an early user of Tab Ninja this tab has been upgraded to Pro free of charge.
+            As an early user of Ninja Tab this tab has been upgraded to Pro free of charge.
           </p>
         </div>
 

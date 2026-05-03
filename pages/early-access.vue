@@ -12,12 +12,12 @@ const platform = ref<'ios' | 'android' | null>(null)
     <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
       <div class="max-w-md w-full px-4">
         <div class="flex justify-center mb-8">
-          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-24" />
+          <img src="/logo-v2.png" alt="Ninja Tab logo" class="w-24" />
         </div>
 
         <div class="text-center mb-8">
           <h1 class="text-3xl font-bold text-white mb-2">Early access</h1>
-          <p class="text-gray-400">The Tab Ninja mobile app is in early access.</p>
+          <p class="text-gray-400">The Ninja Tab mobile app is in early access.</p>
           <p class="text-gray-400">Select your platform to get started.</p>
         </div>
 

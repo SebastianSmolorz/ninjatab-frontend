@@ -2,7 +2,7 @@
   <UMain class="bg-gray-900">
     <UHeader class="bg-gray-900 border-none" :toggle="false">
       <template #title>
-        <img src="/logo-v2.png" alt="Tab Ninja logo" class="h-10 w-auto" />
+        <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
       </template>
       <template #right>
         <UDropdownMenu :items="navItems">
@@ -66,7 +66,7 @@
           highlight
           highlight-color="primary"
           title="App is in early access"
-          description="Very soon Tab Ninja will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
+          description="Very soon Ninja Tab will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
       >
         <div>
           <UButton to="/early-access" label="Join early access" class="p-3"/>
@@ -76,12 +76,12 @@
       <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
       <div class="flex flex-col mb-24">
         <p>
-          Tab Ninja is an expense splitting app that helps groups track shared expenses. It makes it easy to split expenses between friends and see exactly who owes what.
+          Ninja Tab is an expense splitting app that helps groups track shared expenses. It makes it easy to split expenses between friends and see exactly who owes what.
           It works great for smaller plans such as a night out or house share cost splitting, but it really shines when it comes to larger plans such as a summer holiday, festival or ski trip.
         </p>
         <h3 class="font-bold mt-2">A smarter way to track group expenses</h3>
         <p>
-          Add bills in seconds, split expenses your way, and let Tab Ninja automatically calculate the simplest
+          Add bills in seconds, split expenses your way, and let Ninja Tab automatically calculate the simplest
           settlement, reducing the number of payments needed so all debts are settled. It makes it easy to split expenses with friends without spreadsheets, group chat maths,
           or awkward money conversations.
         </p>
@@ -92,7 +92,7 @@
     <UFooter>
       <template #left>
         <p class="text-muted text-sm">
-          Copyright Tab Ninja © {{ new Date().getFullYear() }}
+          Copyright Ninja Tab © {{ new Date().getFullYear() }}
         </p>
       </template>
       <UNavigationMenu :items="footerLinks" variant="link" orientation="vertical" class="sm:hidden" />
@@ -162,8 +162,8 @@ const footerLinks = [
 ]
 
 useSeoMeta({
-  title: 'App to Split Trip Bills & Expenses Easily | Tab Ninja',
-  description: 'Split bills and expenses with Tab Ninja. Start a tab, add friends, scan receipts and simplify settling for trips, nights out and shared costs.',
+  title: 'App to Split Trip Bills & Expenses Easily | Ninja Tab',
+  description: 'Split bills and expenses with Ninja Tab. Start a tab, add friends, scan receipts and simplify settling for trips, nights out and shared costs.',
 })
 </script>
 

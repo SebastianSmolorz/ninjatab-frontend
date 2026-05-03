@@ -25,7 +25,7 @@ async function onSubmit() {
       <div class="max-w-md w-full px-4">
         <!-- Logo -->
         <div v-if="!emailSent" class="flex justify-center mb-8">
-          <img src="/logo-v2.png" alt="Tab Ninja logo" class="w-28" />
+          <img src="/logo-v2.png" alt="Ninja Tab logo" class="w-28" />
         </div>
 
         <!-- Email sent confirmation -->

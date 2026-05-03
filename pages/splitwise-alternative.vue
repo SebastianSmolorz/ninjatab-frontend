@@ -4,10 +4,10 @@
       <UContainer class="py-16 max-w-3xl space-y-10">
         <!-- Hero -->
         <header class="space-y-4">
-          <h1 class="text-4xl font-bold tracking-tight">Best Splitwise Alternative (UK) – Try Tab Ninja</h1>
+          <h1 class="text-4xl font-bold tracking-tight">Best Splitwise Alternative (UK) – Try Ninja Tab</h1>
           <p class="text-lg text-gray-400">Looking for a better alternative to Splitwise?</p>
           <p>
-            If you're planning group trips, nights out, ski holidays, or stag/hen weekends. Tab Ninja is a modern
+            If you're planning group trips, nights out, ski holidays, or stag/hen weekends. Ninja Tab is a modern
             expense splitting app built around real-world group chaos, not subscription lock-ins.
           </p>
         </header>
@@ -37,13 +37,13 @@
 
         <!-- Comparison Table -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Tab Ninja vs Splitwise</h2>
+          <h2 class="text-2xl font-bold">Ninja Tab vs Splitwise</h2>
           <div class="overflow-x-auto">
             <table class="w-full text-left">
               <thead>
                 <tr class="border-b border-gray-700">
                   <th class="py-3 pr-4">Feature</th>
-                  <th class="py-3 pr-4">Tab Ninja</th>
+                  <th class="py-3 pr-4">Ninja Tab</th>
                   <th class="py-3">Splitwise</th>
                 </tr>
               </thead>
@@ -81,7 +81,7 @@
               </tbody>
             </table>
           </div>
-          <p>Tab Ninja is built for event-based use. Splitwise is built around subscriptions.</p>
+          <p>Ninja Tab is built for event-based use. Splitwise is built around subscriptions.</p>
           <p class="font-medium">If you split expenses occasionally but intensely. Subscriptions feel unnecessary.</p>
         </section>
 
@@ -132,7 +132,7 @@
             <li>Multiple currencies</li>
           </ul>
           <p>Different people paying at different times.</p>
-          <h3 class="text-lg font-semibold pt-2">Tab Ninja handles:</h3>
+          <h3 class="text-lg font-semibold pt-2">Ninja Tab handles:</h3>
           <ul class="list-disc pl-6 space-y-1">
             <li>Uneven splits</li>
             <li>Item-level splits</li>
@@ -165,7 +165,7 @@
         <!-- UK-Based -->
         <section class="space-y-4">
           <h2 class="text-2xl font-bold">UK-Based. Transparent. No Lock-In.</h2>
-          <p>Tab Ninja is a British business built around a simple idea:</p>
+          <p>Ninja Tab is a British business built around a simple idea:</p>
           <ul class="list-disc pl-6 space-y-1 font-medium">
             <li>If the trip is small, it should be free</li>
             <li>If the trip is big, everyone contributes a tiny amount</li>
@@ -174,9 +174,9 @@
 
         <USeparator />
 
-        <!-- Is Tab Ninja the Best? -->
+        <!-- Is Ninja Tab the Best? -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">So Is Tab Ninja the Best Splitwise Alternative?</h2>
+          <h2 class="text-2xl font-bold">So Is Ninja Tab the Best Splitwise Alternative?</h2>
           <p>If you:</p>
           <ul class="list-disc pl-6 space-y-1">
             <li>Split expenses occasionally but heavily</li>
@@ -196,7 +196,7 @@
 
         <!-- CTA -->
         <section class="space-y-4 text-center">
-          <h2 class="text-2xl font-bold">Try Tab Ninja</h2>
+          <h2 class="text-2xl font-bold">Try Ninja Tab</h2>
           <p>
             Start a free tab.<br />
             Upgrade only if your trip actually needs it.
@@ -219,7 +219,7 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Best Splitwise Alternative (UK) – Try Tab Ninja',
-  description: 'Looking for a Splitwise alternative? Tab Ninja is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
+  title: 'Best Splitwise Alternative (UK) – Try Ninja Tab',
+  description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
 })
 </script>
