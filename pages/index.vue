@@ -67,10 +67,11 @@
           highlight-color="primary"
           title="App launching 21 May 2026"
           description="Ninja Tab is coming to the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
+          :ui="{ leading: 'items-center', body: 'items-center text-center', title: 'text-center', description: 'text-center' }"
       >
-        <div class="flex flex-col gap-6">
+        <div class="flex flex-col items-center gap-6">
           <AppLaunchCountdown />
-          <UButton to="/early-access" label="Join early access" class="p-3 self-start"/>
+          <UButton to="/early-access" label="Join early access" class="p-3"/>
         </div>
       </UPageCard>
     <article>
