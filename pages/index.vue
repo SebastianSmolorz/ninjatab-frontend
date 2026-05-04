@@ -26,7 +26,7 @@
       <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 py-16 text-center">
         <div class="flex flex-col items-center gap-6 bg-black/70 rounded-2xl px-8 py-5">
           <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
-            Stick it on the tab<span class="text-primary-400 animate-pulse [animation-duration:1.5s]">.ninja</span>
+            Stick it on the <span class="text-primary-400 animate-pulse [animation-duration:1.5s]">Ninja</span> Tab
           </h1>
           <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow">
             Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
@@ -65,11 +65,12 @@
           spotlight-color="primary"
           highlight
           highlight-color="primary"
-          title="App is in early access"
-          description="Very soon Ninja Tab will hit the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
+          title="App launching 21 May 2026"
+          description="Ninja Tab is coming to the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
       >
-        <div>
-          <UButton to="/early-access" label="Join early access" class="p-3"/>
+        <div class="flex flex-col gap-6">
+          <AppLaunchCountdown />
+          <UButton to="/early-access" label="Join early access" class="p-3 self-start"/>
         </div>
       </UPageCard>
     <article>
@@ -86,6 +87,10 @@
           or awkward money conversations.
         </p>
         </div>
+    </article>
+    <article class="mb-24">
+      <h2 class="text-2xl mb-6 text-primary font-bold">Frequently asked questions</h2>
+      <UAccordion :items="faqItems" />
     </article>
     </UContainer>
 
@@ -152,6 +157,33 @@ const benefits = [
     title: 'Fair and transparent pricing',
     description: 'Free for smaller tabs. £1 per person for unlimited. Added directly to the tab.'
   }
+]
+
+const faqItems = [
+  {
+    label: 'Is Ninja Tab free to use?',
+    content: 'Yes — opening a tab and adding expenses is completely free. For larger groups, there is a small £1 per person fee for unlimited bills on a tab, added directly to the tab so the group can split it like any other expense.',
+  },
+  {
+    label: 'Do my friends need to sign up to join a tab?',
+    content: 'No sign-up is needed for friends to be added to a tab. You can add people by name and manage splits on their behalf. If they want to log in and view the tab themselves, they can create a free account.',
+  },
+  {
+    label: 'How does the smart settlement work?',
+    content: 'Once all expenses are added, Ninja Tab calculates the minimum number of payments needed to settle all debts across the group. Instead of everyone paying everyone else back, you get a simple list of who pays whom and how much.',
+  },
+  {
+    label: 'Can I split bills unevenly?',
+    content: 'Yes. Each line item is split using shares, so you can give people different numbers of shares to reflect what they actually used or consumed. For example, if one person has two portions and another has one, just assign shares accordingly.',
+  },
+  {
+    label: 'What currencies does Ninja Tab support?',
+    content: 'Ninja Tab supports 14 currencies: USD, EUR, GBP, JPY, CAD, TRY, PLN, CZK, AUD, CHF, HUF, BGN, MXN, and THB. Each bill can use a different currency, making it ideal for international trips where you are spending in multiple currencies.',
+  },
+  {
+    label: 'When will the mobile app be available?',
+    content: 'The Ninja Tab mobile app launches on 21 May 2026 on both the Google Play Store and Apple App Store, with exclusive features like receipt scanning with automatic currency and date detection. Join the early access list to be first in line.',
+  },
 ]
 
 const footerLinks = [

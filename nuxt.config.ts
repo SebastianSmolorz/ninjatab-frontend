@@ -18,7 +18,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            title: 'Tab.ninja - Free app keep track of and settle shared costs',
+            title: 'Ninja Tab - Free app keep track of and settle shared costs',
             htmlAttrs: {
                 lang: 'en',
             },
