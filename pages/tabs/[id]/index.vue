@@ -407,6 +407,13 @@
               @update:model-value="onAddPersonSelected"
             />
           </div>
+          <UAlert
+            icon="i-heroicons-information-circle"
+            color="warning"
+            variant="soft"
+            title="New people aren't included in existing bills"
+            description="They'll only appear in bills created from now on. Edit existing bills if you need to include them."
+          />
           <div class="flex justify-end gap-2">
             <UButton
               label="Cancel"
