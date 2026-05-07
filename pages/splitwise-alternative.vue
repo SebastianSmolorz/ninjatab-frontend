@@ -4,11 +4,11 @@
       <UContainer class="py-16 max-w-3xl space-y-10">
         <!-- Hero -->
         <header class="space-y-4">
-          <h1 class="text-4xl font-bold tracking-tight">Best Splitwise Alternative (UK) – Try Ninja Tab</h1>
+          <h1 class="text-4xl font-bold tracking-tight">Best Free Splitwise Alternative (UK) – Try Ninja Tab</h1>
           <p class="text-lg text-gray-400">Looking for a better alternative to Splitwise?</p>
           <p>
             If you're planning group trips, nights out, ski holidays, or stag/hen weekends. Ninja Tab is a modern
-            expense splitting app built around real-world group chaos, not subscription lock-ins.
+            expense splitting app built around solving real-world group chaos.
           </p>
         </header>
 
@@ -16,28 +16,30 @@
 
         <!-- Why People Search -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Why People Search for a Splitwise Alternative</h2>
+          <h2 class="text-2xl text-primary font-bold">Why People Search for a Splitwise Alternative</h2>
           <p>
-            People don't leave Splitwise because it doesn't work.<br />
-            They leave because:
+            If you use it, you'll probably know why. It mostly does the job but do you enjoy using it?
           </p>
+          <h3>Here are my gripes:</h3>
           <ul class="list-disc pl-6 space-y-1">
-            <li>Daily bill adding limit feels restrictive</li>
-            <li>The experience is not as smooth as it possibly can be</li>
-            <li>Not enough currencies and currency conversion is locked behind Pro</li>
-            <li>Without a trip pass, only the subscriber gets Pro features so they end up adding all the bills</li>
-            <li>Subscriptions don't make sense for occasional travel and</li>
-            <li>One person ends up paying for the whole group</li>
+            <li>On the free tier you can only add one expense a day</li>
+            <li>Everyone must join by email to even start tracking expenses</li>
+            <li>£40 per year subscription which ONE PERSON has to front</li>
+            <li>Even with a subscription, only the pro user gets pro features</li>
+            <li>No currency conversion on free</li>
+            <li>No way to scan a receipt into an itemised expense</li>
+            <li>Ads</li>
+            <li>(personal opinion) Outdated design and user experience</li>
           </ul>
           <p>If you're only splitting a few bills with a flatmate, most apps do ok.</p>
-          <p class="font-medium">If you're organising a big group holiday? That's different.</p>
+          <p class="font-medium">If you're organising a group holiday? That's different.</p>
         </section>
 
         <USeparator />
 
         <!-- Comparison Table -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Ninja Tab vs Splitwise</h2>
+          <h2 class="text-2xl text-primary font-bold">Ninja Tab vs Splitwise</h2>
           <div class="overflow-x-auto">
             <table class="w-full text-left">
               <thead>
@@ -49,17 +51,32 @@
               </thead>
               <tbody class="divide-y divide-gray-800">
                 <tr>
+                  <td class="py-3 pr-4">Track group expenses</td>
+                  <td class="py-3 pr-4 text-green-400">Yes</td>
+                  <td class="py-3 text-green-400">Yes</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4">Simplify repayments</td>
+                  <td class="py-3 pr-4 text-green-400">Yes</td>
+                  <td class="py-3 text-green-400">Yes</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4">Receipt scanning</td>
+                  <td class="py-3 pr-4 text-green-400">Parsed into items and translated</td>
+                  <td class="py-3 text-red-400">Attach image on Pro only</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4">Manual itemised expenses like a receipt</td>
+                  <td class="py-3 pr-4 text-green-400">Yes</td>
+                  <td class="py-3 text-red-400">Pro only (only subscriber)</td>
+                </tr>
+                <tr>
                   <td class="py-3 pr-4">Free for smaller plans</td>
                   <td class="py-3 pr-4 text-green-400">Yes</td>
                   <td class="py-3 text-yellow-400">Limited</td>
                 </tr>
                 <tr>
-                  <td class="py-3 pr-4">Receipt scanning</td>
-                  <td class="py-3 pr-4 text-green-400">One free per tab for anyone</td>
-                  <td class="py-3 text-red-400">Pro only (only subscriber)</td>
-                </tr>
-                <tr>
-                  <td class="py-3 pr-4">Multi-currency support</td>
+                  <td class="py-3 pr-4">Multi-currency conversion support</td>
                   <td class="py-3 pr-4 text-green-400">Included</td>
                   <td class="py-3 text-red-400">Pro only</td>
                 </tr>
@@ -69,14 +86,19 @@
                   <td class="py-3 text-yellow-400">Restricted free usage</td>
                 </tr>
                 <tr>
-                  <td class="py-3 pr-4">Subscription required</td>
+                  <td class="py-3 pr-4">Subscription model</td>
                   <td class="py-3 pr-4 text-green-400">Never</td>
-                  <td class="py-3 text-red-400">Pro subscription</td>
+                  <td class="py-3 text-red-400">Yes</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4">Ads</td>
+                  <td class="py-3 pr-4 text-green-400">Never</td>
+                  <td class="py-3 text-red-400">Yes</td>
                 </tr>
                 <tr>
                   <td class="py-3 pr-4">Per-event pricing</td>
                   <td class="py-3 pr-4 text-green-400">£1 per person, split evenly</td>
-                  <td class="py-3 text-red-400">No</td>
+                  <td class="py-3 text-red-400">One trip pass with a £40 subscription</td>
                 </tr>
               </tbody>
             </table>
@@ -89,7 +111,7 @@
 
         <!-- Pricing -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Pricing That Matches Real Life</h2>
+          <h2 class="text-2xl text-primary font-bold">Pricing That Matches Real Life</h2>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="rounded-lg border border-gray-700 p-4 text-center">
               <p class="text-sm text-gray-400">A night out</p>
@@ -118,7 +140,7 @@
 
         <!-- Built for Group Travel -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Built for Group Travel (Not Just Flat Shares)</h2>
+          <h2 class="text-2xl text-primary font-bold">Built for Group Travel</h2>
           <p>A real trip looks like this:</p>
           <ul class="list-disc pl-6 space-y-1">
             <li>Flights</li>
@@ -132,23 +154,23 @@
             <li>Multiple currencies</li>
           </ul>
           <p>Different people paying at different times.</p>
-          <h3 class="text-lg font-semibold pt-2">Ninja Tab handles:</h3>
+          <h3 class="text-lg text-primary font-semibold pt-2">Ninja Tab handles:</h3>
           <ul class="list-disc pl-6 space-y-1">
             <li>Uneven splits</li>
-            <li>Item-level splits</li>
+            <li>Item level splits</li>
             <li>Receipt scanning</li>
+            <li>Receipt translation</li>
             <li>Live balances</li>
             <li>Automatic currency conversion</li>
             <li>Clean final settlement</li>
           </ul>
-          <p class="font-medium">It's built for group travel, not just roommate rent splits.</p>
         </section>
 
         <USeparator />
 
         <!-- Smarter Bill Splitting -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">Smarter Bill Splitting</h2>
+          <h2 class="text-2xl font-bold text-primary">Smarter Bill Splitting</h2>
           <p>
             Restaurant receipt in a foreign language?<br />
             Scan it. Tap who had what. Item names translated.
@@ -164,7 +186,7 @@
 
         <!-- UK-Based -->
         <section class="space-y-4">
-          <h2 class="text-2xl font-bold">UK-Based. Transparent. No Lock-In.</h2>
+          <h2 class="text-2xl text-primary font-bold">UK-Based. Transparent. No Lock-In.</h2>
           <p>Ninja Tab is a British business built around a simple idea:</p>
           <ul class="list-disc pl-6 space-y-1 font-medium">
             <li>If the trip is small, it should be free</li>
@@ -196,7 +218,7 @@
 
         <!-- CTA -->
         <section class="space-y-4 text-center">
-          <h2 class="text-2xl font-bold">Try Ninja Tab</h2>
+          <h2 class="text-2xl font-bold">Group Expenses? Stick It On The Ninja Tab</h2>
           <p>
             Start a free tab.<br />
             Upgrade only if your trip actually needs it.
@@ -207,7 +229,7 @@
             <li>Done.</li>
           </ul>
           <div class="pt-4">
-            <UButton size="xl" block to="/login">
+            <UButton size="xl" block to="/join">
               Start a Free Tab
             </UButton>
           </div>
