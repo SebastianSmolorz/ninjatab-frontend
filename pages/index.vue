@@ -71,7 +71,7 @@
       >
         <div class="flex flex-col items-center gap-6">
           <AppLaunchCountdown />
-          <UButton to="/early-access" label="Join early access" class="p-3"/>
+          <UButton to="/join" label="Join early access" class="p-3"/>
         </div>
       </UPageCard>
     <article>
@@ -117,7 +117,7 @@ const navItems: DropdownMenuItem[][] = [
     { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
   ],
   [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: '/join' },
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
     { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
   ],
 ]

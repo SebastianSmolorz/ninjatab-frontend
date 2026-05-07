@@ -35,7 +35,7 @@ const dismissed = ref(false)
 const isLoggedIn = computed(() => authStore.isAuthenticated)
 
 function getTheApp() {
-  router.push('/early-access')
+  router.push('/join')
 }
 
 onMounted(async () => {

@@ -9,7 +9,7 @@
       </template>
 
       <template #body>
-        <UNavigationMenu :items="headerItems" orientation="vertical" class="-mx-2.5" />
+        <UNavigationMenu :items="burgerItems" orientation="vertical" class="-mx-2.5" />
       </template>
     </UHeader>
     <UNavigationMenu v-if="isIndex" :items="indexLinks" orientation="vertical" class="absolute right-0 top-0" />
@@ -41,6 +41,10 @@ const headerItems = computed(() => {
   ]
 })
 
+const burgerItems = computed(() =>
+  headerItems.value.filter(item => item.label !== 'Login')
+)
+
 const indexLinks = [
   {
     label: 'Already have an account?',
@@ -57,5 +61,5 @@ const route = useRoute()
 const { isNativeApp } = useNativeApp()
 
 const isIndex = computed(() => route.name === 'index')
-const hideHeader = computed(() => isNativeApp.value || isIndex.value || route.name === 'join' || route.name === 'early-access' || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
+const hideHeader = computed(() => isNativeApp.value || isIndex.value || route.name === 'join' || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
 </script>

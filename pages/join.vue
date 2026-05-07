@@ -1,66 +1,78 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Get Started - Tab.ninja',
-  description: 'Start splitting group expenses now. Get the app or start now in browser.',
+  title: 'Early Access - Tab.ninja',
+  description: 'Get early access to the Tab.ninja mobile app.',
 })
 
-const config = useRuntimeConfig()
-const baseURL = config.public.apiBaseUrl || 'http://localhost:8000/api'
-
-onMounted(() => {
-  fetch(`${baseURL}/marketing/waitlist/pageview`, { method: 'POST' }).catch(() => {})
-})
+const platform = ref<'ios' | 'android' | null>(null)
 </script>
 
 <template>
-  <UMain class="bg-gray-900 h-svh flex flex-col">
-    <UContainer class="flex-1 flex items-center justify-center overflow-hidden">
-      <div class="w-full max-w-2xl px-4">
-        <div class="flex justify-center mb-4">
+  <UMain class="bg-gray-900 min-h-screen flex flex-col">
+    <UContainer class="flex-1 flex items-start justify-center pt-12 pb-16">
+      <div class="max-w-md w-full px-4">
+        <div class="flex justify-center mb-8">
           <img src="/logo-v2.png" alt="Ninja Tab logo" class="w-24" />
         </div>
 
-        <div class="text-center mb-6">
-          <h1 class="text-3xl sm:text-4xl font-bold text-white mb-3">Ready to split?</h1>
-          <p class="text-gray-400">Use Ninja Tab right now in your browser, or get early access to the mobile app.</p>
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-white mb-2">Early access</h1>
+          <p class="text-gray-400">The Ninja Tab mobile app is in early access.</p>
+          <p class="text-gray-400">Select your platform to get started.</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Mobile app option -->
-          <NuxtLink
-            to="/early-access"
-            class="group flex flex-col gap-4 p-6 rounded-xl border border-gray-700 bg-gray-800/60 hover:border-primary hover:bg-gray-800 transition-colors"
-          >
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-              <UIcon name="i-lucide-smartphone" class="text-2xl text-primary" />
+        <div class="bg-gray-800/60 rounded-xl border border-gray-700 p-6 space-y-5">
+          <UFormField label="Your phone">
+            <div class="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-colors"
+                :class="platform === 'ios'
+                  ? 'border-primary bg-primary/10 text-white'
+                  : 'border-gray-600 bg-gray-900/50 text-gray-400 hover:border-gray-500'"
+                @click="platform = 'ios'"
+              >
+                <UIcon name="i-simple-icons-apple" class="text-xl shrink-0" />
+                <span class="font-medium">iPhone</span>
+              </button>
+              <button
+                type="button"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-colors"
+                :class="platform === 'android'
+                  ? 'border-primary bg-primary/10 text-white'
+                  : 'border-gray-600 bg-gray-900/50 text-gray-400 hover:border-gray-500'"
+                @click="platform = 'android'"
+              >
+                <UIcon name="i-simple-icons-googleplay" class="text-xl shrink-0" />
+                <span class="font-medium">Android</span>
+              </button>
             </div>
-            <div>
-              <h2 class="text-lg font-semibold text-white mb-1">Get the app</h2>
-              <p class="text-sm text-gray-400">iOS and Android. <span class="text-primary font-bold">Scan receipts</span>. Join early access.</p>
-            </div>
-            <div class="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary">
-              Join early access
-              <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-1" />
-            </div>
-          </NuxtLink>
+          </UFormField>
 
-          <!-- Browser option -->
-          <NuxtLink
-            to="/login"
-            class="group flex flex-col gap-4 p-6 rounded-xl border border-gray-700 bg-gray-800/60 hover:border-primary hover:bg-gray-800 transition-colors"
-          >
-            <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-              <UIcon name="i-lucide-monitor" class="text-2xl text-primary" />
-            </div>
-            <div>
-              <h2 class="text-lg font-semibold text-white mb-1">Start in browser</h2>
-              <p class="text-sm text-gray-400">No download needed. Open a tab and start splitting expenses right now.</p>
-            </div>
-            <div class="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary">
-              Get started
-              <UIcon name="i-lucide-arrow-right" class="transition-transform group-hover:translate-x-1" />
-            </div>
-          </NuxtLink>
+          <template v-if="platform === 'ios'">
+            <p class="text-sm text-gray-400">Click the button below and follow the instructions.</p>
+            <UButton
+              size="lg"
+              block
+              to="https://testflight.apple.com/join/Vw7FSBqP"
+              target="_blank"
+              trailing-icon="i-lucide-arrow-right"
+            >
+              Download the app
+            </UButton>
+          </template>
+
+          <template v-else-if="platform === 'android'">
+            <UButton
+              size="lg"
+              block
+              to="https://play.google.com/store/apps/details?id=ninja.tab.app"
+              target="_blank"
+              trailing-icon="i-lucide-arrow-right"
+            >
+              Download the app
+            </UButton>
+          </template>
         </div>
       </div>
     </UContainer>
