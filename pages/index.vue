@@ -113,9 +113,9 @@ import type { PageFeatureProps, DropdownMenuItem } from '@nuxt/ui'
 definePageMeta({ middleware: 'guest' })
 
 const navItems: DropdownMenuItem[][] = [
-  [
-    { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
-  ],
+  // [
+  //   { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
+  // ],
   [
     { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
     { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
