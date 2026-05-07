@@ -9,7 +9,7 @@
       </template>
 
       <template #body>
-        <UNavigationMenu :items="burgerItems" orientation="vertical" class="-mx-2.5" />
+        <UNavigationMenu :items="headerItems" orientation="vertical" class="-mx-2.5" />
       </template>
     </UHeader>
     <UNavigationMenu v-if="isIndex" :items="indexLinks" orientation="vertical" class="absolute right-0 top-0" />
@@ -36,14 +36,9 @@ const headerItems = computed(() => {
     ]
   }
   return [
-    { label: 'Login', to: '/login' },
     { label: 'Contact', to: '/contact' },
   ]
 })
-
-const burgerItems = computed(() =>
-  headerItems.value.filter(item => item.label !== 'Login')
-)
 
 const indexLinks = [
   {
