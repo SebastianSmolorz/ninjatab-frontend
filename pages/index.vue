@@ -1,18 +1,7 @@
 <template>
   <UMain class="bg-gray-900">
-    <UHeader class="bg-gray-900 border-none" :toggle="false">
-      <template #title>
-        <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
-      </template>
-      <template #right>
-        <UDropdownMenu :items="navItems">
-          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
-        </UDropdownMenu>
-      </template>
-    </UHeader>
-
-    <!-- Hero Section — full viewport minus header, outside container -->
-    <div class="relative w-full overflow-hidden" style="min-height: calc(100svh - var(--ui-header-height));">
+    <!-- Hero Section — full viewport, outside container -->
+    <div class="relative w-full overflow-hidden" style="min-height: 100svh;">
       <!-- Background: dimmed photo + layered gradients + radial glows -->
       <div class="absolute inset-0 bg-gray-900" />
       <picture>
@@ -30,27 +19,30 @@
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--ui-color-primary-700)/25%,_transparent_55%)] opacity-50" />
       <div class="absolute inset-0 bg-[linear-gradient(180deg,_transparent_0%,_rgba(0,0,0,0.4)_100%)]" />
 
+      <!-- Fixed overlay: logo + burger menu -->
+      <div class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 sm:px-6 py-4">
+        <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
+        <UDropdownMenu :items="navItems">
+          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+        </UDropdownMenu>
+      </div>
+
       <UContainer class="relative z-10 h-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center pt-2 pb-12 lg:pt-4 lg:pb-20" style="min-height: calc(100svh - var(--ui-header-height));">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
           <!-- Text column -->
           <div class="flex flex-col items-center lg:items-start gap-6 text-center lg:text-left">
-            <div class="inline-flex items-center gap-2 rounded-full bg-primary-500/10 ring-1 ring-primary-500/30 px-3 py-1 text-xs sm:text-sm text-primary-300">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
+            <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
+              <span class="block text-4xl sm:text-5xl lg:text-6xl">Group Expenses?</span>
+              <span class="block text-2xl sm:text-3xl lg:text-4xl mt-2">
+                Stick it on the
+                <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
               </span>
-              App launching 21 May 2026
-            </div>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
-              Group Expenses?<br/>
-              Stick it on the
-              <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
             </h1>
             <h2 class="text-gray-300 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
-              Like a bar tab, but for your shared holiday, night out or restaurant trip. Split bills, simplify settling, skip maths.
+              Stick the group costs on one shared tab.<br/> Scan receipts, split who had what, and settle up without the maths.
             </h2>
-            <div class="w-full sm:w-auto pt-2">
-              <UButton size="xl" to="/join" class="w-full sm:w-auto justify-center">
+            <div class="pt-2">
+              <UButton size="xl" to="/join" class="justify-center">
                 Get started now
               </UButton>
             </div>
