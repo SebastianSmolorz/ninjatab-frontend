@@ -12,32 +12,75 @@
     </UHeader>
 
     <!-- Hero Section — full viewport minus header, outside container -->
-    <div class="relative w-full overflow-hidden" style="height: calc(100svh - var(--ui-header-height));">
+    <div class="relative w-full overflow-hidden" style="min-height: calc(100svh - var(--ui-header-height));">
+      <!-- Background: dimmed photo + layered gradients + radial glows -->
+      <div class="absolute inset-0 bg-gray-900" />
       <picture>
         <source srcset="/group.webp" type="image/webp" />
         <img
           src="/group-optimised.jpg"
-          alt="Friends enjoying on a holiday"
+          alt=""
+          aria-hidden="true"
           fetchpriority="high"
-          class="absolute inset-0 w-full h-full object-cover"
+          class="absolute inset-0 w-full h-full object-cover opacity-25"
         />
       </picture>
-      <div class="absolute inset-0 " />
-      <div class="relative z-10 flex flex-col items-center justify-center h-full gap-6 py-16 text-center">
-        <div class="flex flex-col items-center gap-6 bg-black/70 rounded-2xl px-8 py-5">
-          <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
-            Stick it on the <span class="text-primary-400 animate-pulse [animation-duration:1.5s]">Ninja</span> Tab
-          </h1>
-          <h2 class="text-gray-200 text-base sm:text-lg max-w-md drop-shadow">
-            Like a bar tab, but for your shared holiday, night out or restaurant trip.<br/>
-          </h2>
-          <div class="w-full max-w-xs">
-            <UButton size="xl" block to="/join">
-              Get started now
-            </UButton>
+      <div class="absolute inset-0 bg-black/30" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--ui-color-primary-500)/20%,_transparent_50%)] opacity-40" />
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--ui-color-primary-700)/25%,_transparent_55%)] opacity-50" />
+      <div class="absolute inset-0 bg-[linear-gradient(180deg,_transparent_0%,_rgba(0,0,0,0.4)_100%)]" />
+
+      <UContainer class="relative z-10 h-full">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center pt-2 pb-12 lg:pt-4 lg:pb-20" style="min-height: calc(100svh - var(--ui-header-height));">
+          <!-- Text column -->
+          <div class="flex flex-col items-center lg:items-start gap-6 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 rounded-full bg-primary-500/10 ring-1 ring-primary-500/30 px-3 py-1 text-xs sm:text-sm text-primary-300">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75" />
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-400" />
+              </span>
+              App launching 21 May 2026
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
+              Group Expenses?<br/>
+              Stick it on the
+              <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
+            </h1>
+            <h2 class="text-gray-300 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
+              Like a bar tab, but for your shared holiday, night out or restaurant trip. Split bills, simplify settling, skip maths.
+            </h2>
+            <div class="w-full sm:w-auto pt-2">
+              <UButton size="xl" to="/join" class="w-full sm:w-auto justify-center">
+                Get started now
+              </UButton>
+            </div>
+          </div>
+
+          <!-- Device mockup carousel column -->
+          <div class="relative flex items-center justify-center">
+            <UCarousel
+              v-slot="{ item }"
+              loop
+              dots
+              fade
+              :autoplay="{ delay: 3500 }"
+              :items="deviceMockups"
+              class="relative w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]"
+              :ui="{ container: 'items-center ml-0', item: 'pl-0 min-w-0 basis-full', dots: 'mt-6', dot: 'bg-white/30 data-[state=active]:bg-primary-400' }"
+            >
+              <div class="flex items-center justify-center">
+                <img
+                  :src="item"
+                  alt="Ninja Tab app screen"
+                  loading="eager"
+                  fetchpriority="high"
+                  class="w-full h-auto max-h-[50vh] lg:max-h-[70vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
+                />
+              </div>
+            </UCarousel>
           </div>
         </div>
-      </div>
+      </UContainer>
     </div>
 
     <UContainer>
@@ -74,7 +117,7 @@
           <UButton to="/join" label="Join early access" class="p-3"/>
         </div>
       </UPageCard>
-    <article>
+    <article id="how-it-works">
       <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
       <div class="flex flex-col mb-24">
         <p>
@@ -120,6 +163,9 @@ const navItems: DropdownMenuItem[][] = [
     { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
     { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
   ],
+  [
+    { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
+  ],
 ]
 
 const features = ref<PageFeatureProps[]>([
@@ -141,6 +187,12 @@ const features = ref<PageFeatureProps[]>([
 ])
 
 const logoActive = ref(false)
+
+const deviceMockups = [
+  '/device-mockup_1.5x_postspark_2026-05-13_13-11-53.png',
+  '/device-mockup_1.5x_postspark_2026-05-13_13-11-55.png',
+  '/device-mockup_1.5x_postspark_2026-05-13_13-11-56.png',
+]
 
 const benefits = [
   {
