@@ -269,7 +269,7 @@
               <span class="text-gray-400">forever</span>
             </div>
             <ul class="mt-6 flex flex-col gap-3 text-gray-300">
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Up to 5 bills per tab</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Up to 7 expenses per tab</li>
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited people on a tab</li>
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Smart settlement</li>
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Multi-currency support</li>
