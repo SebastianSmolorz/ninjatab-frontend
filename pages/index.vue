@@ -86,9 +86,8 @@
             Group trips end the same way every time.
           </h2>
           <p class="mt-6 text-lg text-gray-300 leading-relaxed">
-            A messy group chat. A half-finished spreadsheet. Someone always paid more.
-            Someone always ends up doing the maths. By the time you've worked out who owes who,
-            the holiday memory is already fading.
+            A messy group chat. Bunch of pictures of receipts. Nobody can remember what they had.
+            Welcome home. Here's some maths homework.
           </p>
         </div>
 
@@ -253,15 +252,16 @@
         <div class="max-w-3xl mx-auto text-center mb-12">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Pricing</span>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Free for small tabs. Fair when you grow.
+            Every feature, free. Pay only when the tab gets massive.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
-            No subscriptions. No per-user trickery. Just one transparent fee, added to the tab so the group splits it.
+            Free gets you the full Ninja Tab experience: receipt scanning, smart settlement, multi-currency, all of it. The only thing that changes on a paid tab is the cap on expenses.
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          <div class="p-8 rounded-2xl bg-gray-800/50 ring-1 ring-white/10 flex flex-col">
+          <div class="relative p-8 rounded-2xl bg-gray-800/50 ring-1 ring-white/10 flex flex-col">
+            <span class="absolute -top-3 right-6 bg-gray-200 text-gray-900 text-xs font-bold px-3 py-1 rounded-full">Great for smaller plans</span>
             <h3 class="text-xl font-semibold text-white">Free</h3>
             <p class="text-gray-400 mt-1">Get started, no card required.</p>
             <div class="mt-6 flex items-baseline gap-2">
@@ -269,27 +269,28 @@
               <span class="text-gray-400">forever</span>
             </div>
             <ul class="mt-6 flex flex-col gap-3 text-gray-300">
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Every Ninja Tab feature included</li>
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Up to 7 expenses per tab</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited people on a tab</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Smart settlement</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Multi-currency support</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />1 receipt scan per tab (mobile)</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited people, smart settlement, multi-currency</li>
             </ul>
             <UButton to="/join" variant="soft" size="lg" class="mt-8 justify-center" block>Start free</UButton>
           </div>
 
           <div class="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-2 ring-primary-500/40 flex flex-col">
-            <span class="absolute -top-3 right-6 bg-primary-500 text-gray-950 text-xs font-bold px-3 py-1 rounded-full">Best for trips</span>
+            <span class="absolute -top-3 right-6 bg-primary-500 text-gray-950 text-xs font-bold px-3 py-1 rounded-full">Best for group trips</span>
+            <span class="absolute -top-3 left-6 bg-amber-400 text-gray-950 text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-amber-500/30">Free during launch</span>
             <h3 class="text-xl font-semibold text-white">Unlimited tab</h3>
             <p class="text-gray-400 mt-1">For bigger groups and longer trips.</p>
             <div class="mt-6 flex items-baseline gap-2">
-              <span class="text-5xl font-bold text-white">£1</span>
-              <span class="text-gray-400">per person, one-off</span>
+              <span class="text-5xl font-bold text-white"><span class="line-through text-gray-500 text-3xl mr-2">£1</span>£0</span>
+              <span class="text-gray-400">per person, free for our launch period</span>
             </div>
             <ul class="mt-6 flex flex-col gap-3 text-gray-300">
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Everything in Free</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited bills on the tab</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Receipt scanning (mobile)</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Fee added to the tab and split by the group</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited expenses on the tab</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited receipt scans</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />The fee is added to the tab so everyone pays £1</li>
             </ul>
             <UButton to="/join" size="lg" class="mt-8 justify-center" block>Get started</UButton>
           </div>
@@ -392,17 +393,17 @@ const painPoints = [
   {
     icon: 'i-lucide-message-circle-off',
     title: 'The bottomless group chat',
-    description: 'Receipts, Venmo screenshots and "who paid for the Uber?" buried under 400 messages.',
+    description: 'Receipts, screenshots and "who paid for the Uber?" buried under 400 messages.',
   },
   {
     icon: 'i-lucide-calculator',
-    title: 'The doomed spreadsheet',
-    description: 'One person ends up maintaining it. The formulas break. The currencies don\'t add up.',
+    title: 'Calculator madness',
+    description: 'Have fun working out a 10 person, 30 expense trip by hand. Don\'t forget the exchange rate.',
   },
   {
     icon: 'i-lucide-clock-alert',
     title: 'The endless settle-up',
-    description: 'Six people sending six different transfers. Half forget. The other half round down.',
+    description: 'If Steve owes Ben £100, but Ben owes Seb £25....no wonder your gang put it off',
   },
 ]
 
