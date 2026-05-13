@@ -527,7 +527,7 @@ const footerLinks = [
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
 ]
 
-const siteUrl = 'https://ninjatab.app'
+const siteUrl = 'https://www.tab.ninja'
 const ogImage = `${siteUrl}/og-image.jpg`
 
 useSeoMeta({

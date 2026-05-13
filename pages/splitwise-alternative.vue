@@ -367,7 +367,7 @@ useSeoMeta({
   description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
   ogTitle: 'Ninja Tab — The free Splitwise alternative built for trips',
   ogDescription: 'No daily limits, no £40 subscription, multi-currency included. Built for the way groups actually spend.',
-  ogImage: 'https://ninjatab.app/og-image.jpg',
+  ogImage: 'https://www.tab.ninja/og-image.jpg',
   twitterCard: 'summary_large_image',
 })
 </script>
