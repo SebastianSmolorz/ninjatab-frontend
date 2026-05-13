@@ -3,7 +3,7 @@
     <UContainer class="max-w-lg">
       <div class="text-center space-y-8">
         <div class="flex justify-center">
-          <img src="/logo-v2.png" alt="Ninja Tab" class="w-28" />
+          <img src="/logo-v2-240.webp" alt="Ninja Tab" class="w-28" />
         </div>
 
         <div class="space-y-3">
