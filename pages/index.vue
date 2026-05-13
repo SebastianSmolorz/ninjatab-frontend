@@ -77,60 +77,280 @@
       </UContainer>
     </div>
 
-    <UContainer>
-      <UPageSection
-        title="Less time splitting expenses. More time enjoying the trip."
-        :features="features"
-      />
-      <!-- Benefits Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 max-w-4xl mx-auto">
-        <UPageFeature
-          v-for="benefit in benefits"
-          :key="benefit.title"
-          :icon="benefit.icon"
-          :title="benefit.title"
-          :description="benefit.description"
-          orientation="vertical"
-          class="text-center p-6 rounded-xl bg-gray-800/50"
-        >
-        </UPageFeature>
-      </div>
-      <UPageCard
+    <!-- Problem framing -->
+    <section class="relative py-20 lg:py-28 bg-gray-900">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">The problem</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Group trips end the same way every time.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300 leading-relaxed">
+            A messy group chat. A half-finished spreadsheet. Someone always paid more.
+            Someone always ends up doing the maths. By the time you've worked out who owes who,
+            the holiday memory is already fading.
+          </p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+          <div v-for="pain in painPoints" :key="pain.title" class="p-6 rounded-xl bg-gray-800/40 ring-1 ring-white/5">
+            <UIcon :name="pain.icon" class="size-7 text-primary-400 mb-3" />
+            <h3 class="font-semibold text-white mb-1">{{ pain.title }}</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">{{ pain.description }}</p>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- How it works -->
+    <section id="how-it-works" class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-900 to-gray-950">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-14">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">How it works</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Three steps. No spreadsheets. No drama.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300">
+            Ninja Tab keeps every expense in one shared tab and works out the simplest way to settle up.
+          </p>
+        </div>
+
+        <ol class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <li v-for="(step, i) in steps" :key="step.title" class="relative p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
+            <div class="absolute -top-4 -left-2 size-10 rounded-full bg-primary-500 text-gray-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-primary-500/30">
+              {{ i + 1 }}
+            </div>
+            <UIcon :name="step.icon" class="size-8 text-primary-400 mt-2 mb-4" />
+            <h3 class="text-xl font-semibold text-white mb-2">{{ step.title }}</h3>
+            <p class="text-gray-400 leading-relaxed">{{ step.description }}</p>
+          </li>
+        </ol>
+
+        <div class="mt-12 flex justify-center">
+          <UButton size="xl" to="/join" trailing-icon="i-lucide-arrow-right">Start a free tab</UButton>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Use cases -->
+    <section class="relative py-20 lg:py-28 bg-gray-950">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-14">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Made for groups</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Built for every kind of shared spend.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300">
+            From a single dinner to a two-week trip across three currencies — Ninja Tab handles it.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <div
+            v-for="useCase in useCases"
+            :key="useCase.title"
+            class="group relative p-6 rounded-2xl bg-gradient-to-br from-gray-800/60 to-gray-800/20 ring-1 ring-white/10 hover:ring-primary-500/40 transition"
+          >
+            <UIcon :name="useCase.icon" class="size-8 text-primary-400 mb-4" />
+            <h3 class="text-lg font-semibold text-white mb-2">{{ useCase.title }}</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">{{ useCase.description }}</p>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Feature highlights — alternating rows -->
+    <section class="relative py-20 lg:py-28 bg-gray-950">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Features</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Less time on the maths. More time enjoying the trip.
+          </h2>
+        </div>
+
+        <div class="flex flex-col gap-16 lg:gap-24 max-w-6xl mx-auto">
+          <div
+            v-for="(highlight, i) in highlights"
+            :key="highlight.title"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+          >
+            <div :class="[i % 2 === 1 ? 'lg:order-2' : '', 'flex flex-col gap-4']">
+              <UIcon :name="highlight.icon" class="size-10 text-primary-400" />
+              <h3 class="text-2xl sm:text-3xl font-bold text-white">{{ highlight.title }}</h3>
+              <p class="text-gray-300 text-lg leading-relaxed">{{ highlight.description }}</p>
+              <ul class="flex flex-col gap-2 mt-2">
+                <li v-for="bullet in highlight.bullets" :key="bullet" class="flex items-start gap-2 text-gray-300">
+                  <UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />
+                  <span>{{ bullet }}</span>
+                </li>
+              </ul>
+            </div>
+            <div :class="[i % 2 === 1 ? 'lg:order-1' : '', 'relative']">
+              <!-- Placeholder visual — swap with annotated screenshots when ready -->
+              <div class="aspect-[4/5] rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-1 ring-primary-500/20 flex items-center justify-center overflow-hidden">
+                <img
+                  :src="highlight.image"
+                  :alt="highlight.title"
+                  class="w-full h-full object-contain p-8 drop-shadow-[0_25px_40px_rgba(0,0,0,0.5)]"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Comparison: vs spreadsheets / Splitwise -->
+    <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Why Ninja Tab</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Built for groups, not for accountants.
+          </h2>
+        </div>
+
+        <div class="max-w-4xl mx-auto overflow-hidden rounded-2xl ring-1 ring-white/10 bg-gray-900/60">
+          <table class="w-full text-left">
+            <thead class="bg-gray-800/60">
+              <tr>
+                <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">&nbsp;</th>
+                <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-primary-400">Ninja Tab</th>
+                <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">Spreadsheets</th>
+                <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">Group chats</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              <tr v-for="row in comparison" :key="row.feature">
+                <td class="px-4 sm:px-6 py-4 text-gray-200 font-medium">{{ row.feature }}</td>
+                <td class="px-4 sm:px-6 py-4">
+                  <UIcon name="i-lucide-check-circle-2" class="size-5 text-primary-400" />
+                </td>
+                <td class="px-4 sm:px-6 py-4 text-gray-500">
+                  <UIcon :name="row.spreadsheet ? 'i-lucide-circle-dashed' : 'i-lucide-x'" class="size-5" />
+                </td>
+                <td class="px-4 sm:px-6 py-4 text-gray-500">
+                  <UIcon name="i-lucide-x" class="size-5" />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="text-center mt-6">
+          <NuxtLink to="/splitwise-alternative" class="text-primary-400 hover:text-primary-300 text-sm font-medium">
+            See how Ninja Tab compares to Splitwise →
+          </NuxtLink>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="relative py-20 lg:py-28 bg-gray-900">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-12">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Pricing</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Free for small tabs. Fair when you grow.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300">
+            No subscriptions. No per-user trickery. Just one transparent fee, added to the tab so the group splits it.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div class="p-8 rounded-2xl bg-gray-800/50 ring-1 ring-white/10 flex flex-col">
+            <h3 class="text-xl font-semibold text-white">Free</h3>
+            <p class="text-gray-400 mt-1">Get started, no card required.</p>
+            <div class="mt-6 flex items-baseline gap-2">
+              <span class="text-5xl font-bold text-white">£0</span>
+              <span class="text-gray-400">forever</span>
+            </div>
+            <ul class="mt-6 flex flex-col gap-3 text-gray-300">
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Up to 5 bills per tab</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited people on a tab</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Smart settlement</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Multi-currency support</li>
+            </ul>
+            <UButton to="/join" variant="soft" size="lg" class="mt-8 justify-center" block>Start free</UButton>
+          </div>
+
+          <div class="relative p-8 rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-2 ring-primary-500/40 flex flex-col">
+            <span class="absolute -top-3 right-6 bg-primary-500 text-gray-950 text-xs font-bold px-3 py-1 rounded-full">Best for trips</span>
+            <h3 class="text-xl font-semibold text-white">Unlimited tab</h3>
+            <p class="text-gray-400 mt-1">For bigger groups and longer trips.</p>
+            <div class="mt-6 flex items-baseline gap-2">
+              <span class="text-5xl font-bold text-white">£1</span>
+              <span class="text-gray-400">per person, one-off</span>
+            </div>
+            <ul class="mt-6 flex flex-col gap-3 text-gray-300">
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Everything in Free</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Unlimited bills on the tab</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Receipt scanning (mobile)</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Fee added to the tab and split by the group</li>
+            </ul>
+            <UButton to="/join" size="lg" class="mt-8 justify-center" block>Get started</UButton>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
+    <!-- App launching countdown -->
+    <section class="relative py-20 lg:py-24 bg-gray-900">
+      <UContainer>
+        <UPageCard
           icon="i-lucide-smartphone"
           spotlight
-          class="pb-6 mb-16 mt-16"
           spotlight-color="primary"
           highlight
           highlight-color="primary"
-          title="App launching 21 May 2026"
-          description="Ninja Tab is coming to the Android and Apple mobile app stores. Mobile only features will include receipt scanning with built in translation, date and currency detection. No more guessing, just scan it and split it."
+          title="Mobile app launching 21 May 2026"
+          description="Receipt scanning with built-in translation, automatic currency and date detection. Scan it, split it, done."
           :ui="{ leading: 'items-center', body: 'items-center text-center', title: 'text-center', description: 'text-center' }"
-      >
-        <div class="flex flex-col items-center gap-6">
-          <AppLaunchCountdown />
-          <UButton to="/join" label="Join early access" class="p-3"/>
+        >
+          <div class="flex flex-col items-center gap-6">
+            <AppLaunchCountdown />
+            <UButton to="/join" size="lg" label="Join early access" />
+          </div>
+        </UPageCard>
+      </UContainer>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="relative py-20 lg:py-28 bg-gray-950">
+      <UContainer>
+        <div class="max-w-3xl mx-auto">
+          <div class="text-center mb-10">
+            <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">FAQ</span>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+              Frequently asked questions
+            </h2>
+          </div>
+          <UAccordion :items="faqItems" />
         </div>
-      </UPageCard>
-    <article id="how-it-works">
-      <h2 class="text-2xl mb-2 text-primary font-bold">How it works</h2>
-      <div class="flex flex-col mb-24">
-        <p>
-          Ninja Tab is an expense splitting app that helps groups track shared expenses. It makes it easy to split expenses between friends and see exactly who owes what.
-          It works great for smaller plans such as a night out or house share cost splitting, but it really shines when it comes to larger plans such as a summer holiday, festival or ski trip.
-        </p>
-        <h3 class="font-bold mt-2">A smarter way to track group expenses</h3>
-        <p>
-          Add bills in seconds, split expenses your way, and let Ninja Tab automatically calculate the simplest
-          settlement, reducing the number of payments needed so all debts are settled. It makes it easy to split expenses with friends without spreadsheets, group chat maths,
-          or awkward money conversations.
-        </p>
+      </UContainer>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900 overflow-hidden">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--ui-color-primary-500)/15%,_transparent_60%)]" />
+      <UContainer class="relative">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Stick the next trip on a tab.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300">
+            Free to start, no card required. Open a tab in seconds and skip the maths.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+            <UButton size="xl" to="/join" trailing-icon="i-lucide-arrow-right">Start your free tab</UButton>
+            <UButton size="xl" variant="ghost" color="neutral" to="#how-it-works">See how it works</UButton>
+          </div>
         </div>
-    </article>
-    <article class="mb-24">
-      <h2 class="text-2xl mb-6 text-primary font-bold">Frequently asked questions</h2>
-      <UAccordion :items="faqItems" />
-    </article>
-    </UContainer>
+      </UContainer>
+    </section>
 
     <UFooter>
       <template #left>
@@ -145,7 +365,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PageFeatureProps, DropdownMenuItem } from '@nuxt/ui'
+import type { DropdownMenuItem } from '@nuxt/ui'
 
 definePageMeta({ middleware: 'guest' })
 
@@ -162,48 +382,115 @@ const navItems: DropdownMenuItem[][] = [
   ],
 ]
 
-const features = ref<PageFeatureProps[]>([
-  {
-    title: 'Open a tab',
-    description: 'Create a shared tab in seconds. Add friends or manage everything yourself. Completely free to start.',
-    icon: 'i-lucide-smile',
-  },
-  {
-    title: 'Add expenses in seconds',
-    description: 'Scan a receipt or enter expenses manually. Split costs exactly how you want, or let friends claim their items.',
-    icon: 'i-lucide-receipt-pound-sterling',
-  },
-  {
-    title: 'Settle with fewer payments',
-    description: 'See who owes what at a glance. Our smart settlement minimises transfers so your group can square up fast.',
-    icon: 'i-lucide-hand-coins',
-  }
-])
-
-const logoActive = ref(false)
-
 const deviceMockups = [
   '/screen1.webp',
   '/screen2.webp',
   '/screen3.webp',
 ]
 
-const benefits = [
+const painPoints = [
   {
     icon: 'i-lucide-message-circle-off',
-    title: 'Stop tracking expenses in chat',
-    description: 'Everything stays organised in one shared tab.'
+    title: 'The bottomless group chat',
+    description: 'Receipts, Venmo screenshots and "who paid for the Uber?" buried under 400 messages.',
   },
   {
     icon: 'i-lucide-calculator',
-    title: 'Fewer payments',
-    description: 'Our smart settlement reduces the number of transfers needed to settle up quickly.'
+    title: 'The doomed spreadsheet',
+    description: 'One person ends up maintaining it. The formulas break. The currencies don\'t add up.',
   },
   {
-    icon: 'i-lucide-heart',
-    title: 'Fair and transparent pricing',
-    description: 'Free for smaller tabs. £1 per person for unlimited. Added directly to the tab.'
-  }
+    icon: 'i-lucide-clock-alert',
+    title: 'The endless settle-up',
+    description: 'Six people sending six different transfers. Half forget. The other half round down.',
+  },
+]
+
+const steps = [
+  {
+    icon: 'i-lucide-users-round',
+    title: 'Open a tab',
+    description: 'Create a shared tab and add the group. Friends don\'t need to sign up — add them by name.',
+  },
+  {
+    icon: 'i-lucide-receipt',
+    title: 'Add bills as you go',
+    description: 'Scan a receipt or enter a bill. Split by shares, by item, or evenly — whatever fits.',
+  },
+  {
+    icon: 'i-lucide-hand-coins',
+    title: 'Settle in fewer payments',
+    description: 'Ninja Tab works out the minimum transfers needed so the group squares up fast.',
+  },
+]
+
+const useCases = [
+  {
+    icon: 'i-lucide-plane',
+    title: 'Group holidays',
+    description: 'Track flights, villas, food and taxis across multiple currencies. Settle in one go when you\'re home.',
+  },
+  {
+    icon: 'i-lucide-home',
+    title: 'House shares',
+    description: 'Rent, bills, groceries and that one flatmate who always buys the loo roll. Keep it fair month after month.',
+  },
+  {
+    icon: 'i-lucide-utensils',
+    title: 'Dinners & nights out',
+    description: 'Someone always covers the card. Split the bill by what each person actually ordered, not awkward maths.',
+  },
+  {
+    icon: 'i-lucide-mountain-snow',
+    title: 'Trips & festivals',
+    description: 'Ski lift passes, festival vans, the joint kitty for snacks. Capture every cost without breaking the vibe.',
+  },
+]
+
+const highlights = [
+  {
+    icon: 'i-lucide-scan-line',
+    title: 'Scan the receipt. Split the items.',
+    description: 'Snap a photo of any receipt and let Ninja Tab pull out the line items, currency and date. Then everyone claims what they had.',
+    bullets: [
+      'Auto-detects currency and date',
+      'Built-in translation for receipts abroad',
+      'Tap to claim items per person',
+    ],
+    image: '/screen1.webp',
+  },
+  {
+    icon: 'i-lucide-split',
+    title: 'Split however the group actually spent.',
+    description: 'Forget rigid even splits. Use shares when people had different portions, fixed amounts when one person ordered more, or split evenly when it doesn\'t matter.',
+    bullets: [
+      'Shares, fixed amounts or even splits per line item',
+      'Different splits on different items in the same bill',
+      'Edit any bill at any time',
+    ],
+    image: '/screen2.webp',
+  },
+  {
+    icon: 'i-lucide-route',
+    title: 'Smart settlement, fewer transfers.',
+    description: 'Instead of everyone paying everyone back, Ninja Tab works out the smallest set of transfers that settle the whole group.',
+    bullets: [
+      'Minimises the number of payments',
+      'Handles multi-currency tabs',
+      'See exactly who pays whom, and how much',
+    ],
+    image: '/screen3.webp',
+  },
+]
+
+const comparison = [
+  { feature: 'Add bills in seconds', spreadsheet: true },
+  { feature: 'Receipt scanning', spreadsheet: false },
+  { feature: 'Smart settlement (minimum transfers)', spreadsheet: false },
+  { feature: 'Multi-currency on one tab', spreadsheet: false },
+  { feature: 'Friends join without signing up', spreadsheet: true },
+  { feature: 'Updates in real time for everyone', spreadsheet: false },
+  { feature: 'Works on phone and web', spreadsheet: true },
 ]
 
 const faqItems = [
@@ -241,8 +528,74 @@ const footerLinks = [
 ]
 
 useSeoMeta({
-  title: 'App to Split Trip Bills & Expenses Easily | Ninja Tab',
-  description: 'Split bills and expenses with Ninja Tab. Start a tab, add friends, scan receipts and simplify settling for trips, nights out and shared costs.',
+  title: 'Ninja Tab — Split Group Expenses, Trips & Bills the Easy Way',
+  description: 'Ninja Tab is the smart way to split group expenses. Open a shared tab, scan receipts, split bills by item or share, and settle up in the fewest payments. Free to start.',
+  ogTitle: 'Ninja Tab — Stick it on the Tab',
+  ogDescription: 'Split trips, dinners, house bills and nights out. Smart settlement, multi-currency, free to start.',
+  ogImage: '/group-optimised.jpg',
+  twitterCard: 'summary_large_image',
+})
+
+const siteUrl = 'https://ninjatab.app'
+
+const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').trim()
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Ninja Tab',
+    url: siteUrl,
+    logo: `${siteUrl}/logo-v2.png`,
+    sameAs: [
+      'https://play.google.com/store/apps/details?id=ninja.tab.app',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'Ninja Tab',
+    operatingSystem: 'Web, Android, iOS',
+    applicationCategory: 'FinanceApplication',
+    url: siteUrl,
+    description: 'Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.',
+    offers: [
+      {
+        '@type': 'Offer',
+        name: 'Free',
+        price: '0',
+        priceCurrency: 'GBP',
+      },
+      {
+        '@type': 'Offer',
+        name: 'Unlimited tab',
+        price: '1',
+        priceCurrency: 'GBP',
+        description: 'One-off per person for unlimited bills on a tab.',
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(item => ({
+      '@type': 'Question',
+      name: item.label,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: stripHtml(item.content),
+      },
+    })),
+  },
+]
+
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(jsonLd),
+    },
+  ],
 })
 </script>
 
