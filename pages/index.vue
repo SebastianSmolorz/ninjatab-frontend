@@ -1,5 +1,15 @@
 <template>
   <UMain class="bg-gray-900">
+    <!-- Fixed overlay: logo + burger menu (outside hero so dropdown isn't clipped) -->
+    <div class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
+      <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto pointer-events-auto" />
+      <div class="pointer-events-auto">
+        <UDropdownMenu :items="navItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }" :modal="false">
+          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+        </UDropdownMenu>
+      </div>
+    </div>
+
     <!-- Hero Section — full viewport, outside container -->
     <div class="relative w-full overflow-hidden" style="min-height: 100svh;">
       <!-- Background: dimmed photo + layered gradients + radial glows -->
@@ -18,14 +28,6 @@
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--ui-color-primary-500)/20%,_transparent_50%)] opacity-40" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--ui-color-primary-700)/25%,_transparent_55%)] opacity-50" />
       <div class="absolute inset-0 bg-[linear-gradient(180deg,_transparent_0%,_rgba(0,0,0,0.4)_100%)]" />
-
-      <!-- Fixed overlay: logo + burger menu -->
-      <div class="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 sm:px-6 py-4">
-        <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
-        <UDropdownMenu :items="navItems">
-          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
-        </UDropdownMenu>
-      </div>
 
       <UContainer class="relative z-10 h-full">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
@@ -53,8 +55,8 @@
             <UCarousel
               v-slot="{ item }"
               loop
-              dots
               fade
+              arrows
               :autoplay="{ delay: 3500 }"
               :items="deviceMockups"
               class="relative w-full max-w-[380px] sm:max-w-[440px] lg:max-w-[420px]"
@@ -181,9 +183,9 @@ const features = ref<PageFeatureProps[]>([
 const logoActive = ref(false)
 
 const deviceMockups = [
-  '/screen1.png',
-  '/screen2.png',
-  '/screen3.png',
+  '/screen1.webp',
+  '/screen2.webp',
+  '/screen3.webp',
 ]
 
 const benefits = [
