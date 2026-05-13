@@ -28,20 +28,20 @@
       </div>
 
       <UContainer class="relative z-10 h-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
           <!-- Text column -->
-          <div class="flex flex-col items-center lg:items-start gap-6 text-center lg:text-left">
+          <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-6 text-center lg:text-left">
             <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
-              <span class="block text-4xl sm:text-5xl lg:text-6xl">Group Expenses?</span>
-              <span class="block text-2xl sm:text-3xl lg:text-4xl mt-2">
-                Stick it on the
+              <span class="block text-2xl sm:text-3xl lg:text-4xl">Group Expenses?</span>
+              <span class="block text-4xl sm:text-5xl lg:text-6xl mt-2 mb-2">
+                <span class="text-primary-200 mr-2">Stick it on the</span>
                 <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
               </span>
             </h1>
             <h2 class="text-gray-300 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
               Stick the group costs on one shared tab.<br/> Scan receipts, split who had what, and settle up without the maths.
             </h2>
-            <div class="pt-2">
+            <div class="lg:pt-2">
               <UButton size="xl" to="/join" class="justify-center">
                 Get started now
               </UButton>
@@ -49,7 +49,7 @@
           </div>
 
           <!-- Device mockup carousel column -->
-          <div class="relative flex items-center justify-center">
+          <div class="relative flex items-center justify-center -mt-6 lg:mt-0">
             <UCarousel
               v-slot="{ item }"
               loop
@@ -57,7 +57,7 @@
               fade
               :autoplay="{ delay: 3500 }"
               :items="deviceMockups"
-              class="relative w-full max-w-[240px] sm:max-w-[280px] lg:max-w-[320px]"
+              class="relative w-full max-w-[380px] sm:max-w-[440px] lg:max-w-[420px]"
               :ui="{ container: 'items-center ml-0', item: 'pl-0 min-w-0 basis-full', dots: 'mt-6', dot: 'bg-white/30 data-[state=active]:bg-primary-400' }"
             >
               <div class="flex items-center justify-center">
@@ -181,9 +181,9 @@ const features = ref<PageFeatureProps[]>([
 const logoActive = ref(false)
 
 const deviceMockups = [
-  '/device-mockup_1.5x_postspark_2026-05-13_13-11-53.png',
-  '/device-mockup_1.5x_postspark_2026-05-13_13-11-55.png',
-  '/device-mockup_1.5x_postspark_2026-05-13_13-11-56.png',
+  '/screen1.png',
+  '/screen2.png',
+  '/screen3.png',
 ]
 
 const benefits = [
