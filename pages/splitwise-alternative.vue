@@ -1,7 +1,7 @@
 <template>
-  <UMain class="bg-gray-900">
-    <!-- Fixed overlay: logo + back to home -->
-    <div class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
+  <UMain class="relative bg-gray-900">
+    <!-- Overlay: logo + back to home -->
+    <div class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
       <NuxtLink to="/" class="pointer-events-auto">
         <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
       </NuxtLink>
@@ -60,8 +60,8 @@
         </div>
 
         <p class="text-center mt-10 text-gray-400 max-w-2xl mx-auto">
-          Splitting a few bills with a flatmate? Most apps do fine.
-          <span class="text-white font-medium">Organising a group holiday? That's a different game.</span>
+          Splitting a few single item bills with a flatmate? Most apps do fine.<br/>
+          <span class="text-white font-medium">Organising a group holiday? Big group at a restaurant? That's a different ball game.</span>
         </p>
       </UContainer>
     </section>
@@ -74,6 +74,7 @@
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Ninja Tab vs Splitwise.
           </h2>
+          <small class="text-gray-300/70 mt-1">Comparison of Android apps accurate as of 13/05/2026</small>
           <p class="mt-6 text-lg text-gray-300">
             Ninja Tab is built for event-based use. Splitwise is built around subscriptions.
           </p>
@@ -228,10 +229,9 @@
           <div class="p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/10">
             <h3 class="font-semibold text-white mb-4">Maybe not, if you:</h3>
             <ul class="flex flex-col gap-2 text-gray-400">
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-minus" class="size-5 text-gray-500 mt-0.5 shrink-0" />Split one recurring bill with the same person every month</li>
-              <li class="flex items-start gap-2"><UIcon name="i-lucide-minus" class="size-5 text-gray-500 mt-0.5 shrink-0" />Only need a running tally between two people</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-minus" class="size-5 text-gray-500 mt-0.5 shrink-0" />Only split single item expenses e.g. internet bill</li>
+              <li class="flex items-start gap-2"><UIcon name="i-lucide-minus" class="size-5 text-gray-500 mt-0.5 shrink-0" />Have a small number of bills</li>
             </ul>
-            <p class="text-sm text-gray-500 mt-4 italic">Different tools for different patterns.</p>
           </div>
         </div>
       </UContainer>
@@ -292,6 +292,11 @@ const comparison = [
     splitwise: { status: 'yes', text: 'Yes' },
   },
   {
+    feature: 'Uneven splits',
+    ninjaTab: { status: 'yes', text: 'Yes' },
+    splitwise: { status: 'yes', text: 'Yes' },
+  },
+  {
     feature: 'Receipt scanning',
     ninjaTab: { status: 'yes', text: 'Parsed into items and translated' },
     splitwise: { status: 'no', text: 'Attach image on Pro only' },
@@ -299,7 +304,7 @@ const comparison = [
   {
     feature: 'Itemised expenses like a receipt',
     ninjaTab: { status: 'yes', text: 'Yes' },
-    splitwise: { status: 'no', text: 'Pro only (subscriber only)' },
+    splitwise: { status: 'no', text: 'No' },
   },
   {
     feature: 'Free for smaller plans',
@@ -362,7 +367,7 @@ useSeoMeta({
   description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
   ogTitle: 'Ninja Tab — The free Splitwise alternative built for trips',
   ogDescription: 'No daily limits, no £40 subscription, multi-currency included. Built for the way groups actually spend.',
-  ogImage: '/group-optimised.jpg',
+  ogImage: 'https://ninjatab.app/og-image.jpg',
   twitterCard: 'summary_large_image',
 })
 </script>

@@ -9,7 +9,7 @@ useSeoMeta({
 
 <template>
   <UMain class="bg-gray-900 min-h-screen">
-    <UContainer class="max-w-3xl py-12 px-4">
+    <UContainer class="max-w-3xl pt-28 pb-12 px-4">
       <div class="mb-10">
         <h1 class="text-3xl font-bold text-white mb-2">Privacy Policy</h1>
         <p class="text-sm text-gray-500">Last updated: 9 April 2026</p>

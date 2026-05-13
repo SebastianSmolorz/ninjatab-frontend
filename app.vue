@@ -1,23 +1,33 @@
 <template>
   <UApp>
-    <UHeader v-if="!hideHeader" to="/">
-      <template #title>
-        <img src="/logo1-small-120.png" alt="Ninja Tab logo" class="w-14" />
-      </template>
-      <template #right>
-        <UNavigationMenu :items="headerItems" class="hidden lg:flex" />
-      </template>
+    <div class="relative min-h-screen">
+      <!-- Global overlay: logo + burger menu (matches index style) -->
+      <div
+        v-if="!hideHeader"
+        class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none"
+      >
+        <NuxtLink to="/" class="pointer-events-auto">
+          <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto" />
+        </NuxtLink>
+        <div class="pointer-events-auto">
+          <UDropdownMenu
+            :items="navItems"
+            :content="{ align: 'end', side: 'bottom', sideOffset: 8 }"
+            :modal="false"
+          >
+            <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+          </UDropdownMenu>
+        </div>
+      </div>
 
-      <template #body>
-        <UNavigationMenu :items="headerItems" orientation="vertical" class="-mx-2.5" />
-      </template>
-    </UHeader>
-    <UNavigationMenu v-if="isIndex" :items="indexLinks" orientation="vertical" class="absolute right-0 top-0" />
-    <NuxtPage />
+      <NuxtPage />
+    </div>
   </UApp>
 </template>
 
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@nuxt/ui'
+
 const authStore = useAuthStore()
 const router = useRouter()
 
@@ -27,25 +37,25 @@ onMounted(async () => {
   }
 })
 
-const headerItems = computed(() => {
-  if (authStore.isAuthenticated) {
-    return [
-      { label: 'Tabs', to: '/tabs' },
-      { label: 'Contact', to: '/contact' },
-      { label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout },
-    ]
-  }
+const navItems = computed<DropdownMenuItem[][]>(() => {
+  const authed = authStore.isAuthenticated
   return [
-    { label: 'Contact', to: '/contact' },
+    [
+      ...(authed ? [{ label: 'My Tabs', icon: 'i-lucide-list', to: '/tabs' }] : []),
+      { label: 'Contact', icon: 'i-lucide-mail', to: '/contact' },
+    ],
+    [
+      { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
+      { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
+    ],
+    [
+      { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
+    ],
+    ...(authed
+      ? [[{ label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout }]]
+      : []),
   ]
 })
-
-const indexLinks = [
-  {
-    label: 'Already have an account?',
-    to: '/tabs'
-  }
-]
 
 async function handleLogout() {
   await authStore.logout()
@@ -55,6 +65,12 @@ async function handleLogout() {
 const route = useRoute()
 const { isNativeApp } = useNativeApp()
 
-const isIndex = computed(() => route.name === 'index')
-const hideHeader = computed(() => isNativeApp.value || isIndex.value || route.name === 'join' || route.name === 'tabs-id-upgrade' || route.name === 'tabs-id-upgraded')
+const hideHeader = computed(() =>
+  isNativeApp.value
+  || route.name === 'index'
+  || route.name === 'splitwise-alternative'
+  || route.name === 'join'
+  || route.name === 'tabs-id-upgrade'
+  || route.name === 'tabs-id-upgraded'
+)
 </script>

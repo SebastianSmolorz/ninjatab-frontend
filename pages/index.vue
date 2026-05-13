@@ -1,7 +1,7 @@
 <template>
-  <UMain class="bg-gray-900">
-    <!-- Fixed overlay: logo + burger menu (outside hero so dropdown isn't clipped) -->
-    <div class="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
+  <UMain class="relative bg-gray-900">
+    <!-- Overlay: logo + burger menu (outside hero so dropdown isn't clipped) -->
+    <div class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
       <img src="/logo-v2.png" alt="Ninja Tab logo" class="h-10 w-auto pointer-events-auto" />
       <div class="pointer-events-auto">
         <UDropdownMenu :items="navItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }" :modal="false">
@@ -45,13 +45,13 @@
             </h2>
             <div class="lg:pt-2">
               <UButton size="xl" to="/join" class="justify-center">
-                Get started now
+                Download now
               </UButton>
             </div>
           </div>
 
           <!-- Device mockup carousel column -->
-          <div class="relative flex items-center justify-center -mt-6 lg:mt-0">
+          <div class="relative flex items-center justify-center">
             <UCarousel
               v-slot="{ item }"
               loop
@@ -312,7 +312,7 @@
         >
           <div class="flex flex-col items-center gap-6">
             <AppLaunchCountdown />
-            <UButton to="/join" size="lg" label="Join early access" />
+            <UButton to="/join" size="lg" label="Download" />
           </div>
         </UPageCard>
       </UContainer>
@@ -457,7 +457,7 @@ const highlights = [
       'Built-in translation for receipts abroad',
       'Tap to claim items per person',
     ],
-    image: '/screen1.webp',
+    image: '/screen3.webp',
   },
   {
     icon: 'i-lucide-split',
@@ -468,7 +468,7 @@ const highlights = [
       'Different splits on different items in the same bill',
       'Edit any bill at any time',
     ],
-    image: '/screen2.webp',
+    image: '/screen1.webp',
   },
   {
     icon: 'i-lucide-route',
@@ -479,7 +479,7 @@ const highlights = [
       'Handles multi-currency tabs',
       'See exactly who pays whom, and how much',
     ],
-    image: '/screen3.webp',
+    image: '/screen2.webp',
   },
 ]
 
@@ -516,7 +516,7 @@ const faqItems = [
   },
   {
     label: 'When will the mobile app be available?',
-    content: 'The Ninja Tab mobile app launches on 21 May 2026 on both the Google Play Store and Apple App Store, with exclusive features like receipt scanning with automatic currency and date detection. Join the early access list to be first in line.',
+    content: 'The Ninja Tab mobile app launches on 21 May 2026 on both the Google Play Store and Apple App Store, with exclusive features like receipt scanning with automatic currency and date detection. Download it as soon as it goes live.',
   },
 ]
 
@@ -527,62 +527,87 @@ const footerLinks = [
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
 ]
 
+const siteUrl = 'https://ninjatab.app'
+const ogImage = `${siteUrl}/og-image.jpg`
+
 useSeoMeta({
-  title: 'Ninja Tab — Split Group Expenses, Trips & Bills the Easy Way',
-  description: 'Ninja Tab is the smart way to split group expenses. Open a shared tab, scan receipts, split bills by item or share, and settle up in the fewest payments. Free to start.',
+  title: 'Split Group Expenses & Trip Bills | Ninja Tab',
+  description: 'Split group expenses the easy way. Open a shared tab, scan receipts, split bills by item or share, and settle up in the fewest payments. Free to start.',
+  keywords: 'split bills, split expenses, group expenses, expense splitting app, trip cost splitter, splitwise alternative, holiday expenses, group travel app',
+  applicationName: 'Ninja Tab',
+  author: 'Ninja Tab',
+  robots: 'index, follow, max-image-preview:large, max-snippet:-1',
+  themeColor: '#0a0a0a',
+
+  ogType: 'website',
+  ogUrl: siteUrl,
+  ogSiteName: 'Ninja Tab',
+  ogLocale: 'en_GB',
   ogTitle: 'Ninja Tab — Stick it on the Tab',
   ogDescription: 'Split trips, dinners, house bills and nights out. Smart settlement, multi-currency, free to start.',
-  ogImage: '/group-optimised.jpg',
+  ogImage,
+  ogImageAlt: 'Group of friends — Ninja Tab splits group expenses fairly',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageType: 'image/jpeg',
+
   twitterCard: 'summary_large_image',
+  twitterTitle: 'Ninja Tab — Stick it on the Tab',
+  twitterDescription: 'Split trips, dinners, house bills and nights out. Smart settlement, multi-currency, free to start.',
+  twitterImage: ogImage,
+  twitterImageAlt: 'Group of friends — Ninja Tab splits group expenses fairly',
 })
 
-const siteUrl = 'https://ninjatab.app'
+useHead({
+  link: [{ rel: 'canonical', href: siteUrl }],
+  htmlAttrs: { lang: 'en-GB' },
+})
 
 const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').trim()
 
 const jsonLd = [
   {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Ninja Tab',
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Ninja Tab",
     url: siteUrl,
     logo: `${siteUrl}/logo-v2.png`,
     sameAs: [
-      'https://play.google.com/store/apps/details?id=ninja.tab.app',
+      "https://play.google.com/store/apps/details?id=ninja.tab.app",
     ],
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name: 'Ninja Tab',
-    operatingSystem: 'Web, Android, iOS',
-    applicationCategory: 'FinanceApplication',
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "Ninja Tab",
+    operatingSystem: "Web, Android, iOS",
+    applicationCategory: "FinanceApplication",
     url: siteUrl,
-    description: 'Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.',
+    description: "Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.",
     offers: [
       {
-        '@type': 'Offer',
-        name: 'Free',
-        price: '0',
-        priceCurrency: 'GBP',
+        "@type": "Offer",
+        name: "Free",
+        price: "0",
+        priceCurrency: "GBP",
       },
       {
-        '@type': 'Offer',
-        name: 'Unlimited tab',
-        price: '1',
-        priceCurrency: 'GBP',
-        description: 'One-off per person for unlimited bills on a tab.',
+        "@type": "Offer",
+        name: "Unlimited tab",
+        price: "1",
+        priceCurrency: "GBP",
+        description: "One-off per person for unlimited bills on a tab.",
       },
     ],
   },
   {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     mainEntity: faqItems.map(item => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: item.label,
       acceptedAnswer: {
-        '@type': 'Answer',
+        "@type": "Answer",
         text: stripHtml(item.content),
       },
     })),
