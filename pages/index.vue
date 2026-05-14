@@ -277,10 +277,10 @@
             <span class="absolute -top-3 right-6 bg-primary-500 text-gray-950 text-xs font-bold px-3 py-1 rounded-full">Best for group trips</span>
             <span class="absolute -top-3 left-6 bg-amber-400 text-gray-950 text-xs font-bold px-3 py-1 rounded-full shadow-lg shadow-amber-500/30">Free during launch</span>
             <h3 class="text-xl font-semibold text-white">Unlimited tab</h3>
-            <p class="text-gray-400 mt-1">For bigger groups and longer trips.</p>
+            <p class="text-gray-400 mt-1">For bigger trips.</p>
             <div class="mt-6 flex items-baseline gap-2">
-              <span class="text-5xl font-bold text-white"><span class="line-through text-gray-500 text-3xl mr-2">£1</span>£0</span>
-              <span class="text-gray-400">per person, free for our launch period</span>
+              <span class="text-5xl font-bold text-white">£1</span>
+              <span class="text-gray-400">everyone chips in just a quid.</span>
             </div>
             <ul class="mt-6 flex flex-col gap-3 text-gray-300">
               <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Everything in Free</li>

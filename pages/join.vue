@@ -5,6 +5,24 @@ useSeoMeta({
 })
 
 const showIosDetails = ref(false)
+
+const route = useRoute()
+const config = useRuntimeConfig()
+
+onMounted(() => {
+  if (route.query.utm_source !== 'qr') return
+
+  const payload = JSON.stringify({
+    qr_id: String(route.query.qr_id ?? ''),
+    utm_campaign: String(route.query.utm_campaign ?? ''),
+    utm_medium: String(route.query.utm_medium ?? ''),
+    utm_source: String(route.query.utm_source ?? ''),
+  })
+
+  const url = `${config.public.apiBaseUrl}/marketing/qr-scanned`
+  const blob = new Blob([payload], { type: 'application/json' })
+  navigator.sendBeacon(url, blob)
+})
 </script>
 
 <template>
