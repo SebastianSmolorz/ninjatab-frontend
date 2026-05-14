@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <!-- Hero Section — full viewport, outside container -->
+    <!-- Hero Section - full viewport, outside container -->
     <div class="relative w-full overflow-hidden" style="min-height: 100svh;">
       <!-- Background: dimmed photo + layered gradients + radial glows -->
       <div class="absolute inset-0 bg-gray-900" />
@@ -24,7 +24,7 @@
           class="absolute inset-0 w-full h-full object-cover opacity-25"
         />
       </picture>
-      <div class="absolute inset-0 bg-black/30" />
+      <div class="absolute inset-0 bg-black/50" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--ui-color-primary-500)/20%,_transparent_50%)] opacity-40" />
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--ui-color-primary-700)/25%,_transparent_55%)] opacity-50" />
       <div class="absolute inset-0 bg-[linear-gradient(180deg,_transparent_0%,_rgba(0,0,0,0.4)_100%)]" />
@@ -32,20 +32,19 @@
       <UContainer class="relative z-10 h-full">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
           <!-- Text column -->
-          <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-6 text-center lg:text-left">
+          <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-2 text-center lg:text-left bg-black/50 pt-1 pb-4 md:pl-5 rounded-md">
             <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
-              <span class="block text-2xl sm:text-3xl lg:text-4xl">Group Expenses?</span>
-              <span class="block text-4xl sm:text-5xl lg:text-6xl mt-2 mb-2">
+              <span class="block text-4xl sm:text-5xl lg:text-6xl mt-2">
                 <span class="text-primary-200 mr-2">Stick it on the</span>
                 <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
               </span>
             </h1>
-            <h2 class="text-gray-300 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
-              Stick the group costs on one shared tab.<br/> Scan receipts, split who had what, and settle up without the maths.
+            <h2 class="text-gray-200 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
+              Scan receipts. Split costs. Settle up.
             </h2>
             <div class="lg:pt-2">
               <UButton size="xl" to="/join" class="justify-center">
-                Download now
+                Start a Tab
               </UButton>
             </div>
           </div>
@@ -56,10 +55,10 @@
               v-slot="{ item }"
               loop
               fade
-              arrows
+              dots
               :autoplay="{ delay: 3500 }"
               :items="deviceMockups"
-              class="relative w-full max-w-[380px] sm:max-w-[440px] lg:max-w-[420px]"
+              class="relative w-full max-w-[420px] sm:max-w-[500px] lg:max-w-[500px]"
               :ui="{ container: 'items-center ml-0', item: 'pl-0 min-w-0 basis-full', dots: 'mt-6', dot: 'bg-white/30 data-[state=active]:bg-primary-400' }"
             >
               <div class="flex items-center justify-center">
@@ -68,7 +67,7 @@
                   alt="Ninja Tab app screen"
                   loading="eager"
                   fetchpriority="high"
-                  class="w-full h-auto max-h-[50vh] lg:max-h-[70vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
+                  class="w-full h-auto max-h-[58vh] lg:max-h-[75vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
                 />
               </div>
             </UCarousel>
@@ -107,7 +106,7 @@
         <div class="max-w-3xl mx-auto text-center mb-14">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">How it works</span>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Three steps. No spreadsheets. No drama.
+            Three steps. No maths. No drama.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
             Ninja Tab keeps every expense in one shared tab and works out the simplest way to settle up.
@@ -140,7 +139,7 @@
             Built for every kind of shared spend.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
-            From a single dinner to a two-week trip across three currencies — Ninja Tab handles it.
+            From a single dinner to a two-week trip across three currencies, Ninja Tab handles it.
           </p>
         </div>
 
@@ -158,7 +157,7 @@
       </UContainer>
     </section>
 
-    <!-- Feature highlights — alternating rows -->
+    <!-- Feature highlights - alternating rows -->
     <section class="relative py-20 lg:py-28 bg-gray-950">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-16">
@@ -186,7 +185,7 @@
               </ul>
             </div>
             <div :class="[i % 2 === 1 ? 'lg:order-1' : '', 'relative']">
-              <!-- Placeholder visual — swap with annotated screenshots when ready -->
+              <!-- Placeholder visual - swap with annotated screenshots when ready -->
               <div class="aspect-[4/5] rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-1 ring-primary-500/20 flex items-center justify-center overflow-hidden">
                 <img
                   :src="highlight.image"
@@ -201,7 +200,6 @@
       </UContainer>
     </section>
 
-    <!-- Comparison: vs spreadsheets / Splitwise -->
     <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-12">
@@ -217,7 +215,6 @@
               <tr>
                 <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">&nbsp;</th>
                 <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-primary-400">Ninja Tab</th>
-                <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">Spreadsheets</th>
                 <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">Group chats</th>
               </tr>
             </thead>
@@ -226,9 +223,6 @@
                 <td class="px-4 sm:px-6 py-4 text-gray-200 font-medium">{{ row.feature }}</td>
                 <td class="px-4 sm:px-6 py-4">
                   <UIcon name="i-lucide-check-circle-2" class="size-5 text-primary-400" />
-                </td>
-                <td class="px-4 sm:px-6 py-4 text-gray-500">
-                  <UIcon :name="row.spreadsheet ? 'i-lucide-circle-dashed' : 'i-lucide-x'" class="size-5" />
                 </td>
                 <td class="px-4 sm:px-6 py-4 text-gray-500">
                   <UIcon name="i-lucide-x" class="size-5" />
@@ -384,9 +378,9 @@ const navItems: DropdownMenuItem[][] = [
 ]
 
 const deviceMockups = [
-  '/screen1.webp',
-  '/screen2.webp',
   '/screen3.webp',
+  '/screen2.webp',
+  '/screen1.webp',
 ]
 
 const painPoints = [
@@ -411,12 +405,12 @@ const steps = [
   {
     icon: 'i-lucide-users-round',
     title: 'Open a tab',
-    description: 'Create a shared tab and add the group. Friends don\'t need to sign up — add them by name.',
+    description: 'Create a shared tab and add the group. Friends don\'t need to sign up - add them by name.',
   },
   {
     icon: 'i-lucide-receipt',
     title: 'Add bills as you go',
-    description: 'Scan a receipt or enter a bill. Split by shares, by item, or evenly — whatever fits.',
+    description: 'Scan a receipt or enter a bill. Split by shares, by item, or evenly - whatever fits.',
   },
   {
     icon: 'i-lucide-hand-coins',
@@ -485,19 +479,19 @@ const highlights = [
 ]
 
 const comparison = [
-  { feature: 'Add bills in seconds', spreadsheet: true },
-  { feature: 'Receipt scanning', spreadsheet: false },
-  { feature: 'Smart settlement (minimum transfers)', spreadsheet: false },
-  { feature: 'Multi-currency on one tab', spreadsheet: false },
-  { feature: 'Friends join without signing up', spreadsheet: true },
-  { feature: 'Updates in real time for everyone', spreadsheet: false },
-  { feature: 'Works on phone and web', spreadsheet: true },
+  { feature: 'Add bills in seconds' },
+  { feature: 'Receipt scanning' },
+  { feature: 'Smart settlement (minimum transfers)' },
+  { feature: 'Multi-currency on one tab' },
+  { feature: 'Friends join without signing up' },
+  { feature: 'Updates in real time for everyone' },
+  { feature: 'Works on phone and web' },
 ]
 
 const faqItems = [
   {
     label: 'Is Ninja Tab free to use?',
-    content: 'Yes — opening a tab and adding expenses is completely free. For larger groups, there is a small £1 per person fee for unlimited bills on a tab, added directly to the tab so the group can split it like any other expense.',
+    content: 'Yes, opening a tab and adding expenses is completely free. When your plans grow in complexity, there is a small £1 per person fee for unlimited bills on a tab, added directly to the tab so the group can split it like any other expense.',
   },
   {
     label: 'Do my friends need to sign up to join a tab?',
@@ -513,7 +507,7 @@ const faqItems = [
   },
   {
     label: 'What currencies does Ninja Tab support?',
-    content: 'Ninja Tab supports 14 currencies: USD, EUR, GBP, JPY, CAD, TRY, PLN, CZK, AUD, CHF, HUF, BGN, MXN, and THB. Each bill can use a different currency, making it ideal for international trips where you are spending in multiple currencies.',
+    content: 'Ninja Tab supports over 150 currencies, including all major and most minor world currencies. Each bill can use a different currency, making it ideal for your international trip to find yourself in the mountains of Bhutan.',
   },
   {
     label: 'When will the mobile app be available?',
@@ -544,19 +538,19 @@ useSeoMeta({
   ogUrl: siteUrl,
   ogSiteName: 'Ninja Tab',
   ogLocale: 'en_GB',
-  ogTitle: 'Ninja Tab — Stick it on the Tab',
+  ogTitle: 'Ninja Tab - Stick it on the Tab',
   ogDescription: 'Split trips, dinners, house bills and nights out. Smart settlement, multi-currency, free to start.',
   ogImage,
-  ogImageAlt: 'Group of friends — Ninja Tab splits group expenses fairly',
+  ogImageAlt: 'Group of friends - Ninja Tab splits group expenses fairly',
   ogImageWidth: 1200,
   ogImageHeight: 630,
   ogImageType: 'image/jpeg',
 
   twitterCard: 'summary_large_image',
-  twitterTitle: 'Ninja Tab — Stick it on the Tab',
+  twitterTitle: 'Ninja Tab - Stick it on the Tab',
   twitterDescription: 'Split trips, dinners, house bills and nights out. Smart settlement, multi-currency, free to start.',
   twitterImage: ogImage,
-  twitterImageAlt: 'Group of friends — Ninja Tab splits group expenses fairly',
+  twitterImageAlt: 'Group of friends - Ninja Tab splits group expenses fairly',
 })
 
 useHead({

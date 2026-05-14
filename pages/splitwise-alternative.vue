@@ -21,7 +21,7 @@
             The free <span class="text-primary-400">Splitwise alternative</span> built for group trips.
           </h1>
           <p class="mt-6 text-lg lg:text-xl text-gray-300 leading-relaxed">
-            No daily expense limits. No £40 subscriptions. No locking currency conversion behind Pro.
+            No daily expense limits. No £39.99 subscriptions. No locking currency conversion behind Pro.
             Ninja Tab is a modern expense splitting app for the real way groups actually spend.
           </p>
           <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
@@ -74,7 +74,7 @@
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Ninja Tab vs Splitwise.
           </h2>
-          <small class="text-gray-300/70 mt-1">Comparison of Android apps accurate as of 13/05/2026</small>
+          <small class="text-gray-300/70 mt-1">Comparison of Android apps accurate as of 13/05/2026 in UK.</small>
           <p class="mt-6 text-lg text-gray-300">
             Ninja Tab is built for event-based use. Splitwise is built around subscriptions.
           </p>
@@ -155,7 +155,7 @@
         </div>
 
         <ul class="mt-12 max-w-2xl mx-auto flex flex-col gap-3 text-gray-300">
-          <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />No £40 annual subscription</li>
+          <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />No £39.99 annual subscription</li>
           <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />No recurring commitment</li>
           <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />No premium currency unlock</li>
           <li class="flex items-start gap-2"><UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />Fee added to the tab so the group splits it</li>
@@ -272,7 +272,7 @@
 const gripes = [
   { title: 'One expense a day on free', description: 'The free tier limits you to a single expense per day. Useless on a trip.' },
   { title: 'Everyone must join by email', description: 'No way to track expenses for a friend who hasn\'t signed up.' },
-  { title: '£40 a year — one person fronts it', description: 'A subscription that one person has to subsidise for the whole group.' },
+  { title: '£39.99 a year — one person fronts it', description: 'A subscription that one person has to subsidise for the whole group.' },
   { title: 'Pro features only for the subscriber', description: 'The rest of the group still uses the limited free experience.' },
   { title: 'No currency conversion on free', description: 'Travelling abroad? Pay up.' },
   { title: 'No receipt scanning into items', description: 'Manual entry, line by line, for every meal.' },
@@ -334,7 +334,7 @@ const comparison = [
   {
     feature: 'Per-event pricing',
     ninjaTab: { status: 'yes', text: '£1 per person, split evenly' },
-    splitwise: { status: 'no', text: 'Trip pass via £40 subscription' },
+    splitwise: { status: 'no', text: 'Trip pass via £39.99 subscription' },
   },
 ]
 
@@ -366,7 +366,7 @@ useSeoMeta({
   title: 'Best Free Splitwise Alternative (UK) — Ninja Tab',
   description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
   ogTitle: 'Ninja Tab — The free Splitwise alternative built for trips',
-  ogDescription: 'No daily limits, no £40 subscription, multi-currency included. Built for the way groups actually spend.',
+  ogDescription: 'No daily limits, no £39.99 subscription, multi-currency included. Built for the way groups actually spend.',
   ogImage: 'https://www.tab.ninja/og-image.jpg',
   twitterCard: 'summary_large_image',
 })
