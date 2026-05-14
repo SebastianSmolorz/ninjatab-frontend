@@ -8,18 +8,18 @@ const showIosDetails = ref(false)
 </script>
 
 <template>
-  <UMain class="relative bg-gray-900 min-h-screen flex flex-col overflow-hidden">
+  <UMain class="relative bg-gray-900 min-h-screen flex flex-col">
     <!-- Ambient background glows, matching index hero -->
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--ui-color-primary-500)/15%,_transparent_55%)] opacity-50 pointer-events-none" />
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--ui-color-primary-700)/20%,_transparent_60%)] opacity-50 pointer-events-none" />
 
-    <UContainer class="relative z-10 flex-1 flex items-start justify-center pt-12 pb-16">
+    <UContainer class="relative z-10 flex-1 flex items-start justify-center pt-6 sm:pt-8 pb-24">
       <div class="max-w-3xl w-full">
-        <div class="flex justify-center mb-8">
-          <img src="/logo-v2-240.webp" alt="Ninja Tab logo" class="w-24" />
+        <div class="flex justify-center mb-4 sm:mb-6">
+          <img src="/logo-v2-240.webp" alt="Ninja Tab logo" class="w-20 sm:w-24" />
         </div>
 
-        <div class="text-center mb-10">
+        <div class="text-center mb-6 sm:mb-8">
           <h1 class="text-3xl sm:text-4xl font-bold text-white leading-tight tracking-tight">
             Get the <span class="text-primary-400">Ninja Tab</span> app
           </h1>
@@ -88,6 +88,6 @@ const showIosDetails = ref(false)
         </div>
       </div>
     </UContainer>
-    <MarketingFooter />
+    <MarketingFooter class="fixed bottom-0 inset-x-0 z-20" />
   </UMain>
 </template>

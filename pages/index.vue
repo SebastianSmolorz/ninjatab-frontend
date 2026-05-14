@@ -81,13 +81,15 @@
       <UContainer>
         <div class="max-w-3xl mx-auto text-center">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">The problem</span>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Group trips end the same way every time.
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Group trips always end the same way.
           </h2>
-          <p class="mt-6 text-lg text-gray-300 leading-relaxed">
+          <p class="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed">
             A messy group chat. Bunch of pictures of receipts. Nobody can remember what they had.
-            Welcome home. Here's some maths homework.
           </p>
+          <h3 class="mt-10 text-xl sm:text-2xl lg:text-3xl font-semibold text-primary-300 leading-tight">
+            Welcome home. <br/>Here's some maths homework.
+          </h3>
         </div>
 
         <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
@@ -292,27 +294,6 @@
       </UContainer>
     </section>
 
-    <!-- App launching countdown -->
-    <section class="relative py-20 lg:py-24 bg-gray-900">
-      <UContainer>
-        <UPageCard
-          icon="i-lucide-smartphone"
-          spotlight
-          spotlight-color="primary"
-          highlight
-          highlight-color="primary"
-          title="Mobile app launching 21 May 2026"
-          description="Receipt scanning with built-in translation, automatic currency and date detection. Scan it, split it, done."
-          :ui="{ leading: 'items-center', body: 'items-center text-center', title: 'text-center', description: 'text-center' }"
-        >
-          <div class="flex flex-col items-center gap-6">
-            <AppLaunchCountdown />
-            <UButton to="/join" size="lg" label="Download" />
-          </div>
-        </UPageCard>
-      </UContainer>
-    </section>
-
     <!-- FAQ -->
     <section id="faq" class="relative py-20 lg:py-28 bg-gray-950">
       <UContainer>
@@ -386,17 +367,17 @@ const deviceMockups = [
 const painPoints = [
   {
     icon: 'i-lucide-message-circle-off',
-    title: 'The bottomless group chat',
+    title: 'The endless group chat',
     description: 'Receipts, screenshots and "who paid for the Uber?" buried under 400 messages.',
   },
   {
     icon: 'i-lucide-calculator',
-    title: 'Calculator madness',
+    title: 'Headache inducing calculations',
     description: 'Have fun working out a 10 person, 30 expense trip by hand. Don\'t forget the exchange rate.',
   },
   {
     icon: 'i-lucide-clock-alert',
-    title: 'The endless settle-up',
+    title: 'Gnawing feeling this could be easier',
     description: 'If Steve owes Ben £100, but Ben owes Seb £25....no wonder your gang put it off',
   },
 ]
@@ -405,12 +386,12 @@ const steps = [
   {
     icon: 'i-lucide-users-round',
     title: 'Open a tab',
-    description: 'Create a shared tab and add the group. Friends don\'t need to sign up - add them by name.',
+    description: 'Create a shared tab and add the group. Friends don\'t need to sign up, just add them by name and invite later.',
   },
   {
     icon: 'i-lucide-receipt',
-    title: 'Add bills as you go',
-    description: 'Scan a receipt or enter a bill. Split by shares, by item, or evenly - whatever fits.',
+    title: 'Add expenses as you go',
+    description: 'Scan a receipt or enter manually. Split naturally, by number of item each person had.',
   },
   {
     icon: 'i-lucide-hand-coins',
@@ -433,12 +414,12 @@ const useCases = [
   {
     icon: 'i-lucide-utensils',
     title: 'Dinners & nights out',
-    description: 'Someone always covers the card. Split the bill by what each person actually ordered, not awkward maths.',
+    description: 'Put the calculator away. One person fronts and everyone selects what they had.',
   },
   {
     icon: 'i-lucide-mountain-snow',
     title: 'Trips & festivals',
-    description: 'Ski lift passes, festival vans, the joint kitty for snacks. Capture every cost without breaking the vibe.',
+    description: 'Flights, hotels, ski lift passes, tickets. Capture every cost without breaking a sweat.',
   },
 ]
 
@@ -457,18 +438,18 @@ const highlights = [
   {
     icon: 'i-lucide-split',
     title: 'Split however the group actually spent.',
-    description: 'Forget rigid even splits. Use shares when people had different portions, fixed amounts when one person ordered more, or split evenly when it doesn\'t matter.',
+    description: 'Split it evenly, or choose what you all had. No need to fall out over money.',
     bullets: [
-      'Shares, fixed amounts or even splits per line item',
+      'Uneven or even splits per line item',
       'Different splits on different items in the same bill',
-      'Edit any bill at any time',
+      'See your share of each bill automatically',
     ],
     image: '/screen1.webp',
   },
   {
     icon: 'i-lucide-route',
     title: 'Smart settlement, fewer transfers.',
-    description: 'Instead of everyone paying everyone back, Ninja Tab works out the smallest set of transfers that settle the whole group.',
+    description: 'Ninja Tab works out the smallest set of transfers that settle the whole group.',
     bullets: [
       'Minimises the number of payments',
       'Handles multi-currency tabs',
@@ -522,7 +503,7 @@ const footerLinks = [
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
 ]
 
-const siteUrl = 'https://www.tab.ninja'
+const siteUrl = 'https://tab.ninja'
 const ogImage = `${siteUrl}/og-image.jpg`
 
 useSeoMeta({
