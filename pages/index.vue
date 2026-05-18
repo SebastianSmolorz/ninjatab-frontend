@@ -39,13 +39,39 @@
                 <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
               </span>
             </h1>
-            <h2 class="text-gray-200 text-base sm:text-lg lg:text-xl max-w-lg leading-relaxed">
-              Scan receipts. Split costs. Settle up.
+            <h2 class="text-gray-200 text-base sm:text-lg lg:text-lg max-w-lg leading-relaxed">
+              A Shared Tab for Your Group Plans<br />Less Maths, More Trip
             </h2>
             <div class="lg:pt-2">
-              <UButton size="xl" to="/join" class="justify-center">
-                Start a Tab
-              </UButton>
+              <div class="flex">
+                <a
+                    href="https://play.google.com/store/apps/details?id=ninja.tab.app"
+                    target="_blank"
+                    rel="noopener"
+                    class="flex justify-center transition-transform hover:scale-[1.02]"
+                    aria-label="Get Ninja Tab on Google Play"
+                >
+                  <img
+                      src="/google-play-badge.png"
+                      alt="Get it on Google Play"
+                      class="h-16 w-auto"
+                  />
+                </a>
+
+                <!-- iPhone -->
+                <button
+                    type="button"
+                    class="transition-transform hover:scale-[1.02] cursor-pointer"
+                    aria-controls="ios-details"
+                    @click="$router.push('join')"
+                >
+                  <img
+                      src="/app-store-badge.svg"
+                      alt="Download on the App Store"
+                      class="h-11"
+                  />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -377,8 +403,8 @@ const painPoints = [
   },
   {
     icon: 'i-lucide-clock-alert',
-    title: 'Gnawing feeling this could be easier',
-    description: 'If Steve owes Ben £100, but Ben owes Seb £25....no wonder your gang put it off',
+    title: 'Gnawing feeling this should be easier',
+    description: 'If Steve owes Ben £100, but Ben owes Seb £25....no wonder your gang constantly put it off.',
   },
 ]
 
@@ -390,8 +416,8 @@ const steps = [
   },
   {
     icon: 'i-lucide-receipt',
-    title: 'Add expenses as you go',
-    description: 'Scan a receipt or enter manually. Split naturally, by number of item each person had.',
+    title: 'Scan receipts as you go',
+    description: 'Scan a receipt or enter manually. Split evenly, by number of item each person had.',
   },
   {
     icon: 'i-lucide-hand-coins',
