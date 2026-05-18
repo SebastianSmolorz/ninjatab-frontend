@@ -43,32 +43,32 @@
               A Shared Tab for Your Group Plans<br />Less Maths, More Trip
             </h2>
             <div class="lg:pt-2">
-              <div class="flex">
+              <div class="flex items-center">
                 <a
                     href="https://play.google.com/store/apps/details?id=ninja.tab.app"
                     target="_blank"
                     rel="noopener"
-                    class="flex justify-center transition-transform hover:scale-[1.02]"
+                    class="inline-flex transition-transform hover:scale-[1.02]"
                     aria-label="Get Ninja Tab on Google Play"
                 >
                   <img
                       src="/google-play-badge.png"
                       alt="Get it on Google Play"
-                      class="h-16 w-auto"
+                      class="h-14 w-auto"
                   />
                 </a>
 
                 <!-- iPhone -->
                 <button
                     type="button"
-                    class="transition-transform hover:scale-[1.02] cursor-pointer"
+                    class="inline-flex p-2 transition-transform hover:scale-[1.02] cursor-pointer"
                     aria-controls="ios-details"
                     @click="$router.push('join')"
                 >
                   <img
                       src="/app-store-badge.svg"
                       alt="Download on the App Store"
-                      class="h-11"
+                      class="h-10 w-auto"
                   />
                 </button>
               </div>
