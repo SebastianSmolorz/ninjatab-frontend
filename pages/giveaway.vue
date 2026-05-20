@@ -130,28 +130,65 @@
             </h2>
           </div>
 
-          <div class="p-6 sm:p-8 rounded-2xl bg-gray-900/60 ring-1 ring-white/10 text-gray-300 leading-relaxed">
-            <ol class="list-decimal list-outside ml-5 flex flex-col gap-3 text-sm sm:text-base">
-              <li>The promoter is Ninja Tab. The giveaway is in no way sponsored, endorsed or administered by, or associated with, any social media platform.</li>
-              <li>Open to UK residents aged 18 or over.</li>
-              <li>The entry period runs from <span class="text-white font-medium">00:00 BST on Thursday 21 May 2026</span> until <span class="text-white font-medium">23:59 BST on Tuesday 26 May 2026</span> ("the entry period").</li>
-              <li>5 (five) prizes are available. Each prize is <span class="text-white font-medium">£50 GBP</span>, paid by bank transfer to the winning tab creator within 14 days of being notified.</li>
-              <li>To enter, an eligible user must, within the entry period:
-                <ul class="list-disc list-outside ml-5 mt-2 flex flex-col gap-1">
-                  <li>Create a new tab in the Ninja Tab app.</li>
-                  <li>Invite at least one friend to that tab, and that friend must create a Ninja Tab account during the entry period.</li>
-                  <li>Scan a receipt to the tab from a UK establishment dated within the entry period. Eligible establishments include pubs, bars, clubs, restaurants, cafés, museums, and activities such as guided tours or attractions.</li>
-                </ul>
-              </li>
-              <li>One entry per person. Creating multiple tabs, inviting multiple friends across separate tabs, or scanning multiple receipts does not increase the chance of winning.</li>
-              <li>Receipts must be from a UK-based establishment. Receipts from purely retail purchases (e.g. supermarkets, off-licences, takeaways without on-site service) are not eligible at the promoter's discretion.</li>
-              <li>Winners will be selected at random from all eligible entries within 7 days of the close of the entry period and contacted via the email address associated with their Ninja Tab account.</li>
-              <li>If a winner does not respond within 14 days of being notified, the promoter reserves the right to redraw and select an alternative winner.</li>
-              <li>No purchase necessary beyond the receipt required to enter. There is no cash alternative and prizes are non-transferable.</li>
-              <li>Entries that are fraudulent, duplicated, automated, or otherwise not made in good faith will be disqualified.</li>
-              <li>The promoter reserves the right to amend, suspend or cancel the giveaway, or these terms, if circumstances beyond its reasonable control require it.</li>
-              <li>By entering, you agree to these terms and to Ninja Tab's <NuxtLink to="/privacy" class="text-primary-400 hover:text-primary-300">privacy policy</NuxtLink>.</li>
-            </ol>
+          <div class="p-6 sm:p-8 rounded-2xl bg-gray-900/60 ring-1 ring-white/10 text-gray-300 leading-relaxed text-sm sm:text-base">
+            <h3 class="text-lg sm:text-xl font-semibold text-white">Ninja Tab — £50 Bank Holiday Giveaway: Terms and Conditions</h3>
+            <p class="mt-4"><span class="text-white font-medium">Promoter:</span> Ninja Tab ("the Promoter", "we", "us"). This giveaway is in no way sponsored, endorsed or administered by, or associated with, any social media platform.</p>
+
+            <p class="mt-4"><span class="text-white font-medium">In short:</span> We're giving away five £50 prizes. To enter, create a tab in the Ninja Tab app and invite a friend who signs up between 21–26 May 2026. You can enter either by scanning a qualifying receipt to your tab, or completely free by emailing us instead — both have the same chance of winning, and no purchase is necessary. You must be 18+ and a UK resident, and you can enter once. Winners are picked at random and paid by bank transfer. The full terms below set out the detail.</p>
+
+            <h4 class="mt-6 text-white font-semibold">1. Eligibility</h4>
+            <p class="mt-2">1.1 Open to residents of the United Kingdom aged 18 or over at the time of entry. Employees of the Promoter and their immediate families are not eligible.</p>
+            <p class="mt-1">1.2 By entering, you confirm you meet these eligibility requirements and agree to be bound by these terms.</p>
+
+            <h4 class="mt-6 text-white font-semibold">2. Entry period</h4>
+            <p class="mt-2">2.1 The entry period runs from 00:00 BST on Thursday 21 May 2026 until 23:59 BST on Tuesday 26 May 2026 ("the entry period"). Entries received outside the entry period will not be accepted.</p>
+
+            <h4 class="mt-6 text-white font-semibold">3. Prizes</h4>
+            <p class="mt-2">3.1 Five (5) prizes are available. Each prize is £50 GBP.</p>
+            <p class="mt-1">3.2 Each prize is paid by bank transfer to the winning tab creator within 14 days of the winner confirming their claim and providing valid UK bank account details under clause 7.</p>
+            <p class="mt-1">3.3 There is no cash alternative, and prizes are non-transferable.</p>
+
+            <h4 class="mt-6 text-white font-semibold">4. How to enter</h4>
+            <p class="mt-2">4.1 There are two ways to enter. Both routes are entered into the same draw and every valid entry, however submitted, carries the same chance of winning.</p>
+            <p class="mt-1">4.2 <span class="text-white">Paid-product route.</span> Within the entry period, an eligible person must:</p>
+            <p class="mt-1 ml-4">(a) create a new tab in the Ninja Tab app;</p>
+            <p class="mt-1 ml-4">(b) invite at least one friend to that tab, and that friend must create a Ninja Tab account during the entry period; and</p>
+            <p class="mt-1 ml-4">(c) scan to that tab a receipt from a UK-based establishment, dated within the entry period, from an eligible establishment as defined in clause 5.</p>
+            <p class="mt-1">4.3 <span class="text-white">Free entry route.</span> No purchase is necessary to enter. As an alternative to scanning a receipt, an eligible person may, within the entry period:</p>
+            <p class="mt-1 ml-4">(a) create a new tab in the Ninja Tab app;</p>
+            <p class="mt-1 ml-4">(b) invite at least one friend to that tab, and that friend must create a Ninja Tab account during the entry period; and</p>
+            <p class="mt-1 ml-4">(c) enter free of charge by emailing <a href="mailto:seb@tab.ninja?subject=Free%20Entry" class="text-primary-400 hover:text-primary-300">seb@tab.ninja</a> with the subject line "Free Entry", stating their full name and the email address associated with their Ninja Tab account, so we can confirm the tab and invited account.</p>
+            <p class="mt-1">4.4 The free entry route is available throughout the entry period at no cost and on equal terms. Entries via the free route have exactly the same chance of winning as entries via the paid-product route.</p>
+
+            <h4 class="mt-6 text-white font-semibold">5. Eligible receipts (paid-product route only)</h4>
+            <p class="mt-2">5.1 A receipt must be from a UK-based establishment and dated within the entry period.</p>
+            <p class="mt-1">5.2 Eligible establishments are venues offering on-site service or experiences, including pubs, bars, clubs, restaurants, cafés, museums, and activities such as guided tours or attractions.</p>
+            <p class="mt-1">5.3 The following are not eligible: receipts from purely retail purchases (for example supermarkets, off-licences, or takeaways without on-site service); receipts dated outside the entry period; receipts from non-UK establishments; and any receipt that has already been used to enter.</p>
+
+            <h4 class="mt-6 text-white font-semibold">6. One entry per person</h4>
+            <p class="mt-2">6.1 Each person may enter once only, by either route. Creating multiple tabs, inviting multiple friends across separate tabs, scanning multiple receipts, or combining the paid and free routes does not increase the chance of winning.</p>
+            <p class="mt-1">6.2 For the purpose of this giveaway, a "person" is identified by their verified Ninja Tab account. We may treat multiple entries or accounts that share identifying details (including name, email, payment details, or device) as a single person, and may consolidate or disregard duplicate entries accordingly.</p>
+
+            <h4 class="mt-6 text-white font-semibold">7. Winner selection, notification and claim</h4>
+            <p class="mt-2">7.1 Five winners will be selected at random from all eligible entries within 7 days of the close of the entry period.</p>
+            <p class="mt-1">7.2 Winners will be contacted via the email address associated with their Ninja Tab account.</p>
+            <p class="mt-1">7.3 To claim a prize, a winner must, within 14 days of being notified, respond to confirm their claim and provide valid UK bank account details (and any reasonable verification we request under clause 8).</p>
+            <p class="mt-1">7.4 If a winner does not respond, cannot be contacted, or does not provide valid bank details within 14 days of being notified, we reserve the right to disqualify that entry and select an alternative winner at random. Any prize that remains unclaimed 30 days after the original draw will lapse and need not be awarded.</p>
+
+            <h4 class="mt-6 text-white font-semibold">8. Verification and disqualification</h4>
+            <p class="mt-2">8.1 We may verify any entry before awarding a prize, including by asking an entrant to provide the original receipt, confirm tab activity, or verify that an invited account is genuine.</p>
+            <p class="mt-1">8.2 We reserve the right to disqualify any entry, without notice, where we reasonably believe on objective grounds that it:</p>
+            <p class="mt-1 ml-4">(a) uses a fake, altered, edited, or duplicate receipt, or a receipt that does not meet clause 5;</p>
+            <p class="mt-1 ml-4">(b) is one of multiple entries or accounts attributable to the same person, contrary to clause 6;</p>
+            <p class="mt-1 ml-4">(c) involves an account created solely to enter or game the giveaway (including an invited "friend" account that does not genuinely participate in the tab);</p>
+            <p class="mt-1 ml-4">(d) is made using bots, scripts, or other automated means; or</p>
+            <p class="mt-1 ml-4">(e) otherwise breaches these terms.</p>
+            <p class="mt-1">8.3 These verification and disqualification provisions apply equally to entries made by the free route and the paid-product route.</p>
+
+            <h4 class="mt-6 text-white font-semibold">9. General</h4>
+            <p class="mt-2">9.1 We reserve the right to amend, suspend or cancel the giveaway, or these terms, if circumstances beyond our reasonable control require it. Any such change will not unfairly prejudice entrants who have already entered validly.</p>
+            <p class="mt-1">9.2 By entering, you agree to these terms and to Ninja Tab's <NuxtLink to="/privacy" class="text-primary-400 hover:text-primary-300">privacy policy</NuxtLink>.</p>
+            <p class="mt-1">9.3 These terms are governed by the laws of England and Wales (or, where applicable, of the entrant's home UK jurisdiction), and the courts of England and Wales have non-exclusive jurisdiction.</p>
           </div>
         </div>
       </UContainer>
