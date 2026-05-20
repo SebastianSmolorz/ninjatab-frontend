@@ -46,7 +46,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
     ],
     [
       { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app&referrer=utm_source%3Dwebsite', target: '_blank' },
-      { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
+      { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },]
     ],
     [
       { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
