@@ -9,6 +9,24 @@ const showIosDetails = ref(false)
 const route = useRoute()
 const config = useRuntimeConfig()
 
+const playStoreUrl = computed(() => {
+  const isQr = route.query.utm_source === 'qr'
+  const referrerParams = new URLSearchParams()
+  referrerParams.set('utm_source', isQr ? 'qr' : 'website')
+  if (isQr) {
+    const medium = String(route.query.utm_medium ?? '')
+    const campaign = String(route.query.utm_campaign ?? '')
+    const qrId = String(route.query.qr_id ?? '')
+    if (medium) referrerParams.set('utm_medium', medium)
+    if (campaign) referrerParams.set('utm_campaign', campaign)
+    if (qrId) referrerParams.set('utm_content', qrId)
+  }
+  const url = new URL('https://play.google.com/store/apps/details')
+  url.searchParams.set('id', 'ninja.tab.app')
+  url.searchParams.set('referrer', referrerParams.toString())
+  return url.toString()
+})
+
 onMounted(() => {
   if (route.query.utm_source !== 'qr') return
 
@@ -50,7 +68,7 @@ onMounted(() => {
           <div class="flex flex-col md:flex-row md:justify-center items-center gap-6 md:gap-8">
             <!-- Android -->
             <a
-              href="https://play.google.com/store/apps/details?id=ninja.tab.app"
+              :href="playStoreUrl"
               target="_blank"
               rel="noopener"
               class="flex justify-center transition-transform hover:scale-[1.02]"
