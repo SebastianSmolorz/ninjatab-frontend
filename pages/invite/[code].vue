@@ -19,7 +19,6 @@ const deepLink = `ninjatab://invite/${code}`
 
 const loadingInvite = ref(true)
 const notFound = ref(false)
-const showIosDetails = ref(false)
 
 onMounted(async () => {
   // Attempt to open the native app immediately. If installed, the OS will
@@ -112,44 +111,20 @@ function openInApp() {
               </a>
 
               <!-- iPhone -->
-              <button
-                type="button"
-                class="flex justify-center transition-transform hover:scale-[1.02] cursor-pointer"
-                :aria-expanded="showIosDetails"
-                aria-controls="ios-details"
-                @click="showIosDetails = true"
+              <a
+                href="https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804"
+                target="_blank"
+                rel="noopener"
+                class="flex justify-center transition-transform hover:scale-[1.02]"
+                aria-label="Download Ninja Tab on the App Store"
               >
                 <img
                   src="/app-store-badge.svg"
                   alt="Download on the App Store"
                   class="h-12 w-auto"
                 />
-              </button>
+              </a>
             </div>
-          </div>
-
-          <div
-            id="ios-details"
-            class="mt-6 mx-auto max-w-sm transition-opacity duration-200"
-            :class="showIosDetails ? 'opacity-100' : 'opacity-0 pointer-events-none select-none'"
-            :aria-hidden="!showIosDetails"
-          >
-            <p class="text-sm text-gray-300 leading-relaxed text-center">
-              The App Store listing goes live on <span class="text-white font-medium">21 May</span>.
-              Until then you can grab early access through Apple's TestFlight.
-            </p>
-            <UButton
-              size="lg"
-              block
-              class="mt-4 justify-center"
-              to="https://testflight.apple.com/join/Vw7FSBqP"
-              target="_blank"
-              icon="i-simple-icons-apple"
-              trailing-icon="i-lucide-arrow-right"
-              :tabindex="showIosDetails ? 0 : -1"
-            >
-              Download via TestFlight
-            </UButton>
           </div>
         </template>
       </div>

@@ -87,7 +87,7 @@ useSeoMeta({
 
           <p>When using the mobile app, you may be prompted to grant access to your device's <strong class="text-white">camera</strong> (to take a photo of a receipt) and your device's <strong class="text-white">photo library or files</strong> (to select an existing image). These permissions are used solely to allow you to upload receipt images when recording expenses. We do not access your camera or photo library for any other purpose.</p>
 
-          <p>These images may be sent to Mistral, an AI service, to help extract information such as totals,
+          <p>These images may be sent to a third-party service to help extract information such as totals,
             items, or amounts from the receipt.</p>
 
           <p>Receipt images may be stored on our servers so that they can be viewed or downloaded by participants of the
@@ -132,7 +132,6 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">7. Data sharing</h2>
           <p>We share limited data with service providers that help us operate the service, including:</p>
           <ul>
-            <li><strong class="text-white">Mistral</strong> — receipt image processing (AI extraction of expense data)</li>
             <li><strong class="text-white">Google Analytics</strong> — web analytics</li>
             <li><strong class="text-white">PostHog</strong> — product analytics (web and mobile)</li>
             <li><strong class="text-white">Sentry</strong> — crash and error reporting (mobile app)</li>
