@@ -12,7 +12,7 @@ useSeoMeta({
     <UContainer class="max-w-3xl pt-28 pb-12 px-4">
       <div class="mb-10">
         <h1 class="text-3xl font-bold text-white mb-2">Privacy Policy</h1>
-        <p class="text-sm text-gray-500">Last updated: 9 April 2026</p>
+        <p class="text-sm text-gray-500">Last updated: 21 May 2026</p>
       </div>
 
       <div class="space-y-10 text-gray-300 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1">
