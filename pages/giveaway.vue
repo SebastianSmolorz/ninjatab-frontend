@@ -31,7 +31,7 @@
             <span class="block mt-2 text-2xl sm:text-3xl lg:text-4xl text-primary-200">for your group</span>
           </h1>
           <p class="mt-6 text-lg text-gray-300 leading-relaxed">
-            We're giving away <span class="text-white font-semibold">5&nbsp;×&nbsp;£50</span> to UK groups making the most of the late May bank holiday.
+            We're giving away <span class="text-white font-semibold">3&nbsp;×&nbsp;£50</span> to UK groups making the most of the late May bank holiday.
             Start a tab, invite a mate, scan a receipt &ndash; you're in the draw.
           </p>
 
@@ -53,8 +53,8 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
           <div class="p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
             <UIcon name="i-lucide-gift" class="size-7 text-primary-400 mb-3" />
-            <h3 class="font-semibold text-white mb-1">5 prizes</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">Five winning groups, £50 each, paid by bank transfer.</p>
+            <h3 class="font-semibold text-white mb-1">3 prizes</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">Three winning groups, £50 each, paid by bank transfer.</p>
           </div>
           <div class="p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
             <UIcon name="i-lucide-calendar-days" class="size-7 text-primary-400 mb-3" />
@@ -76,7 +76,7 @@
         <div class="max-w-3xl mx-auto text-center mb-14">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">How to enter</span>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Three steps. One entry. Five winners.
+            Three steps. One entry. Three winners.
           </h2>
         </div>
 
@@ -134,7 +134,7 @@
             <h3 class="text-lg sm:text-xl font-semibold text-white">Ninja Tab — £50 Bank Holiday Giveaway: Terms and Conditions</h3>
             <p class="mt-4"><span class="text-white font-medium">Promoter:</span> Ninja Tab ("the Promoter", "we", "us"). This giveaway is in no way sponsored, endorsed or administered by, or associated with, any social media platform.</p>
 
-            <p class="mt-4"><span class="text-white font-medium">In short:</span> We're giving away five £50 prizes. To enter, create a tab in the Ninja Tab app and invite a friend who signs up between 21–26 May 2026. You can enter either by scanning a qualifying receipt to your tab, or completely free by emailing us instead — both have the same chance of winning, and no purchase is necessary. You must be 18+ and a UK resident, and you can enter once. Winners are picked at random and paid by bank transfer. The full terms below set out the detail.</p>
+            <p class="mt-4"><span class="text-white font-medium">In short:</span> We're giving away three £50 prizes. To enter, create a tab in the Ninja Tab app and invite a friend who signs up between 21–26 May 2026. You can enter either by scanning a qualifying receipt to your tab, or completely free by emailing us instead — both have the same chance of winning, and no purchase is necessary. You must be 18+ and a UK resident, and you can enter once. Winners are picked at random and paid by bank transfer. The full terms below set out the detail.</p>
 
             <h4 class="mt-6 text-white font-semibold">1. Eligibility</h4>
             <p class="mt-2">1.1 Open to residents of the United Kingdom aged 18 or over at the time of entry. Employees of the Promoter and their immediate families are not eligible.</p>
@@ -144,7 +144,7 @@
             <p class="mt-2">2.1 The entry period runs from 00:00 BST on Thursday 21 May 2026 until 23:59 BST on Tuesday 26 May 2026 ("the entry period"). Entries received outside the entry period will not be accepted.</p>
 
             <h4 class="mt-6 text-white font-semibold">3. Prizes</h4>
-            <p class="mt-2">3.1 Five (5) prizes are available. Each prize is £50 GBP.</p>
+            <p class="mt-2">3.1 Three (3) prizes are available. Each prize is £50 GBP.</p>
             <p class="mt-1">3.2 Each prize is paid by bank transfer to the winning tab creator within 14 days of the winner confirming their claim and providing valid UK bank account details under clause 7.</p>
             <p class="mt-1">3.3 There is no cash alternative, and prizes are non-transferable.</p>
 
@@ -162,15 +162,15 @@
 
             <h4 class="mt-6 text-white font-semibold">5. Eligible receipts (paid-product route only)</h4>
             <p class="mt-2">5.1 A receipt must be from a UK-based establishment and dated within the entry period.</p>
-            <p class="mt-1">5.2 Eligible establishments are venues offering on-site service or experiences, including pubs, bars, clubs, restaurants, cafés, museums, and activities such as guided tours or attractions.</p>
-            <p class="mt-1">5.3 The following are not eligible: receipts from purely retail purchases (for example supermarkets, off-licences, or takeaways without on-site service); receipts dated outside the entry period; receipts from non-UK establishments; and any receipt that has already been used to enter.</p>
+            <p class="mt-1">5.2 Any UK experience-based establishment is eligible — that is, any venue whose primary offering is an on-site experience or service consumed at the venue. This includes (without limitation) pubs, bars, clubs, restaurants, cafés, coffee shops, hotels and B&amp;Bs, cinemas, theatres, live music and comedy venues, museums, galleries, sporting and leisure venues, spas, and activities or attractions such as guided tours, classes, and experience days.</p>
+            <p class="mt-1">5.3 The following are not eligible: supermarket receipts (which are explicitly excluded, regardless of what was purchased); receipts from other purely retail purchases (for example off-licences, convenience stores, or general retail shops); receipts from takeaway or delivery orders without on-site service; receipts dated outside the entry period; receipts from non-UK establishments; and any receipt that has already been used to enter.</p>
 
             <h4 class="mt-6 text-white font-semibold">6. One entry per person</h4>
             <p class="mt-2">6.1 Each person may enter once only, by either route. Creating multiple tabs, inviting multiple friends across separate tabs, scanning multiple receipts, or combining the paid and free routes does not increase the chance of winning.</p>
             <p class="mt-1">6.2 For the purpose of this giveaway, a "person" is identified by their verified Ninja Tab account. We may treat multiple entries or accounts that share identifying details (including name, email, payment details, or device) as a single person, and may consolidate or disregard duplicate entries accordingly.</p>
 
             <h4 class="mt-6 text-white font-semibold">7. Winner selection, notification and claim</h4>
-            <p class="mt-2">7.1 Five winners will be selected at random from all eligible entries within 7 days of the close of the entry period.</p>
+            <p class="mt-2">7.1 Three winners will be selected at random from all eligible entries within 7 days of the close of the entry period.</p>
             <p class="mt-1">7.2 Winners will be contacted via the email address associated with their Ninja Tab account.</p>
             <p class="mt-1">7.3 To claim a prize, a winner must, within 14 days of being notified, respond to confirm their claim and provide valid UK bank account details (and any reasonable verification we request under clause 8).</p>
             <p class="mt-1">7.4 If a winner does not respond, cannot be contacted, or does not provide valid bank details within 14 days of being notified, we reserve the right to disqualify that entry and select an alternative winner at random. Any prize that remains unclaimed 30 days after the original draw will lapse and need not be awarded.</p>
@@ -230,7 +230,7 @@ const steps = [
   {
     icon: 'i-lucide-receipt',
     title: 'Scan a UK receipt',
-    description: 'Scan a receipt from a UK pub, bar, club, restaurant, museum or activity, dated within the entry window.',
+    description: 'Scan a receipt from any UK experience-based establishment, dated within the entry window. Supermarket receipts are not eligible.',
   },
 ]
 
@@ -248,12 +248,12 @@ const rules = [
   {
     icon: 'i-lucide-map-pin',
     title: 'UK establishments only',
-    description: 'Receipts must be from a UK pub, bar, club, restaurant, café, museum or activity such as a guided tour.',
+    description: 'Receipts must be from a UK experience-based establishment. Supermarket receipts are explicitly not eligible.',
   },
   {
     icon: 'i-lucide-shuffle',
     title: 'Random draw',
-    description: 'Five winners drawn at random from all eligible entries after the window closes.',
+    description: 'Three winners drawn at random from all eligible entries after the window closes.',
   },
 ]
 
@@ -261,14 +261,14 @@ const siteUrl = 'https://tab.ninja'
 
 useSeoMeta({
   title: '£50 Bank Holiday Giveaway | Ninja Tab',
-  description: 'Win one of 5 × £50 prizes for your group. Open a tab, invite a friend and scan a UK receipt between 21–26 May 2026 to enter.',
+  description: 'Win one of 3 × £50 prizes for your group. Open a tab, invite a friend and scan a UK receipt between 21–26 May 2026 to enter.',
   ogType: 'website',
   ogUrl: `${siteUrl}/giveaway`,
   ogTitle: 'Ninja Tab £50 Bank Holiday Giveaway',
-  ogDescription: '5 × £50 up for grabs. Start a tab, invite a mate, scan a UK receipt between 21–26 May 2026.',
+  ogDescription: '3 × £50 up for grabs. Start a tab, invite a mate, scan a UK receipt between 21–26 May 2026.',
   twitterCard: 'summary_large_image',
   twitterTitle: 'Ninja Tab £50 Bank Holiday Giveaway',
-  twitterDescription: '5 × £50 up for grabs. Start a tab, invite a mate, scan a UK receipt between 21–26 May 2026.',
+  twitterDescription: '3 × £50 up for grabs. Start a tab, invite a mate, scan a UK receipt between 21–26 May 2026.',
   robots: 'index, follow',
 })
 
