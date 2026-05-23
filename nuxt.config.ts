@@ -2,11 +2,15 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: false},
+    routeRules: {
+        '/giveaway': {prerender: true},
+        '/join': {prerender: true},
+    },
     modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights'],
 
     fonts: {
         families: [
-            { name: 'Nunito', provider: 'google', weights: [400, 500, 600, 700, 800], styles: ['normal'] },
+            {name: 'Nunito', provider: 'google', weights: [400, 500, 600, 700, 800], styles: ['normal']},
         ],
     },
 
