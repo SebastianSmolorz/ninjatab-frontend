@@ -13,6 +13,7 @@ useSeoMeta({
 
 const route = useRoute()
 const api = useApi()
+const { trackDownload } = useDownloadTracking()
 
 const code = route.params.code as string
 const deepLink = `ninjatab://invite/${code}`
@@ -102,6 +103,7 @@ function openInApp() {
                 rel="noopener"
                 class="flex justify-center transition-transform hover:scale-[1.02]"
                 aria-label="Get Ninja Tab on Google Play"
+                @click="trackDownload('android', 'invite_page')"
               >
                 <img
                   src="/google-play-badge.png"
@@ -117,6 +119,7 @@ function openInApp() {
                 rel="noopener"
                 class="flex justify-center transition-transform hover:scale-[1.02]"
                 aria-label="Download Ninja Tab on the App Store"
+                @click="trackDownload('ios', 'invite_page')"
               >
                 <img
                   src="/app-store-badge.svg"

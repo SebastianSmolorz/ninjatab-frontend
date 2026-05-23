@@ -57,6 +57,7 @@
                     rel="noopener"
                     class="inline-flex transition-transform hover:scale-[1.02]"
                     aria-label="Get Ninja Tab on Google Play"
+                    @click="trackDownload('android', 'index_hero')"
                 >
                   <img
                       src="/google-play-badge.png"
@@ -72,6 +73,7 @@
                     rel="noopener"
                     class="inline-flex p-2 transition-transform hover:scale-[1.02]"
                     aria-label="Download Ninja Tab on the App Store"
+                    @click="trackDownload('ios', 'index_hero')"
                 >
                   <img
                       src="/app-store-badge.svg"
@@ -379,13 +381,15 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 definePageMeta({ middleware: 'guest' })
 
+const { trackDownload } = useDownloadTracking()
+
 const navItems: DropdownMenuItem[][] = [
   // [
   //   { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
   // ],
   [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
-    { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank' },
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank', onSelect: () => trackDownload('android', 'index_menu') },
+    { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank', onSelect: () => trackDownload('ios', 'index_menu') },
   ],
   [
     { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },

@@ -6,6 +6,7 @@ useSeoMeta({
 
 const route = useRoute()
 const config = useRuntimeConfig()
+const { trackDownload } = useDownloadTracking()
 
 const playStoreUrl = computed(() => {
   const isQr = route.query.utm_source === 'qr'
@@ -71,6 +72,7 @@ onMounted(() => {
               rel="noopener"
               class="flex justify-center transition-transform hover:scale-[1.02]"
               aria-label="Get Ninja Tab on Google Play"
+              @click="trackDownload('android', 'join_page')"
             >
               <img
                 src="/google-play-badge.png"
@@ -86,6 +88,7 @@ onMounted(() => {
               rel="noopener"
               class="flex justify-center transition-transform hover:scale-[1.02]"
               aria-label="Download Ninja Tab on the App Store"
+              @click="trackDownload('ios', 'join_page')"
             >
               <img
                 src="/app-store-badge.svg"
