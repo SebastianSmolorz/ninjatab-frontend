@@ -80,8 +80,44 @@
           </p>
         </div>
 
-        <div class="max-w-5xl mx-auto overflow-x-auto rounded-2xl ring-1 ring-white/10 bg-gray-900/60">
-          <table class="w-full text-left min-w-[640px]">
+        <!-- Mobile: stacked cards -->
+        <div class="md:hidden max-w-xl mx-auto space-y-4">
+          <div
+            v-for="row in comparison"
+            :key="row.feature"
+            class="rounded-2xl ring-1 ring-white/10 bg-gray-900/60 overflow-hidden"
+          >
+            <div class="px-4 py-3 bg-gray-800/60 text-gray-200 font-semibold text-sm text-center">
+              {{ row.feature }}
+            </div>
+            <div class="grid grid-cols-2 divide-x divide-white/5">
+              <div class="px-3 py-3 text-center">
+                <div class="text-xs uppercase tracking-wide text-primary-400 font-semibold mb-1.5">Ninja Tab</div>
+                <div class="flex flex-col items-center gap-1.5">
+                  <UIcon
+                    :name="row.ninjaTab.status === 'yes' ? 'i-lucide-check-circle-2' : row.ninjaTab.status === 'partial' ? 'i-lucide-circle-dashed' : 'i-lucide-x-circle'"
+                    :class="['size-4 shrink-0', row.ninjaTab.status === 'yes' ? 'text-primary-400' : row.ninjaTab.status === 'partial' ? 'text-yellow-400' : 'text-red-400']"
+                  />
+                  <span class="text-gray-200 text-sm">{{ row.ninjaTab.text }}</span>
+                </div>
+              </div>
+              <div class="px-3 py-3 text-center">
+                <div class="text-xs uppercase tracking-wide text-gray-400 font-semibold mb-1.5">Splitwise</div>
+                <div class="flex flex-col items-center gap-1.5">
+                  <UIcon
+                    :name="row.splitwise.status === 'yes' ? 'i-lucide-check-circle-2' : row.splitwise.status === 'partial' ? 'i-lucide-circle-dashed' : 'i-lucide-x-circle'"
+                    :class="['size-4 shrink-0', row.splitwise.status === 'yes' ? 'text-primary-400' : row.splitwise.status === 'partial' ? 'text-yellow-400' : 'text-red-400']"
+                  />
+                  <span class="text-gray-400 text-sm">{{ row.splitwise.text }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- md+: table -->
+        <div class="hidden md:block max-w-5xl mx-auto rounded-2xl ring-1 ring-white/10 bg-gray-900/60">
+          <table class="w-full text-left">
             <thead class="bg-gray-800/60">
               <tr>
                 <th class="px-4 sm:px-6 py-4 text-sm font-semibold text-gray-400">Feature</th>
@@ -277,7 +313,7 @@ const gripes = [
   { title: 'No currency conversion on free', description: 'Travelling abroad? Pay up.' },
   { title: 'No receipt scanning into items', description: 'Manual entry, line by line, for every meal.' },
   { title: 'Ads on free', description: 'Even when you\'re trying to settle up after a holiday.' },
-  { title: 'Outdated design', description: 'It works, but it doesn\'t feel built for 2026.' },
+  { title: 'Ease of use', description: 'Arguably has a steep learning curve' },
 ]
 
 const comparison = [
@@ -317,17 +353,7 @@ const comparison = [
     splitwise: { status: 'no', text: 'Pro only' },
   },
   {
-    feature: 'Unlimited bills on serious trips',
-    ninjaTab: { status: 'yes', text: 'Yes' },
-    splitwise: { status: 'partial', text: 'Restricted on free' },
-  },
-  {
     feature: 'Subscription model',
-    ninjaTab: { status: 'yes', text: 'Never' },
-    splitwise: { status: 'no', text: 'Yes' },
-  },
-  {
-    feature: 'Ads',
     ninjaTab: { status: 'yes', text: 'Never' },
     splitwise: { status: 'no', text: 'Yes' },
   },
@@ -335,6 +361,11 @@ const comparison = [
     feature: 'Per-event pricing',
     ninjaTab: { status: 'yes', text: '£1 per person, split evenly' },
     splitwise: { status: 'no', text: 'Trip pass via £39.99 subscription' },
+  },
+  {
+    feature: 'Ads',
+    ninjaTab: {status: 'yes', text: 'Never'},
+    splitwise: {status: 'no', text: 'Yes'},
   },
 ]
 

@@ -6,6 +6,13 @@
       <div class="pointer-events-auto">
         <UDropdownMenu :items="navItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }" :modal="false">
           <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+          <template #item-trailing="{ item }">
+            <UIcon
+              v-if="item.target === '_blank'"
+              name="i-lucide-external-link"
+              class="size-4 text-gray-400"
+            />
+          </template>
         </UDropdownMenu>
       </div>
     </div>
@@ -59,18 +66,19 @@
                 </a>
 
                 <!-- iPhone -->
-                <button
-                    type="button"
-                    class="inline-flex p-2 transition-transform hover:scale-[1.02] cursor-pointer"
-                    aria-controls="ios-details"
-                    @click="$router.push('join')"
+                <a
+                    href="https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804"
+                    target="_blank"
+                    rel="noopener"
+                    class="inline-flex p-2 transition-transform hover:scale-[1.02]"
+                    aria-label="Download Ninja Tab on the App Store"
                 >
                   <img
                       src="/app-store-badge.svg"
                       alt="Download on the App Store"
                       class="h-10 w-auto"
                   />
-                </button>
+                </a>
               </div>
             </div>
           </div>
@@ -377,7 +385,7 @@ const navItems: DropdownMenuItem[][] = [
   // ],
   [
     { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank' },
-    { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
+    { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank' },
   ],
   [
     { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },

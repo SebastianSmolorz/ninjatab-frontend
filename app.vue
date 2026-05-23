@@ -16,6 +16,13 @@
             :modal="false"
           >
             <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
+            <template #item-trailing="{ item }">
+              <UIcon
+                v-if="item.target === '_blank'"
+                name="i-lucide-external-link"
+                class="size-4 text-gray-400"
+              />
+            </template>
           </UDropdownMenu>
         </div>
       </div>
@@ -46,7 +53,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
     ],
     [
       { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app&referrer=utm_source%3Dwebsite', target: '_blank' },
-      { label: 'App Store', icon: 'i-simple-icons-apple', to: '/join' },
+      { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank' },
     ],
     [
       { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
