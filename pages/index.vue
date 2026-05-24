@@ -39,17 +39,17 @@
       <UContainer class="relative z-10 h-full">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-8 items-center pt-20 pb-12 lg:pt-24 lg:pb-20" style="min-height: 100svh;">
           <!-- Text column -->
-          <div class="flex flex-col items-center lg:items-start gap-3 lg:gap-2 text-center lg:text-left bg-black/50 pt-1 pb-4 md:pl-5 rounded-md">
+          <div class="flex flex-col items-center lg:items-start gap-4 lg:gap-3 text-center lg:text-left bg-black/50 pt-3 pb-5 md:pl-5 md:pr-5 rounded-md">
             <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
-              <span class="block text-4xl sm:text-5xl lg:text-6xl mt-2">
-                <span class="text-primary-200 mr-2">Stick it on the</span>
-                <span class="text-primary-400 animate-pulse [animation-duration:1.8s]">Tab</span>
+              <span class="block text-3xl sm:text-4xl lg:text-5xl mt-2">
+                <span class="text-primary-200">Essential for </span>
+                <span class="text-primary-400">group holidays.</span>
               </span>
             </h1>
-            <h2 class="text-gray-200 text-base sm:text-lg lg:text-lg max-w-lg leading-relaxed">
-              A Shared Tab for Your Group Plans<br />Less Maths, More Trip
-            </h2>
-            <div class="lg:pt-2">
+            <p class="text-primary-300 text-lg sm:text-xl lg:text-2xl max-w-lg leading-snug font-medium">
+              Download now, ready for your next trip.
+            </p>
+            <div class="lg:pt-1">
               <div class="flex items-center">
                 <a
                     :href="playStoreHref"
@@ -83,6 +83,26 @@
                 </a>
               </div>
             </div>
+            <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-snug">
+              Saves friendships and hours of admin.
+            </p>
+
+            <!-- Testimonial -->
+            <figure class="mt-1 max-w-md flex flex-col items-center lg:items-start gap-1">
+              <div class="flex items-center gap-0.5" aria-label="5 out of 5 stars">
+                <UIcon v-for="n in 5" :key="n" name="i-heroicons-star-20-solid" class="size-3 text-amber-400" />
+              </div>
+              <blockquote class="text-gray-300 text-xs leading-snug italic">
+                Really easy to use and useful app, saves loads of time.
+              </blockquote>
+            </figure>
+
+            <NuxtLink
+              to="/splitwise-alternative"
+              class="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 decoration-primary-400/50 hover:decoration-primary-300"
+            >
+              Coming from Splitwise? See the comparison →
+            </NuxtLink>
           </div>
 
           <!-- Device mockup carousel column -->
@@ -94,7 +114,7 @@
               dots
               :autoplay="{ delay: 3500 }"
               :items="deviceMockups"
-              class="relative w-full max-w-[420px] sm:max-w-[500px] lg:max-w-[500px]"
+              class="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px]"
               :ui="{ container: 'items-center ml-0', item: 'pl-0 min-w-0 basis-full', dots: 'mt-6', dot: 'bg-white/30 data-[state=active]:bg-primary-400' }"
             >
               <div class="flex items-center justify-center">
@@ -103,7 +123,7 @@
                   alt="Ninja Tab app screen"
                   loading="eager"
                   fetchpriority="high"
-                  class="w-full h-auto max-h-[58vh] lg:max-h-[75vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
+                  class="w-full h-auto max-h-[48vh] lg:max-h-[62vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
                 />
               </div>
             </UCarousel>
@@ -400,8 +420,8 @@ const navItems = computed<DropdownMenuItem[][]>(() => [
 ])
 
 const deviceMockups = [
-  '/screen3.webp',
   '/screen2.webp',
+  '/screen3.webp',
   '/screen1.webp',
 ]
 
