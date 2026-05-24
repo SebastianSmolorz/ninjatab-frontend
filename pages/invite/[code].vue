@@ -13,7 +13,10 @@ useSeoMeta({
 
 const route = useRoute()
 const api = useApi()
-const { trackDownload } = useDownloadTracking()
+const { trackDownload, storeUrl } = useDownloadTracking()
+
+const playStoreHref = computed(() => storeUrl('android'))
+const appStoreHref = computed(() => storeUrl('ios'))
 
 const code = route.params.code as string
 const deepLink = `ninjatab://invite/${code}`
@@ -98,7 +101,7 @@ function openInApp() {
             <div class="flex flex-col md:flex-row md:justify-center items-center gap-6 md:gap-8">
               <!-- Android -->
               <a
-                href="https://play.google.com/store/apps/details?id=ninja.tab.app"
+                :href="playStoreHref"
                 target="_blank"
                 rel="noopener"
                 class="flex justify-center transition-transform hover:scale-[1.02]"
@@ -114,7 +117,7 @@ function openInApp() {
 
               <!-- iPhone -->
               <a
-                href="https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804"
+                :href="appStoreHref"
                 target="_blank"
                 rel="noopener"
                 class="flex justify-center transition-transform hover:scale-[1.02]"

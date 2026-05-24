@@ -52,7 +52,7 @@
             <div class="lg:pt-2">
               <div class="flex items-center">
                 <a
-                    href="https://play.google.com/store/apps/details?id=ninja.tab.app"
+                    :href="playStoreHref"
                     target="_blank"
                     rel="noopener"
                     class="inline-flex transition-transform hover:scale-[1.02]"
@@ -68,7 +68,7 @@
 
                 <!-- iPhone -->
                 <a
-                    href="https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804"
+                    :href="appStoreHref"
                     target="_blank"
                     rel="noopener"
                     class="inline-flex p-2 transition-transform hover:scale-[1.02]"
@@ -381,20 +381,23 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 definePageMeta({ middleware: 'guest' })
 
-const { trackDownload } = useDownloadTracking()
+const { trackDownload, storeUrl } = useDownloadTracking()
 
-const navItems: DropdownMenuItem[][] = [
+const playStoreHref = computed(() => storeUrl('android'))
+const appStoreHref = computed(() => storeUrl('ios'))
+
+const navItems = computed<DropdownMenuItem[][]>(() => [
   // [
   //   { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
   // ],
   [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app', target: '_blank', onSelect: () => trackDownload('android', 'index_menu') },
-    { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank', onSelect: () => trackDownload('ios', 'index_menu') },
+    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: playStoreHref.value, target: '_blank', onSelect: () => trackDownload('android', 'index_menu') },
+    { label: 'App Store', icon: 'i-simple-icons-apple', to: appStoreHref.value, target: '_blank', onSelect: () => trackDownload('ios', 'index_menu') },
   ],
   [
     { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
   ],
-]
+])
 
 const deviceMockups = [
   '/screen3.webp',

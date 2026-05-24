@@ -37,7 +37,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 const authStore = useAuthStore()
 const router = useRouter()
-const { trackDownload } = useDownloadTracking()
+const { trackDownload, storeUrl } = useDownloadTracking()
 
 onMounted(async () => {
   if (authStore.isAuthenticated && !authStore.user?.first_name) {
@@ -53,8 +53,8 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
       { label: 'Contact', icon: 'i-lucide-mail', to: '/contact' },
     ],
     [
-      { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: 'https://play.google.com/store/apps/details?id=ninja.tab.app&referrer=utm_source%3Dwebsite', target: '_blank', onSelect: () => trackDownload('android', 'global_menu') },
-      { label: 'App Store', icon: 'i-simple-icons-apple', to: 'https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804', target: '_blank', onSelect: () => trackDownload('ios', 'global_menu') },
+      { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: storeUrl('android'), target: '_blank', onSelect: () => trackDownload('android', 'global_menu') },
+      { label: 'App Store', icon: 'i-simple-icons-apple', to: storeUrl('ios'), target: '_blank', onSelect: () => trackDownload('ios', 'global_menu') },
     ],
     [
       { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },

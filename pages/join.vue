@@ -6,25 +6,16 @@ useSeoMeta({
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const { trackDownload } = useDownloadTracking()
+const { trackDownload, storeUrl } = useDownloadTracking()
 
-const playStoreUrl = computed(() => {
-  const isQr = route.query.utm_source === 'qr'
-  const referrerParams = new URLSearchParams()
-  referrerParams.set('utm_source', isQr ? 'qr' : 'website')
-  if (isQr) {
-    const medium = String(route.query.utm_medium ?? '')
-    const campaign = String(route.query.utm_campaign ?? '')
-    const qrId = String(route.query.qr_id ?? '')
-    if (medium) referrerParams.set('utm_medium', medium)
-    if (campaign) referrerParams.set('utm_campaign', campaign)
-    if (qrId) referrerParams.set('utm_content', qrId)
-  }
-  const url = new URL('https://play.google.com/store/apps/details')
-  url.searchParams.set('id', 'ninja.tab.app')
-  url.searchParams.set('referrer', referrerParams.toString())
-  return url.toString()
+const storeOverrides = computed<Record<string, string | undefined>>(() => {
+  if (route.query.utm_source !== 'qr') return {}
+  const qrId = typeof route.query.qr_id === 'string' ? route.query.qr_id : ''
+  return qrId ? { utm_content: qrId } : {}
 })
+
+const playStoreUrl = computed(() => storeUrl('android', storeOverrides.value))
+const appStoreUrl = computed(() => storeUrl('ios', storeOverrides.value))
 
 onMounted(() => {
   if (route.query.utm_source !== 'qr') return
@@ -83,7 +74,7 @@ onMounted(() => {
 
             <!-- iPhone -->
             <a
-              href="https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804"
+              :href="appStoreUrl"
               target="_blank"
               rel="noopener"
               class="flex justify-center transition-transform hover:scale-[1.02]"
