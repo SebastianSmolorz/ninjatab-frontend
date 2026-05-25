@@ -33,12 +33,22 @@ export function useDownloadTracking() {
     return out
   }
 
+  // Campaign token shared by both stores, resolved with the same priority:
+  // utm_campaign → utm_content → utm_source (≤40 chars).
+  function campaignToken(utms: Record<string, string>): string {
+    return (utms.utm_campaign || utms.utm_content || utms.utm_source || '').slice(0, 40)
+  }
+
   function storeUrl(platform: DownloadPlatform, overrides: Record<string, string | undefined> = {}): string {
     const utms = collectUtms(overrides)
+    const ct = campaignToken(utms)
 
     if (platform === 'android') {
       const referrer = new URLSearchParams()
       for (const [key, value] of Object.entries(utms)) referrer.set(key, value)
+      // Mirror the iOS `ct` resolution: fall back to content/source so the
+      // campaign report is never empty. A real utm_campaign is never shadowed.
+      if (!utms.utm_campaign && ct) referrer.set('utm_campaign', ct)
       const url = new URL(PLAY_STORE_BASE)
       url.searchParams.set('id', ANDROID_APP_ID)
       url.searchParams.set('referrer', referrer.toString())
@@ -46,7 +56,6 @@ export function useDownloadTracking() {
     }
 
     // iOS App Store: `ct` (campaign text, ≤40 chars) is the supported tracking token.
-    const ct = (utms.utm_campaign || utms.utm_content || utms.utm_source || '').slice(0, 40)
     const url = new URL(APP_STORE_BASE)
     if (ct) url.searchParams.set('ct', ct)
     url.searchParams.set('mt', '8')
