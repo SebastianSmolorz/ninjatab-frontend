@@ -46,8 +46,11 @@
                 <span class="text-primary-400">More trip.</span>
               </span>
             </h1>
-            <p class="text-primary-300 text-lg sm:text-xl lg:text-2xl max-w-lg leading-snug font-medium">
+            <p class="text-primary-200 text-lg sm:text-xl lg:text-2xl max-w-lg leading-snug font-medium">
               Try it on a dinner, love it on holiday.
+            </p>
+            <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-snug">
+              One shared tab scans every receipt, splits it fairly, and settles up in the fewest payments.
             </p>
             <div class="lg:pt-1">
               <div class="flex items-center">
@@ -83,9 +86,6 @@
                 </a>
               </div>
             </div>
-            <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-snug">
-              One shared tab scans every receipt, splits it fairly, and settles up in the fewest payments.
-            </p>
 
             <!-- Testimonial -->
             <figure class="mt-1 max-w-md flex flex-col items-center lg:items-start gap-1">
@@ -93,10 +93,10 @@
                 <UIcon v-for="n in 5" :key="n" name="i-heroicons-star-20-solid" class="size-3 text-amber-400" />
               </div>
               <blockquote class="text-gray-300 text-xs leading-snug italic">
-                Really easy to use and useful app, saves loads of time.
+                Used it on a ski trip, love the receipt scanner. <br/>It made splitting bills so much easier.
               </blockquote>
               <small>
-                Michael from Bristol
+                Mel (Play Store review)
               </small>
             </figure>
 
@@ -423,9 +423,9 @@ const navItems = computed<DropdownMenuItem[][]>(() => [
 ])
 
 const deviceMockups = [
-  '/screen2.webp',
   '/screen3.webp',
   '/screen1.webp',
+  '/screen2.webp',
 ]
 
 const painPoints = [
