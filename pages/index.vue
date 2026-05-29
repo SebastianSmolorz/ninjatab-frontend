@@ -42,12 +42,12 @@
           <div class="flex flex-col items-center lg:items-start gap-4 lg:gap-3 text-center lg:text-left bg-black/50 pt-3 pb-5 md:pl-5 md:pr-5 rounded-md">
             <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
               <span class="block text-3xl sm:text-4xl lg:text-5xl mt-2">
-                <span class="text-primary-200">Essential for </span>
-                <span class="text-primary-400">group holidays.</span>
+                <span class="text-primary-200">Less maths. </span>
+                <span class="text-primary-400">More trip.</span>
               </span>
             </h1>
             <p class="text-primary-300 text-lg sm:text-xl lg:text-2xl max-w-lg leading-snug font-medium">
-              Download now, ready for your next trip.
+              Try it on a dinner, love it on holiday.
             </p>
             <div class="lg:pt-1">
               <div class="flex items-center">
@@ -84,7 +84,7 @@
               </div>
             </div>
             <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-snug">
-              Saves friendships and hours of admin.
+              One shared tab scans every receipt, splits it fairly, and settles up in the fewest payments.
             </p>
 
             <!-- Testimonial -->
@@ -95,6 +95,9 @@
               <blockquote class="text-gray-300 text-xs leading-snug italic">
                 Really easy to use and useful app, saves loads of time.
               </blockquote>
+              <small>
+                Michael from Bristol
+              </small>
             </figure>
 
             <NuxtLink
@@ -550,10 +553,6 @@ const faqItems = [
   {
     label: 'What currencies does Ninja Tab support?',
     content: 'Ninja Tab supports over 150 currencies, including all major and most minor world currencies. Each bill can use a different currency, making it ideal for your international trip to find yourself in the mountains of Bhutan.',
-  },
-  {
-    label: 'When will the mobile app be available?',
-    content: 'The Ninja Tab mobile app launches on 21 May 2026 on both the Google Play Store and Apple App Store, with exclusive features like receipt scanning with automatic currency and date detection. Download it as soon as it goes live.',
   },
 ]
 
