@@ -418,6 +418,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => [
     { label: 'App Store', icon: 'i-simple-icons-apple', to: appStoreHref.value, target: '_blank', onSelect: () => trackDownload('ios', 'index_menu') },
   ],
   [
+    { label: 'Blog', icon: 'i-lucide-book-open', to: '/blog' },
     { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
   ],
 ])
@@ -557,6 +558,7 @@ const faqItems = [
 ]
 
 const footerLinks = [
+  { label: 'Blog', to: '/blog' },
   { label: 'Contact Us', to: '/contact' },
   { label: 'Terms of Service', to: '/terms' },
   { label: 'Privacy Policy', to: '/privacy' },

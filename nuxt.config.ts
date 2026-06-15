@@ -6,7 +6,7 @@ export default defineNuxtConfig({
         '/giveaway': {prerender: true},
         '/join': {prerender: true},
     },
-    modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights'],
+    modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights', '@nuxt/content'],
 
     fonts: {
         families: [
