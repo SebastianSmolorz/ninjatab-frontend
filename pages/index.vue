@@ -563,6 +563,7 @@ const footerLinks = [
   { label: 'Terms of Service', to: '/terms' },
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
+  { label: 'Credit Card Hot Potato', to: '/credit-card-hot-potato' },
 ]
 
 const siteUrl = 'https://tab.ninja'
