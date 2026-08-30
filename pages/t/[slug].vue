@@ -34,12 +34,12 @@ type PublicTab = {
   group_spend: number | null
   people: { id: string; name: string; spend: number }[]
   bills: PublicBill[]
+  settlements: { from_name: string; to_name: string; amount: number; currency: string; paid: boolean }[]
 }
 
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
-const { trackDownload, storeUrl } = useDownloadTracking()
 
 const { data: tab, error } = await useFetch<PublicTab>(
   () => `${config.public.apiBaseUrl}/tabs/public/${route.params.slug}`
@@ -57,6 +57,18 @@ useSeoMeta({
 // one fetch, and the browser back button still works.
 const bill = computed(() => tab.value?.bills.find(b => b.id === route.query.bill) ?? null)
 const openBill = (id: string) => router.push({ query: { bill: id } })
+
+// Downloads from a shared tab are attributed like the QR surface is: the source
+// names the surface, utm_content carries the specific one (here, the slug).
+const joinLink = computed(() => ({
+  path: '/join',
+  query: {
+    go: '1',
+    utm_source: 'public_tab',
+    utm_medium: 'referral',
+    utm_content: String(route.params.slug),
+  },
+}))
 const closeBill = () => router.push({ query: {} })
 
 const currency = computed(() => tab.value?.settlement_currency ?? 'GBP')
@@ -109,7 +121,7 @@ const isEven = (item: PublicLineItem) =>
       />
 
       <!-- ── Bill detail ────────────────────────────────────────────────── -->
-      <div v-else-if="bill" class="space-y-6">
+      <div v-else-if="bill" class="space-y-5">
         <button
           class="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
           @click="closeBill"
@@ -153,7 +165,7 @@ const isEven = (item: PublicLineItem) =>
         </a>
 
         <section v-if="bill.person_totals.length">
-          <h2 class="text-lg font-semibold text-white mb-3">Per person</h2>
+          <h2 class="text-lg font-semibold text-white mb-2">Per person</h2>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <div
               v-for="pt in bill.person_totals"
@@ -167,7 +179,7 @@ const isEven = (item: PublicLineItem) =>
         </section>
 
         <section>
-          <h2 class="text-lg font-semibold text-white mb-3">
+          <h2 class="text-lg font-semibold text-white mb-2">
             Items
             <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
               {{ bill.line_items.length }}
@@ -216,10 +228,9 @@ const isEven = (item: PublicLineItem) =>
                       </div>
                       <div
                         v-if="item.split_type === 'shares' && claimFor(item, person.id)"
-                        class="rounded-lg ring-1 ring-white/10 py-1 text-center text-sm text-gray-300"
+                        class="mx-auto w-fit rounded-md ring-1 ring-white/10 px-1.5 py-0.5 text-xs text-gray-300"
                       >
-                        {{ claimFor(item, person.id)!.split_value }}
-                        {{ claimFor(item, person.id)!.split_value === 1 ? 'share' : 'shares' }}
+                        {{ claimFor(item, person.id)!.split_value }}x
                       </div>
                     </div>
                   </div>
@@ -245,26 +256,36 @@ const isEven = (item: PublicLineItem) =>
       </div>
 
       <!-- ── Tab overview ───────────────────────────────────────────────── -->
-      <div v-else-if="tab" class="space-y-8">
+      <div v-else-if="tab" class="space-y-6">
         <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ tab.name }}</h1>
           <p v-if="tab.description" class="text-gray-400 mt-2">{{ tab.description }}</p>
-          <div class="flex flex-wrap items-center gap-2 mt-3">
-            <UBadge :color="tab.is_settled ? 'neutral' : 'success'" variant="subtle">
-              {{ tab.is_settled ? 'Settled' : 'Open' }}
-            </UBadge>
-            <UBadge
-              v-if="tab.is_pro"
-              variant="subtle"
-              class="bg-orange-900/30 text-orange-400"
-            >
-              Pro
-            </UBadge>
-          </div>
         </div>
 
+        <!-- Read-only: no Pay action here, unlike the in-app view. -->
+        <section v-if="tab.settlements.length">
+          <h2 class="text-lg font-semibold text-white mb-2">Who pays who</h2>
+          <div class="rounded-xl bg-gray-800/60 ring-1 ring-white/5 divide-y divide-white/5">
+            <div
+              v-for="(s, i) in tab.settlements"
+              :key="i"
+              class="flex items-center gap-2 px-3 py-2.5 text-sm"
+            >
+              <span class="text-white font-medium truncate">{{ s.from_name }}</span>
+              <UIcon name="i-lucide-arrow-right" class="size-4 text-gray-500 shrink-0" />
+              <span class="text-white font-medium truncate">{{ s.to_name }}</span>
+              <span class="ml-auto flex items-center gap-2 shrink-0">
+                <span class="font-semibold" :class="s.paid ? 'text-gray-500 line-through' : 'text-primary-400'">
+                  {{ money(s.amount, s.currency) }}
+                </span>
+                <UIcon v-if="s.paid" name="i-lucide-check" class="size-4 text-primary-400" />
+              </span>
+            </div>
+          </div>
+        </section>
+
         <section>
-          <h2 class="text-lg font-semibold text-white mb-3">Spending summary</h2>
+          <h2 class="text-lg font-semibold text-white mb-2">Spending summary</h2>
           <div class="grid grid-cols-3 rounded-xl bg-gray-800/60 ring-1 ring-white/5 divide-x divide-white/10">
             <div class="p-3 sm:p-4 text-center">
               <div class="text-xs text-gray-500">Group spend</div>
@@ -286,7 +307,7 @@ const isEven = (item: PublicLineItem) =>
         </section>
 
         <section>
-          <h2 class="text-lg font-semibold text-white mb-3">
+          <h2 class="text-lg font-semibold text-white mb-2">
             People
             <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
               {{ tab.people.length }}
@@ -324,7 +345,7 @@ const isEven = (item: PublicLineItem) =>
         </section>
 
         <section>
-          <h2 class="text-lg font-semibold text-white mb-3">
+          <h2 class="text-lg font-semibold text-white mb-2">
             Expenses
             <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
               {{ tab.bills.length }}
@@ -358,32 +379,19 @@ const isEven = (item: PublicLineItem) =>
     <!-- Fixed download CTA. Lives outside the view branches so it is present on
          the tab, the bill drill-down and the not-found state alike. -->
     <div
-      class="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-gray-900/95 backdrop-blur pb-[env(safe-area-inset-bottom)]"
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
     >
-      <div class="mx-auto max-w-2xl px-4 py-3 flex items-center justify-between gap-3">
-        <p class="text-xs sm:text-sm text-gray-300 leading-snug">
-          Split your own bills line by line with Ninja&nbsp;Tab.
+      <div class="mx-auto max-w-2xl px-4 py-3 flex flex-col items-center gap-1">
+        <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug text-center">
+          <strong>Track</strong> and <strong>split</strong> your own trip expenses
         </p>
-        <div class="flex items-center gap-2 shrink-0">
-          <a
-            :href="storeUrl('android')"
-            target="_blank"
-            rel="noopener"
-            aria-label="Get Ninja Tab on Google Play"
-            @click="trackDownload('android', 'public_tab')"
-          >
-            <img src="/google-play-badge.png" alt="Get it on Google Play" class="h-10 w-auto" />
-          </a>
-          <a
-            :href="storeUrl('ios')"
-            target="_blank"
-            rel="noopener"
-            aria-label="Download Ninja Tab on the App Store"
-            @click="trackDownload('ios', 'public_tab')"
-          >
-            <img src="/app-store-badge.svg" alt="Download on the App Store" class="h-7 w-auto" />
-          </a>
-        </div>
+        <NuxtLink
+          :to="joinLink"
+          class="inline-flex items-center gap-1 rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
+        >
+          With Ninja Tab
+          <UIcon name="i-lucide-arrow-right" class="size-3.5" />
+        </NuxtLink>
       </div>
     </div>
   </UMain>

@@ -17,6 +17,20 @@ const storeOverrides = computed<Record<string, string | undefined>>(() => {
 const playStoreUrl = computed(() => storeUrl('android', storeOverrides.value))
 const appStoreUrl = computed(() => storeUrl('ios', storeOverrides.value))
 
+// `?go=1` turns this page into a store proxy: detect the platform and bounce
+// straight to the right store, UTMs and all. Desktop just sees the page.
+// ponytail: naive UA sniff, good enough for iOS vs Android.
+onMounted(() => {
+  if (!route.query.go) return
+  const ua = navigator.userAgent
+  const platform = /android/i.test(ua)
+    ? 'android'
+    : /iphone|ipad|ipod/i.test(ua) ? 'ios' : null
+  if (!platform) return
+  trackDownload(platform, 'join_redirect')
+  window.location.replace(platform === 'android' ? playStoreUrl.value : appStoreUrl.value)
+})
+
 onMounted(() => {
   if (route.query.utm_source !== 'qr') return
 
