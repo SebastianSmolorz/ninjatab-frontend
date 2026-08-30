@@ -79,12 +79,7 @@ const longDate = (d: string) =>
 const shortDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
-const PEOPLE_PREVIEW = 2
 const showAllPeople = ref(false)
-const visiblePeople = computed(() => {
-  const people = tab.value?.people ?? []
-  return showAllPeople.value ? people : people.slice(0, PEOPLE_PREVIEW)
-})
 
 const claimFor = (item: PublicLineItem, personId: string) =>
   item.claims.find(c => c.person_id === personId)
@@ -214,7 +209,9 @@ const isEven = (item: PublicLineItem) =>
               </div>
 
               <template v-if="item.claims.length">
-                <div>
+                <!-- An even split is fully described by the per-person amounts
+                     below, so the name/share grid is only for custom splits. -->
+                <div v-if="!isEven(item)">
                   <p class="text-sm text-gray-500 mb-2">Who's involved</p>
                   <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <div v-for="person in tab.people" :key="person.id" class="space-y-1">
@@ -307,15 +304,28 @@ const isEven = (item: PublicLineItem) =>
         </section>
 
         <section>
-          <h2 class="text-lg font-semibold text-white mb-2">
-            People
-            <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
-              {{ tab.people.length }}
-            </UBadge>
-          </h2>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <h2 class="text-lg font-semibold text-white">
+              People
+              <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
+                {{ tab.people.length }}
+              </UBadge>
+            </h2>
+            <button
+              class="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors"
+              @click="showAllPeople = !showAllPeople"
+            >
+              {{ showAllPeople ? 'Hide people' : 'Show people' }}
+              <UIcon
+                name="i-lucide-chevron-down"
+                class="size-4 transition-transform"
+                :class="showAllPeople && 'rotate-180'"
+              />
+            </button>
+          </div>
+          <div v-if="showAllPeople" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div
-              v-for="person in visiblePeople"
+              v-for="person in tab.people"
               :key="person.id"
               class="flex items-center gap-3 rounded-xl bg-gray-800/60 ring-1 ring-white/5 p-3"
             >
@@ -330,18 +340,6 @@ const isEven = (item: PublicLineItem) =>
               <div class="text-sm text-gray-300 whitespace-nowrap">{{ money(person.spend) }}</div>
             </div>
           </div>
-          <button
-            v-if="tab.people.length > PEOPLE_PREVIEW"
-            class="flex items-center justify-center gap-1.5 w-full mt-2 py-2 -mb-4 text-sm text-gray-400 hover:text-white transition-colors"
-            @click="showAllPeople = !showAllPeople"
-          >
-            {{ showAllPeople ? 'Show less' : `Show all ${tab.people.length}` }}
-            <UIcon
-              name="i-lucide-chevron-down"
-              class="size-4 transition-transform"
-              :class="showAllPeople && 'rotate-180'"
-            />
-          </button>
         </section>
 
         <section>
