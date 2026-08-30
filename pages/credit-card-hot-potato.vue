@@ -41,11 +41,25 @@
         <p class="text-red-300 font-medium">Boom. You're paying!</p>
         <div class="my-7 text-8xl leading-none animate-shake">💥</div>
         <button :class="btn" @click="start">AGAIN</button>
+
+        <div class="mt-7 border-t border-white/10 pt-5 text-left">
+          <a
+            :href="appHref"
+            class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm text-primary-400 ring-1 ring-primary-500/40 transition hover:bg-primary-500/10"
+            @click="trackDownload(platform, 'hot_potato_boom')"
+          >
+            Split Fairly Instead
+          </a>
+          <p class="text-sm leading-relaxed text-gray-400 mt-4 text-center">
+            Scan the receipt, pick your items and pay only for what
+            you had. For free!
+          </p>
+        </div>
       </template>
 
       <NuxtLink
         to="/"
-        class="absolute inset-x-0 -bottom-10 flex items-center justify-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-gray-500 hover:text-primary-400"
+        class="absolute inset-x-0 -bottom-11 flex items-center justify-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-gray-500 hover:text-primary-400"
       >
         <img src="/logo-v2-240.webp" alt="Ninja Tab" class="h-5 w-auto" width="24" height="30" />
         By Ninja Tab
@@ -95,6 +109,14 @@ useHead({
 })
 
 const phase = ref<'idle' | 'playing' | 'boom'>('idle')
+
+const { trackDownload, storeUrl } = useDownloadTracking()
+const platform = ref<'ios' | 'android'>('ios')
+const appHref = computed(() =>
+  storeUrl(platform.value, { utm_source: 'hot_potato', utm_campaign: 'hot_potato_boom' }))
+onMounted(() => {
+  if (/android/i.test(navigator.userAgent)) platform.value = 'android'
+})
 
 const btn = 'w-full rounded-xl bg-primary-500 py-4 text-lg font-extrabold tracking-wider ' +
   'text-gray-950 transition hover:bg-primary-400 active:scale-[0.98]'
