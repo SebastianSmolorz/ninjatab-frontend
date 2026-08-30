@@ -49,6 +49,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
   const authed = authStore.isAuthenticated
   return [
     [
+      { label: 'Home', icon: 'i-lucide-home', to: '/' },
       ...(authed ? [{ label: 'My Tabs', icon: 'i-lucide-list', to: '/tabs' }] : []),
       { label: 'Contact', icon: 'i-lucide-mail', to: '/contact' },
     ],
@@ -58,6 +59,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
     ],
     [
       { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
+      { label: 'Credit Card Hot Potato', icon: 'i-lucide-bomb', to: '/credit-card-hot-potato' },
     ],
     ...(authed
       ? [[{ label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout }]]
@@ -78,6 +80,7 @@ const hideHeader = computed(() =>
   || route.name === 'index'
   || route.name === 'splitwise-alternative'
   || route.name === 'join'
+  || route.name === 'credit-card-hot-potato'
   || route.name === 'tabs-id-upgrade'
   || route.name === 'tabs-id-upgraded'
 )

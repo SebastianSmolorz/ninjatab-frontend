@@ -139,7 +139,7 @@ const isEven = (item: PublicLineItem) =>
                 <UIcon name="i-lucide-calendar" class="size-4 text-gray-500" />
                 {{ longDate(bill.date) }}
               </span>
-              <span class="text-gray-300">{{ bill.currency }}</span>
+              <span class="text-gray-300">{{ getCurrencySymbol(bill.currency) }}</span>
             </div>
             <div class="flex items-center justify-between gap-3 text-gray-500">
               <span>Created by <span class="text-white font-medium">{{ bill.created_by }}</span></span>

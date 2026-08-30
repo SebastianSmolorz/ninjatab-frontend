@@ -5,6 +5,7 @@ export default defineNuxtConfig({
     routeRules: {
         '/giveaway': {prerender: true},
         '/join': {prerender: true},
+        '/credit-card-hot-potato': {prerender: true},
     },
     modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights', '@nuxt/content'],
 
@@ -15,6 +16,12 @@ export default defineNuxtConfig({
     },
 
     css: ['~/assets/css/main.css'],
+
+    vite: {
+        server: {
+            allowedHosts: ['0502-88-97-220-62.ngrok-free.app'],
+        },
+    },
 
     colorMode: {
         preference: 'dark'
