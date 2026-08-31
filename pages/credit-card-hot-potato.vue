@@ -74,17 +74,26 @@ definePageMeta({ layout: false })
 const url = 'https://tab.ninja/credit-card-hot-potato'
 
 useSeoMeta({
-  title: 'Credit Card Hot Potato — The Unfair Way to Split the Bill | Ninja Tab',
-  description: 'The most brutal, unfair way to settle the dinner, a round at the bar or the taxi home. Pass the phone round the table and the unlucky bugger holding it when it blows up picks up the tab. Free credit card roulette, no app, no sign-up.',
+  // Title and description kept inside what Google actually renders (~60 / ~155
+  // chars) so neither gets truncated mid-phrase in the SERP.
+  title: 'Credit Card Hot Potato — Credit Card Roulette Game | Ninja Tab',
+  description: 'Credit card roulette without the cards. Pass the phone round the table — whoever is holding it when it blows picks up the tab. Free, no app, no sign-up.',
   keywords: 'credit card roulette, who pays the bill game, decide who pays, hot potato game, pass the phone game, split the bill, restaurant bill game, drinking game',
   robots: 'index, follow, max-image-preview:large',
   ogType: 'website',
   ogUrl: url,
   ogSiteName: 'Ninja Tab',
+  ogLocale: 'en_GB',
   ogTitle: 'Credit Card Hot Potato — the unlucky bugger pays',
   ogDescription: 'Pass the phone round the table. Whoever is holding it when it blows up picks up the tab.',
   ogImage: 'https://tab.ninja/og-image.jpg',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageAlt: 'Ninja Tab — Credit Card Hot Potato',
   twitterCard: 'summary_large_image',
+  twitterTitle: 'Credit Card Hot Potato — the unlucky bugger pays',
+  twitterDescription: 'Pass the phone round the table. Whoever is holding it when it blows up picks up the tab.',
+  twitterImage: 'https://tab.ninja/og-image.jpg',
 })
 
 useHead({
@@ -97,8 +106,12 @@ useHead({
       name: 'Credit Card Hot Potato',
       url,
       description: 'Credit card roulette without the cards. Pass the phone round the table to settle the dinner, a round at the bar or the taxi home — whoever is holding it when it blows picks up the tab for everyone.',
+      image: 'https://tab.ninja/og-image.jpg',
+      inLanguage: 'en-GB',
+      isAccessibleForFree: true,
       genre: 'Party game',
       gamePlatform: 'Web browser',
+      playMode: 'CoOp',
       numberOfPlayers: { '@type': 'QuantitativeValue', minValue: 2 },
       applicationCategory: 'GameApplication',
       operatingSystem: 'Any',
