@@ -80,6 +80,7 @@ const shortDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
 const showAllPeople = ref(false)
+const showDescription = ref(false)
 
 const claimFor = (item: PublicLineItem, personId: string) =>
   item.claims.find(c => c.person_id === personId)
@@ -256,7 +257,21 @@ const isEven = (item: PublicLineItem) =>
       <div v-else-if="tab" class="space-y-6">
         <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ tab.name }}</h1>
-          <p v-if="tab.description" class="text-gray-400 mt-2">{{ tab.description }}</p>
+          <!-- Clamped with CSS, not JS: the full description stays in the HTML
+               for crawlers even while it renders as a single line. -->
+          <button
+            v-if="tab.description"
+            class="flex items-start gap-1 w-full mt-1 text-left text-gray-400"
+            :aria-expanded="showDescription"
+            @click="showDescription = !showDescription"
+          >
+            <span class="flex-1" :class="!showDescription && 'line-clamp-1'">{{ tab.description }}</span>
+            <UIcon
+              name="i-lucide-chevron-down"
+              class="size-4 shrink-0 mt-0.5 transition-transform"
+              :class="showDescription && 'rotate-180'"
+            />
+          </button>
         </div>
 
         <!-- Read-only: no Pay action here, unlike the in-app view. -->

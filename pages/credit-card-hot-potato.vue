@@ -176,12 +176,16 @@ function start() {
 
   navigator.vibrate?.(0)
   phase.value = 'playing'
+  navigator.vibrate?.([0, 40, 60, 40])
 
   clearTimeout(fuse)
   fuse = setTimeout(boom, 8000 + Math.random() * 17000)
   // ponytail: steady tick, not accelerating - speeding up would leak the fuse length.
   clearInterval(ticker)
-  ticker = setInterval(() => blip(1200, 0.04, 'square', 0.08), 500)
+  ticker = setInterval(() => {
+    blip(1200, 0.04, 'square', 0.08)
+    navigator.vibrate?.(15)
+  }, 500)
 }
 
 onUnmounted(() => {
