@@ -45,10 +45,30 @@ const { data: tab, error } = await useFetch<PublicTab>(
   () => `${config.public.apiBaseUrl}/tabs/public/${route.params.slug}`
 )
 
+// Hand-written titles for the tabs we actually market. Anything else falls
+// back to the tab name.
+const TAB_TITLES: Record<string, string> = {
+  kyrgyzstan: 'Kyrgyzstan Trip Cost: 2 Weeks for 4 People',
+  bali: 'Bali Trip Cost: 4 Friends, A$3,681 Spent',
+}
+const TAB_DESCRIPTIONS: Record<string, string> = {
+  kyrgyzstan: 'See what two weeks in Kyrgyzstan cost four friends, including accommodation, food, taxis, horse treks, yurts and transport. Full $2,541 trip expense breakdown.',
+  bali: 'See what a Bali trip cost four friends, including flights, villa, scooters, food, drinks, massages and a Nusa Penida tour. Full A$3,681 expense breakdown.',
+}
+const pageDescription = computed(() =>
+  TAB_DESCRIPTIONS[String(route.params.slug)] ?? 'A shared tab, split down to the line item.'
+)
+const pageTitle = computed(() => {
+  const custom = TAB_TITLES[String(route.params.slug)]
+  if (custom) return `${custom} | Ninja Tab`
+  return tab.value ? `${tab.value.name} – Ninja Tab` : 'Ninja Tab'
+})
+
 useSeoMeta({
-  title: () => (tab.value ? `${tab.value.name} – Ninja Tab` : 'Ninja Tab'),
-  ogTitle: () => (tab.value ? `${tab.value.name} on Ninja Tab` : 'Ninja Tab'),
-  ogDescription: 'A shared tab, split down to the line item.',
+  title: () => pageTitle.value,
+  ogTitle: () => pageTitle.value,
+  description: () => pageDescription.value,
+  ogDescription: () => pageDescription.value,
   ogImage: 'https://tab.ninja/logo-v2.png',
 })
 
@@ -393,7 +413,7 @@ const isEven = (item: PublicLineItem) =>
     >
       <div class="mx-auto max-w-2xl px-4 pt-1.5 pb-2.5 flex flex-col items-center gap-0.5">
         <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug text-center">
-          <strong>Track</strong> and <strong>split</strong> your own trip expenses
+          <strong>Split</strong> your own trip expenses
         </p>
         <NuxtLink
           :to="joinLink"
