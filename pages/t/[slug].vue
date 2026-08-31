@@ -265,7 +265,7 @@ const isEven = (item: PublicLineItem) =>
             :aria-expanded="showDescription"
             @click="showDescription = !showDescription"
           >
-            <span class="flex-1" :class="!showDescription && 'line-clamp-1'">{{ tab.description }}</span>
+            <span class="flex-1" :class="!showDescription && 'line-clamp-2'">{{ tab.description }}</span>
             <UIcon
               name="i-lucide-chevron-down"
               class="size-4 shrink-0 mt-0.5 transition-transform"
@@ -394,7 +394,7 @@ const isEven = (item: PublicLineItem) =>
     <div
       class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
     >
-      <div class="mx-auto max-w-2xl px-4 py-3 flex flex-col items-center gap-1">
+      <div class="mx-auto max-w-2xl px-4 pt-1.5 pb-2.5 flex flex-col items-center gap-0.5">
         <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug text-center">
           <strong>Track</strong> and <strong>split</strong> your own trip expenses
         </p>
@@ -402,7 +402,7 @@ const isEven = (item: PublicLineItem) =>
           :to="joinLink"
           class="inline-flex items-center gap-1 rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
         >
-          With Ninja Tab
+          Get Ninja Tab
           <UIcon name="i-lucide-arrow-right" class="size-3.5" />
         </NuxtLink>
       </div>
