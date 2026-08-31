@@ -50,7 +50,6 @@ useSeoMeta({
   ogTitle: () => (tab.value ? `${tab.value.name} on Ninja Tab` : 'Ninja Tab'),
   ogDescription: 'A shared tab, split down to the line item.',
   ogImage: 'https://tab.ninja/logo-v2.png',
-  robots: 'noindex',
 })
 
 // The bill drill-down is a query param rather than a nested route: same data,
@@ -76,8 +75,6 @@ const money = (amount: number, code?: string) => formatMinorCurrency(amount, cod
 
 const longDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
-const shortDate = (d: string) =>
-  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
 const showAllPeople = ref(false)
 const showDescription = ref(false)
@@ -374,7 +371,7 @@ const isEven = (item: PublicLineItem) =>
               <div class="min-w-0 flex-1">
                 <div class="text-white font-medium truncate">{{ b.description }}</div>
                 <div class="text-sm text-gray-500 truncate">
-                  {{ shortDate(b.date) }}<template v-if="b.paid_by"> · Paid by {{ b.paid_by }}</template>
+                  <template v-if="b.paid_by">Paid by {{ b.paid_by }}</template>
                 </div>
               </div>
               <span class="font-semibold text-white whitespace-nowrap">

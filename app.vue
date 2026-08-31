@@ -61,6 +61,10 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
       { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
       { label: 'Credit Card Hot Potato', icon: 'i-lucide-bomb', to: '/credit-card-hot-potato' },
     ],
+    [
+      { label: 'Bali trip', icon: 'i-lucide-receipt', to: '/t/bali' },
+      { label: 'Kyrgyzstan trip', icon: 'i-lucide-receipt', to: '/t/kyrgyzstan' },
+    ],
     ...(authed
       ? [[{ label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout }]]
       : []),

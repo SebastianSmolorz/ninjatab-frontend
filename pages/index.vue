@@ -421,6 +421,10 @@ const navItems = computed<DropdownMenuItem[][]>(() => [
     { label: 'Blog', icon: 'i-lucide-book-open', to: '/blog' },
     { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
   ],
+  [
+    { label: 'Bali trip', icon: 'i-lucide-receipt', to: '/t/bali' },
+    { label: 'Kyrgyzstan trip', icon: 'i-lucide-receipt', to: '/t/kyrgyzstan' },
+  ],
 ])
 
 const deviceMockups = [
@@ -564,6 +568,8 @@ const footerLinks = [
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Splitwise Alternative', to: '/splitwise-alternative' },
   { label: 'Credit Card Hot Potato', to: '/credit-card-hot-potato' },
+  { label: 'Bali trip', to: '/t/bali' },
+  { label: 'Kyrgyzstan trip', to: '/t/kyrgyzstan' },
 ]
 
 const siteUrl = 'https://tab.ninja'
