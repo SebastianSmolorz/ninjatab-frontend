@@ -64,6 +64,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => {
     [
       { label: 'Bali trip', icon: 'i-lucide-receipt', to: '/t/bali' },
       { label: 'Kyrgyzstan trip', icon: 'i-lucide-receipt', to: '/t/kyrgyzstan' },
+      { label: 'Sardinia trip', icon: 'i-lucide-receipt', to: '/t/sardinia' },
     ],
     ...(authed
       ? [[{ label: 'Logout', icon: 'i-lucide-log-out', onSelect: handleLogout }]]

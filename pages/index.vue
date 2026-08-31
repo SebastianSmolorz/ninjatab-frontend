@@ -424,6 +424,7 @@ const navItems = computed<DropdownMenuItem[][]>(() => [
   [
     { label: 'Bali trip', icon: 'i-lucide-receipt', to: '/t/bali' },
     { label: 'Kyrgyzstan trip', icon: 'i-lucide-receipt', to: '/t/kyrgyzstan' },
+    { label: 'Sardinia trip', icon: 'i-lucide-receipt', to: '/t/sardinia' },
   ],
 ])
 
@@ -570,6 +571,7 @@ const footerLinks = [
   { label: 'Credit Card Hot Potato', to: '/credit-card-hot-potato' },
   { label: 'Bali trip', to: '/t/bali' },
   { label: 'Kyrgyzstan trip', to: '/t/kyrgyzstan' },
+  { label: 'Sardinia trip', to: '/t/sardinia' },
 ]
 
 const siteUrl = 'https://tab.ninja'

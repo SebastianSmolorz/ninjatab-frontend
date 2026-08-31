@@ -45,32 +45,61 @@ const { data: tab, error } = await useFetch<PublicTab>(
   () => `${config.public.apiBaseUrl}/tabs/public/${route.params.slug}`
 )
 
-// Hand-written titles for the tabs we actually market. Anything else falls
-// back to the tab name.
-const TAB_TITLES: Record<string, string> = {
-  kyrgyzstan: 'Kyrgyzstan Trip Cost: 2 Weeks for 4 People',
-  bali: 'Bali Trip Cost: 4 Friends, A$3,681 Spent',
+// Hand-written copy for the tabs we actually market. Anything else falls back
+// to the tab's own name and description. `title` is the search-intent phrase
+// ("<Place> Trip Cost" first); `h1` overrides the on-page heading when the
+// tab name alone would waste it.
+const TAB_SEO: Record<string, {
+  title: string
+  description: string
+  h1?: string
+  intro?: string
+  ogTitle?: string
+  ogDescription?: string
+}> = {
+  kyrgyzstan: {
+    title: 'Kyrgyzstan Trip Cost: 2 Weeks for 4 People',
+    description: 'See what two weeks in Kyrgyzstan cost four friends, including accommodation, food, taxis, horse treks, yurts and transport. Full $2,541 trip expense breakdown.',
+  },
+  bali: {
+    title: 'Bali Trip Cost: 4 Friends, A$3,681 Spent',
+    description: 'See what a Bali trip cost four friends, including flights, villa, scooters, food, drinks, massages and a Nusa Penida tour. Full A$3,681 expense breakdown.',
+  },
+  sardinia: {
+    title: 'Sardinia Trip Cost: 4 Days for 4 Friends',
+    description: 'See what a four day Sardinia trip cost four friends, with nearly 40 shared expenses across food, drinks, transport and days out. Full group expense breakdown.',
+    h1: 'Sardinia Trip Cost',
+    intro: 'Four friends, four days in Sardinia and nearly 40 shared expenses. We tracked everything along the way, from food and drinks to transport, beach days and the random costs that add up fast on a group holiday. There were even wild dolphins involved. Here’s the full Sardinia trip cost breakdown, including who paid for what and what everyone owed at the end.',
+    ogTitle: 'What 4 Days in Sardinia Cost 4 Friends',
+    ogDescription: 'Nearly 40 expenses in four days. See exactly what we spent in Sardinia and how we split it between four people.',
+  },
 }
-const TAB_DESCRIPTIONS: Record<string, string> = {
-  kyrgyzstan: 'See what two weeks in Kyrgyzstan cost four friends, including accommodation, food, taxis, horse treks, yurts and transport. Full $2,541 trip expense breakdown.',
-  bali: 'See what a Bali trip cost four friends, including flights, villa, scooters, food, drinks, massages and a Nusa Penida tour. Full A$3,681 expense breakdown.',
-}
+const seo = computed(() => TAB_SEO[String(route.params.slug)])
+const canonical = computed(() => `https://tab.ninja/t/${route.params.slug}`)
+
 const pageDescription = computed(() =>
-  TAB_DESCRIPTIONS[String(route.params.slug)] ?? 'A shared tab, split down to the line item.'
+  seo.value?.description ?? 'A shared tab, split down to the line item.'
 )
 const pageTitle = computed(() => {
-  const custom = TAB_TITLES[String(route.params.slug)]
-  if (custom) return `${custom} | Ninja Tab`
+  if (seo.value) return `${seo.value.title} | Ninja Tab`
   return tab.value ? `${tab.value.name} – Ninja Tab` : 'Ninja Tab'
 })
+const heading = computed(() => seo.value?.h1 ?? tab.value?.name ?? '')
+const intro = computed(() => seo.value?.intro ?? tab.value?.description ?? '')
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => pageTitle.value,
+  ogTitle: () => seo.value?.ogTitle ?? pageTitle.value,
   description: () => pageDescription.value,
-  ogDescription: () => pageDescription.value,
+  ogDescription: () => seo.value?.ogDescription ?? pageDescription.value,
+  ogUrl: () => canonical.value,
+  ogType: 'article',
+  ogSiteName: 'Ninja Tab',
   ogImage: 'https://tab.ninja/logo-v2.png',
+  twitterCard: 'summary_large_image',
 })
+
+useHead({ link: [{ rel: 'canonical', href: () => canonical.value }] })
 
 // The bill drill-down is a query param rather than a nested route: same data,
 // one fetch, and the browser back button still works.
@@ -273,16 +302,16 @@ const isEven = (item: PublicLineItem) =>
       <!-- ── Tab overview ───────────────────────────────────────────────── -->
       <div v-else-if="tab" class="space-y-6">
         <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ tab.name }}</h1>
+          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ heading }}</h1>
           <!-- Clamped with CSS, not JS: the full description stays in the HTML
                for crawlers even while it renders as a single line. -->
           <button
-            v-if="tab.description"
+            v-if="intro"
             class="flex items-start gap-1 w-full mt-1 text-left text-gray-400"
             :aria-expanded="showDescription"
             @click="showDescription = !showDescription"
           >
-            <span class="flex-1" :class="!showDescription && 'line-clamp-2'">{{ tab.description }}</span>
+            <span class="flex-1" :class="!showDescription && 'line-clamp-2'">{{ intro }}</span>
             <UIcon
               name="i-lucide-chevron-down"
               class="size-4 shrink-0 mt-0.5 transition-transform"
