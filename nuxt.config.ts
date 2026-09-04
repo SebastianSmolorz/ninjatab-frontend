@@ -6,6 +6,7 @@ export default defineNuxtConfig({
         '/giveaway': {prerender: true},
         '/join': {prerender: true},
         '/credit-card-hot-potato': {prerender: true},
+        '/madlertravel': {prerender: true},
     },
     modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights', '@nuxt/content'],
 
