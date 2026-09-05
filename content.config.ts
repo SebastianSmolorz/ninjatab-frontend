@@ -30,6 +30,7 @@ export default defineContentConfig({
                 image: z.string().optional(),
                 imageAlt: z.string().optional(),
                 blurb: z.string().optional(),
+                date: z.string().optional(),
                 order: z.number().default(0),
             }),
         }),

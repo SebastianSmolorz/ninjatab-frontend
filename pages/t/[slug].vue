@@ -21,7 +21,7 @@ const { data } = await useAsyncData(`trip-${slug.value}`, async () => {
   const author = copy?.author
     ? await queryCollection('authors')
       .path(`/authors/${copy.author}`)
-      .select('path', 'name', 'avatar', 'tagline', 'flag')
+      .select('path', 'name', 'avatar', 'tagline', 'flag', 'website', 'instagram')
       .first()
     : null
   return { copy, tab, author }
@@ -65,7 +65,72 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-useHead({ link: [{ rel: 'canonical', href: () => canonical.value }] })
+const SITE = 'https://tab.ninja'
+const ORGANISATION = `${SITE}/#organization`
+
+// The creator's `@id` here is the same node the author page defines, so a trip
+// and its creator reconcile into one entity across the two pages. Trips without
+// a creator fall back to Ninja Tab as the author.
+const authorNode = computed(() => {
+  const slugged = copy.value?.author
+  if (!slugged || !author.value) return null
+  return {
+    '@type': 'Person',
+    '@id': `${SITE}/${slugged}#person`,
+    name: author.value.name,
+    url: `${SITE}/${slugged}`,
+    ...(author.value.avatar ? { image: `${SITE}${author.value.avatar}` } : {}),
+    sameAs: [author.value.website, author.value.instagram].filter(Boolean),
+  }
+})
+
+const jsonLd = computed(() => ({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${canonical.value}#article`,
+      headline: copy.value?.title ?? tab.value.name,
+      description: pageDescription.value,
+      image: ogImage.value,
+      inLanguage: 'en',
+      isAccessibleForFree: true,
+      mainEntityOfPage: canonical.value,
+      author: { '@id': authorNode.value?.['@id'] ?? ORGANISATION },
+      publisher: { '@id': ORGANISATION },
+      ...(copy.value?.date ? { datePublished: copy.value.date } : {}),
+    },
+    ...(authorNode.value ? [authorNode.value] : []),
+    {
+      '@type': 'Organization',
+      '@id': ORGANISATION,
+      name: 'Ninja Tab',
+      url: `${SITE}/`,
+      logo: `${SITE}/logo-v2.png`,
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonical.value}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Ninja Tab', item: `${SITE}/` },
+        ...(authorNode.value
+          ? [{ '@type': 'ListItem', position: 2, name: authorNode.value.name, item: authorNode.value.url }]
+          : []),
+        {
+          '@type': 'ListItem',
+          position: authorNode.value ? 3 : 2,
+          name: copy.value?.title ?? tab.value.name,
+          item: canonical.value,
+        },
+      ],
+    },
+  ],
+}))
+
+useHead(() => ({
+  link: [{ rel: 'canonical', href: canonical.value }],
+  script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(jsonLd.value) }],
+}))
 
 // The bill drill-down is a query param rather than a nested route: same data,
 // one page, and the browser back button still works. The line items are pulled
