@@ -1,110 +1,94 @@
 <script setup lang="ts">
-type PublicClaim = {
-  person_id: string
-  person_name: string
-  split_value: number | null
-  amount: number | null
-}
-type PublicLineItem = {
-  id: string
-  description: string
-  value: number
-  split_type: 'shares' | 'value'
-  claims: PublicClaim[]
-}
-type PublicBill = {
-  id: string
-  description: string
-  currency: string
-  date: string
-  total_amount: number
-  created_by: string
-  paid_by: string | null
-  receipt_image_url: string
-  person_totals: { person_id: string; person_name: string; amount: number }[]
-  line_items: PublicLineItem[]
-}
-type PublicTab = {
-  id: string
-  name: string
-  description: string
-  settlement_currency: string
-  is_settled: boolean
-  is_pro: boolean
-  group_spend: number | null
-  people: { id: string; name: string; spend: number }[]
-  bills: PublicBill[]
-  settlements: { from_name: string; to_name: string; amount: number; currency: string; paid: boolean }[]
-}
-
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 
-const { data: tab, error } = await useFetch<PublicTab>(
-  () => `${config.public.apiBaseUrl}/tabs/public/${route.params.slug}`
-)
+const slug = computed(() => String(route.params.slug))
 
-// Hand-written copy for the tabs we actually market. Anything else falls back
-// to the tab's own name and description. `title` is the search-intent phrase
-// ("<Place> Trip Cost" first); `h1` overrides the on-page heading when the
-// tab name alone would waste it.
-const TAB_SEO: Record<string, {
-  title: string
-  description: string
-  h1?: string
-  intro?: string
-  ogTitle?: string
-  ogDescription?: string
-}> = {
-  kyrgyzstan: {
-    title: 'Kyrgyzstan Trip Cost: 2 Weeks for 4 People',
-    description: 'See what two weeks in Kyrgyzstan cost four friends, including accommodation, food, taxis, horse treks, yurts and transport. Full $2,541 trip expense breakdown.',
-  },
-  bali: {
-    title: 'Bali Trip Cost: 4 Friends, A$3,681 Spent',
-    description: 'See what a Bali trip cost four friends, including flights, villa, scooters, food, drinks, massages and a Nusa Penida tour. Full A$3,681 expense breakdown.',
-  },
-  sardinia: {
-    title: 'Sardinia Trip Cost: 4 Days for 4 Friends',
-    description: 'See what a four day Sardinia trip cost four friends, with nearly 40 shared expenses across food, drinks, transport and days out. Full group expense breakdown.',
-    h1: 'Sardinia Trip Cost',
-    intro: 'Four friends, four days in Sardinia and nearly 40 shared expenses. We tracked everything along the way, from food and drinks to transport, beach days and the random costs that add up fast on a group holiday. There were even wild dolphins involved. Here’s the full Sardinia trip cost breakdown, including who paid for what and what everyone owed at the end.',
-    ogTitle: 'What 4 Days in Sardinia Cost 4 Friends',
-    ogDescription: 'Nearly 40 expenses in four days. See exactly what we spent in Sardinia and how we split it between four people.',
-  },
-}
-const seo = computed(() => TAB_SEO[String(route.params.slug)])
-const canonical = computed(() => `https://tab.ninja/t/${route.params.slug}`)
-
-const pageDescription = computed(() =>
-  seo.value?.description ?? 'A shared tab, split down to the line item.'
-)
-const pageTitle = computed(() => {
-  if (seo.value) return `${seo.value.title} | Ninja Tab`
-  return tab.value ? `${tab.value.name} – Ninja Tab` : 'Ninja Tab'
+// Everything the overview needs comes off disk via @nuxt/content: the numbers
+// from the exported `tripdata` doc, the copy from the hand-written `trips` doc.
+// No API call, so the page renders identically in dev, in prod and if the
+// backend is down. `bill_details` is deliberately left out of the select — it
+// is the bulk of the payload and only the drill-down reads it.
+const { data } = await useAsyncData(`trip-${slug.value}`, async () => {
+  const [copy, tab] = await Promise.all([
+    queryCollection('trips').path(`/trips/${slug.value}`).first(),
+    queryCollection('tripData')
+      .path(`/tripdata/${slug.value}`)
+      .select('name', 'settlement_currency', 'group_spend', 'people', 'settlements', 'bills', 'body')
+      .first(),
+  ])
+  const author = copy?.author
+    ? await queryCollection('authors')
+      .path(`/authors/${copy.author}`)
+      .select('path', 'name', 'avatar', 'tagline', 'flag')
+      .first()
+    : null
+  return { copy, tab, author }
 })
-const heading = computed(() => seo.value?.h1 ?? tab.value?.name ?? '')
-const intro = computed(() => seo.value?.intro ?? tab.value?.description ?? '')
+
+if (!data.value?.tab) {
+  throw createError({ statusCode: 404, statusMessage: 'Tab not found', fatal: true })
+}
+
+const tab = computed(() => data.value!.tab!)
+const copy = computed(() => data.value?.copy ?? null)
+const author = computed(() => data.value?.author ?? null)
+
+// A hand-written body on the trip doc wins over the tab's own description, so
+// a page can carry proper intro copy without editing the tab in the app.
+const introDoc = computed(() =>
+  copy.value?.body?.value?.length ? copy.value : tab.value
+)
+
+const canonical = computed(() => `https://tab.ninja/t/${slug.value}`)
+const heading = computed(() => copy.value?.heading ?? copy.value?.title ?? tab.value.name)
+const pageTitle = computed(() =>
+  copy.value?.title ? `${copy.value.title} | Ninja Tab` : `${tab.value.name} – Ninja Tab`
+)
+const pageDescription = computed(() =>
+  copy.value?.description ?? 'A shared tab, split down to the line item.'
+)
+const ogImage = computed(() =>
+  copy.value?.image ? `https://tab.ninja${copy.value.image}` : 'https://tab.ninja/logo-v2.png'
+)
 
 useSeoMeta({
   title: () => pageTitle.value,
-  ogTitle: () => seo.value?.ogTitle ?? pageTitle.value,
+  ogTitle: () => copy.value?.ogTitle ?? pageTitle.value,
   description: () => pageDescription.value,
-  ogDescription: () => seo.value?.ogDescription ?? pageDescription.value,
+  ogDescription: () => copy.value?.ogDescription ?? pageDescription.value,
   ogUrl: () => canonical.value,
   ogType: 'article',
   ogSiteName: 'Ninja Tab',
-  ogImage: 'https://tab.ninja/logo-v2.png',
+  ogImage: () => ogImage.value,
   twitterCard: 'summary_large_image',
 })
 
 useHead({ link: [{ rel: 'canonical', href: () => canonical.value }] })
 
 // The bill drill-down is a query param rather than a nested route: same data,
-// one fetch, and the browser back button still works.
-const bill = computed(() => tab.value?.bills.find(b => b.id === route.query.bill) ?? null)
-const openBill = (id: string) => router.push({ query: { bill: id } })
+// one page, and the browser back button still works. The line items are pulled
+// on demand — SSR'd when someone lands straight on `?bill=`, fetched on click
+// otherwise.
+const { data: details, execute: loadDetails } = await useAsyncData(
+  `trip-bills-${slug.value}`,
+  () => queryCollection('tripData').path(`/tripdata/${slug.value}`).select('bill_details').first(),
+  { immediate: Boolean(route.query.bill) },
+)
+
+const bill = computed(() => {
+  const summary = tab.value.bills.find(b => b.id === route.query.bill)
+  if (!summary) return null
+  const detail = details.value?.bill_details?.find(d => d.id === summary.id)
+  return { ...summary, person_totals: detail?.person_totals ?? [], line_items: detail?.line_items ?? [] }
+})
+
+const openBill = (id: string) => {
+  loadDetails()
+  router.push({ query: { bill: id } })
+}
+const closeBill = () => router.push({ query: {} })
 
 // Downloads from a shared tab are attributed like the QR surface is: the source
 // names the surface, utm_content carries the specific one (here, the slug).
@@ -114,13 +98,14 @@ const joinLink = computed(() => ({
     go: '1',
     utm_source: 'public_tab',
     utm_medium: 'referral',
-    utm_content: String(route.params.slug),
+    utm_content: slug.value,
   },
 }))
-const closeBill = () => router.push({ query: {} })
 
-const currency = computed(() => tab.value?.settlement_currency ?? 'GBP')
+const currency = computed(() => tab.value.settlement_currency)
 const money = (amount: number, code?: string) => formatMinorCurrency(amount, code ?? currency.value)
+// Headline figures only — bills and settlements stay exact to the cent.
+const summaryMoney = (amount: number) => formatMinorCurrencyCompact(amount, currency.value)
 
 const longDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -128,24 +113,24 @@ const longDate = (d: string) =>
 const showAllPeople = ref(false)
 const showDescription = ref(false)
 
-const claimFor = (item: PublicLineItem, personId: string) =>
+const claimFor = (item: { claims: { person_id: string }[] }, personId: string) =>
   item.claims.find(c => c.person_id === personId)
 
 // Even means every person on the tab is involved AND carries equal shares.
 // Leaving anyone out makes it a custom split, however equal the rest are.
+const isEven = (item: { claims: { split_value: number | null }[] }) =>
+  item.claims.length > 0 &&
+  item.claims.length === tab.value.people.length &&
+  item.claims.every(c => (c.split_value ?? 0) === (item.claims[0]!.split_value ?? 0))
+
 // Group spend averaged over the roster. Rounded to whole minor units, so the
 // per-person figures need not sum back to the group total.
 const perPerson = computed(() => {
-  const spend = tab.value?.group_spend
-  const heads = tab.value?.people.length ?? 0
+  const spend = tab.value.group_spend
+  const heads = tab.value.people.length
   if (spend === null || spend === undefined || heads === 0) return null
   return Math.round(spend / heads)
 })
-
-const isEven = (item: PublicLineItem) =>
-  item.claims.length > 0 &&
-  item.claims.length === (tab.value?.people.length ?? 0) &&
-  item.claims.every(c => (c.split_value ?? 0) === (item.claims[0]!.split_value ?? 0))
 </script>
 
 <template>
@@ -153,17 +138,8 @@ const isEven = (item: PublicLineItem) =>
     <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--ui-color-primary-500)/12%,_transparent_55%)] pointer-events-none" />
 
     <UContainer class="relative z-10 max-w-2xl pt-20 pb-32">
-      <UAlert
-        v-if="error"
-        icon="i-lucide-eye-off"
-        variant="soft"
-        color="neutral"
-        title="Tab not available"
-        description="This tab is private or the link is no longer valid."
-      />
-
       <!-- ── Bill detail ────────────────────────────────────────────────── -->
-      <div v-else-if="bill" class="space-y-5">
+      <div v-if="bill" class="space-y-5">
         <button
           class="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors"
           @click="closeBill"
@@ -195,9 +171,11 @@ const isEven = (item: PublicLineItem) =>
           </div>
         </div>
 
+        <!-- Presigned S3 URLs expire, so they are never exported. This hits an
+             endpoint that signs one on the spot and redirects. -->
         <a
-          v-if="bill.receipt_image_url"
-          :href="bill.receipt_image_url"
+          v-if="bill.has_receipt"
+          :href="`${config.public.apiBaseUrl}/tabs/public/${slug}/receipt/${bill.id}`"
           target="_blank"
           rel="noopener"
           class="flex items-center justify-center gap-2 w-full py-3 rounded-xl ring-1 ring-white/10 text-gray-200 hover:bg-white/5 transition-colors"
@@ -220,7 +198,7 @@ const isEven = (item: PublicLineItem) =>
           </div>
         </section>
 
-        <section>
+        <section v-if="bill.line_items.length">
           <h2 class="text-lg font-semibold text-white mb-2">
             Items
             <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
@@ -300,25 +278,45 @@ const isEven = (item: PublicLineItem) =>
       </div>
 
       <!-- ── Tab overview ───────────────────────────────────────────────── -->
-      <div v-else-if="tab" class="space-y-6">
+      <div v-else class="space-y-5">
         <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ heading }}</h1>
           <!-- Clamped with CSS, not JS: the full description stays in the HTML
-               for crawlers even while it renders as a single line. -->
+               for crawlers even while it renders as a couple of lines. -->
           <button
-            v-if="intro"
-            class="flex items-start gap-1 w-full mt-1 text-left text-gray-400"
+            class="flex items-start gap-1 w-full mt-1 text-left"
             :aria-expanded="showDescription"
             @click="showDescription = !showDescription"
           >
-            <span class="flex-1" :class="!showDescription && 'line-clamp-2'">{{ intro }}</span>
+            <ContentRenderer
+              :value="introDoc"
+              class="flex-1 trip-prose"
+              :class="!showDescription && 'line-clamp-2'"
+            />
             <UIcon
               name="i-lucide-chevron-down"
-              class="size-4 shrink-0 mt-0.5 transition-transform"
+              class="size-4 shrink-0 mt-1.5 text-gray-400 transition-transform"
               :class="showDescription && 'rotate-180'"
             />
           </button>
         </div>
+
+        <!-- Author byline. The tab links to the creator's page and the creator's
+             page links back, so a trip is never a dead end. -->
+        <NuxtLink
+          v-if="author"
+          :to="`/${copy!.author}`"
+          class="flex items-center gap-3 rounded-2xl bg-gray-800/60 ring-1 ring-white/5 px-4 py-2.5 hover:bg-gray-800 transition-colors"
+        >
+          <UAvatar :src="author.avatar" :alt="author.name" size="lg" class="shrink-0 ring-1 ring-white/10" />
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-semibold uppercase tracking-wide text-primary-400">Trip by</p>
+            <p class="text-white font-small truncate">
+              {{ author.name }} <span v-if="author.flag">{{ author.flag }}</span>
+            </p>
+          </div>
+          <UIcon name="i-lucide-chevron-right" class="size-5 text-gray-500 shrink-0" />
+        </NuxtLink>
 
         <!-- Read-only: no Pay action here, unlike the in-app view. -->
         <section v-if="tab.settlements.length">
@@ -348,7 +346,7 @@ const isEven = (item: PublicLineItem) =>
             <div class="p-3 sm:p-4 text-center">
               <div class="text-xs text-gray-500">Group spend</div>
               <div class="text-base sm:text-lg font-semibold text-white mt-1">
-                {{ tab.group_spend === null ? '—' : money(tab.group_spend) }}
+                {{ tab.group_spend === null ? '—' : summaryMoney(tab.group_spend) }}
               </div>
             </div>
             <div class="p-3 sm:p-4 text-center">
@@ -358,14 +356,14 @@ const isEven = (item: PublicLineItem) =>
             <div class="p-3 sm:p-4 text-center">
               <div class="text-xs text-gray-500">Per person</div>
               <div class="text-base sm:text-lg font-semibold text-white mt-1">
-                {{ perPerson === null ? '—' : money(perPerson) }}
+                {{ perPerson === null ? '—' : summaryMoney(perPerson) }}
               </div>
             </div>
           </div>
         </section>
 
         <section>
-          <div class="flex items-center justify-between gap-3 mb-2">
+          <div class="flex items-center justify-between gap-1 mb-2">
             <h2 class="text-lg font-semibold text-white">
               People
               <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
@@ -398,7 +396,7 @@ const isEven = (item: PublicLineItem) =>
               <div class="min-w-0 flex-1">
                 <div class="text-white font-medium truncate">{{ person.name }}</div>
               </div>
-              <div class="text-sm text-gray-300 whitespace-nowrap">{{ money(person.spend) }}</div>
+              <div class="text-sm text-gray-300 whitespace-nowrap">{{ summaryMoney(person.spend) }}</div>
             </div>
           </div>
         </section>
@@ -431,22 +429,21 @@ const isEven = (item: PublicLineItem) =>
           </div>
           <p v-else class="text-gray-500">No expenses on this tab yet.</p>
         </section>
-
       </div>
     </UContainer>
 
     <!-- Fixed download CTA. Lives outside the view branches so it is present on
-         the tab, the bill drill-down and the not-found state alike. -->
+         the tab and the bill drill-down alike. -->
     <div
-      class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
+      class="fixed inset-x-0 bottom-1 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
     >
-      <div class="mx-auto max-w-2xl px-4 pt-1.5 pb-2.5 flex flex-col items-center gap-0.5">
-        <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug text-center">
+      <div class="mx-auto max-w-2xl px-4 py-1 flex items-baseline justify-center gap-3">
+        <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug">
           <strong>Split</strong> your own trip expenses
         </p>
         <NuxtLink
           :to="joinLink"
-          class="inline-flex items-center gap-1 rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
+          class="inline-flex items-center gap-1 bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
         >
           Get Ninja Tab
           <UIcon name="i-lucide-arrow-right" class="size-3.5" />
@@ -455,3 +452,32 @@ const isEven = (item: PublicLineItem) =>
     </div>
   </UMain>
 </template>
+
+<style scoped>
+/* Nuxt UI's prose components ship `my-5`, which is right for an article body
+   and far too much inside a header card — it opens a 20px gap under the h1 and
+   drops the text away from the caret. Outer margins go, spacing between blocks
+   stays. */
+.trip-prose {
+  color: var(--color-gray-400);
+}
+.trip-prose :deep(p),
+.trip-prose :deep(ul),
+.trip-prose :deep(ol) {
+  margin-block: 0;
+}
+.trip-prose :deep(:where(p, ul, ol) + :where(p, ul, ol)) {
+  margin-top: 0.75rem;
+}
+.trip-prose :deep(strong) {
+  color: var(--color-gray-200);
+}
+.trip-prose :deep(a) {
+  color: var(--ui-color-primary-400);
+  text-decoration: underline;
+}
+.trip-prose :deep(ul) {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+</style>

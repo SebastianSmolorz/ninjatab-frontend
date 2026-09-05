@@ -1,15 +1,5 @@
 <template>
   <UMain class="relative bg-gray-900 min-h-screen">
-    <!-- Overlay: logo + back to home -->
-    <div class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
-      <NuxtLink to="/" class="pointer-events-auto">
-        <img src="/logo-v2-240.webp" alt="Ninja Tab logo" class="h-10 w-auto" />
-      </NuxtLink>
-      <div class="pointer-events-auto">
-        <UButton to="/join" size="md" trailing-icon="i-lucide-arrow-right">Start a free tab</UButton>
-      </div>
-    </div>
-
     <template v-if="page">
       <!-- Hero -->
       <section class="relative overflow-hidden pt-28 pb-10 lg:pt-36 lg:pb-12 bg-gray-900">

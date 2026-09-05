@@ -10,6 +10,7 @@ export enum Currency {
   GBP = 'GBP',
   JPY = 'JPY',
   CAD = 'CAD',
+  AUD = 'AUD',
   TRY = 'TRY',
   PLN = 'PLN',
   CZK = 'CZK',

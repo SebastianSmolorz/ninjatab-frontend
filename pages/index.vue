@@ -1,22 +1,5 @@
 <template>
   <UMain class="relative bg-gray-900">
-    <!-- Overlay: logo + burger menu (outside hero so dropdown isn't clipped) -->
-    <div class="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-4 sm:px-6 py-4 pointer-events-none">
-      <img src="/logo-v2-240.webp" alt="Ninja Tab logo" class="h-10 w-auto pointer-events-auto" />
-      <div class="pointer-events-auto">
-        <UDropdownMenu :items="navItems" :content="{ align: 'end', side: 'bottom', sideOffset: 8 }" :modal="false">
-          <UButton icon="i-lucide-menu" variant="ghost" color="neutral" aria-label="Open menu" />
-          <template #item-trailing="{ item }">
-            <UIcon
-              v-if="item.target === '_blank'"
-              name="i-lucide-external-link"
-              class="size-4 text-gray-400"
-            />
-          </template>
-        </UDropdownMenu>
-      </div>
-    </div>
-
     <!-- Hero Section - full viewport, outside container -->
     <div class="relative w-full overflow-hidden" style="min-height: 100svh;">
       <!-- Background: dimmed photo + layered gradients + radial glows -->
@@ -400,7 +383,6 @@
 </template>
 
 <script setup lang="ts">
-import type { DropdownMenuItem } from '@nuxt/ui'
 
 definePageMeta({ middleware: 'guest' })
 
@@ -408,25 +390,6 @@ const { trackDownload, storeUrl } = useDownloadTracking()
 
 const playStoreHref = computed(() => storeUrl('android'))
 const appStoreHref = computed(() => storeUrl('ios'))
-
-const navItems = computed<DropdownMenuItem[][]>(() => [
-  // [
-  //   { label: 'Web log in', icon: 'i-lucide-log-in', to: '/login' },
-  // ],
-  [
-    { label: 'Google Play', icon: 'i-simple-icons-googleplay', to: playStoreHref.value, target: '_blank', onSelect: () => trackDownload('android', 'index_menu') },
-    { label: 'App Store', icon: 'i-simple-icons-apple', to: appStoreHref.value, target: '_blank', onSelect: () => trackDownload('ios', 'index_menu') },
-  ],
-  [
-    { label: 'Blog', icon: 'i-lucide-book-open', to: '/blog' },
-    { label: 'Splitwise Alternative', icon: 'i-lucide-repeat', to: '/splitwise-alternative' },
-  ],
-  [
-    { label: 'Bali trip', icon: 'i-lucide-receipt', to: '/t/bali' },
-    { label: 'Kyrgyzstan trip', icon: 'i-lucide-receipt', to: '/t/kyrgyzstan' },
-    { label: 'Sardinia trip', icon: 'i-lucide-receipt', to: '/t/sardinia' },
-  ],
-])
 
 const deviceMockups = [
   '/screen3.webp',
