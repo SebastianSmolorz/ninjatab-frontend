@@ -1,3 +1,17 @@
+import { existsSync, readdirSync } from 'node:fs'
+
+// @nuxt/content's SQLite database doesn't run inside a Vercel serverless
+// function, so any page that queries a collection at request time 404s on a
+// direct hit — it only survives client-side navigation, where the browser has
+// its own copy. Every content-backed page is static anyway, so prerender them
+// all. Derived from the files so a new trip or creator needs no config edit.
+const contentRoutes = (dir: string, prefix: string): string[] =>
+    existsSync(`content/${dir}`)
+        ? readdirSync(`content/${dir}`)
+            .filter(file => file.endsWith('.md'))
+            .map(file => prefix + file.replace(/\.md$/, ''))
+        : []
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -9,6 +23,17 @@ export default defineNuxtConfig({
         '/madlertravel': {prerender: true},
     },
     modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights', '@nuxt/content'],
+
+    nitro: {
+        prerender: {
+            routes: [
+                '/blog',
+                ...contentRoutes('blog', '/blog/'),
+                ...contentRoutes('trips', '/t/'),
+                ...contentRoutes('authors', '/'),
+            ],
+        },
+    },
 
     fonts: {
         families: [

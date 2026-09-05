@@ -69,13 +69,17 @@ useHead({ link: [{ rel: 'canonical', href: () => canonical.value }] })
 
 // The bill drill-down is a query param rather than a nested route: same data,
 // one page, and the browser back button still works. The line items are pulled
-// on demand — SSR'd when someone lands straight on `?bill=`, fetched on click
-// otherwise.
+// on demand, and always in the browser — this page is prerendered, so the build
+// never sees a query string to render them from.
 const { data: details, execute: loadDetails } = await useAsyncData(
   `trip-bills-${slug.value}`,
   () => queryCollection('tripData').path(`/tripdata/${slug.value}`).select('bill_details').first(),
-  { immediate: Boolean(route.query.bill) },
+  { immediate: false },
 )
+
+watch(() => route.query.bill, (id) => {
+  if (id && !details.value) loadDetails()
+}, { immediate: true })
 
 const bill = computed(() => {
   const summary = tab.value.bills.find(b => b.id === route.query.bill)
@@ -84,10 +88,7 @@ const bill = computed(() => {
   return { ...summary, person_totals: detail?.person_totals ?? [], line_items: detail?.line_items ?? [] }
 })
 
-const openBill = (id: string) => {
-  loadDetails()
-  router.push({ query: { bill: id } })
-}
+const openBill = (id: string) => router.push({ query: { bill: id } })
 const closeBill = () => router.push({ query: {} })
 
 // Downloads from a shared tab are attributed like the QR surface is: the source
