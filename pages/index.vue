@@ -584,16 +584,29 @@ const jsonLd = [
     logo: `${siteUrl}/logo-v2.png`,
     sameAs: [
       "https://play.google.com/store/apps/details?id=ninja.tab.app",
+      "https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804",
     ],
   },
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": "MobileApplication",
     name: "Ninja Tab",
-    operatingSystem: "Web, Android, iOS",
+    operatingSystem: "Android, iOS",
     applicationCategory: "FinanceApplication",
+    installUrl: [
+      "https://play.google.com/store/apps/details?id=ninja.tab.app",
+      "https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804",
+    ],
     url: siteUrl,
     description: "Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.",
+    // Combined App Store + Google Play, not shown on-page by choice.
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "5",
+      ratingCount: "16",
+      bestRating: "5",
+      worstRating: "1",
+    },
     offers: [
       {
         "@type": "Offer",

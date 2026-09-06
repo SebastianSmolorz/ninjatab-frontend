@@ -74,12 +74,29 @@ function formatDate(date?: string) {
     : ''
 }
 
+const canonical = 'https://tab.ninja/blog'
+const ogImage = 'https://tab.ninja/og-image.jpg'
+
 useSeoMeta({
   title: 'Blog — Ninja Tab',
   description: 'Honest guides on group expenses, fair splitting, and keeping friendships intact when money is involved.',
+  ogType: 'website',
+  ogUrl: canonical,
+  ogSiteName: 'Ninja Tab',
+  ogLocale: 'en_GB',
   ogTitle: 'Ninja Tab Blog',
   ogDescription: 'Honest guides on group expenses, fair splitting, and keeping friendships intact.',
-  ogImage: 'https://tab.ninja/og-image.jpg',
+  ogImage,
+  ogImageAlt: 'Ninja Tab blog - guides on splitting group expenses',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageType: 'image/jpeg',
   twitterCard: 'summary_large_image',
+  twitterTitle: 'Ninja Tab Blog',
+  twitterDescription: 'Honest guides on group expenses, fair splitting, and keeping friendships intact.',
+  twitterImage: ogImage,
+  twitterImageAlt: 'Ninja Tab blog - guides on splitting group expenses',
 })
+
+useHead({ link: [{ rel: 'canonical', href: canonical }] })
 </script>

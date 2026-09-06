@@ -1,4 +1,10 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: 'Signing you in - Tab.ninja',
+  // Magic-link landing page, carries a token in the URL. Never index it.
+  robots: 'noindex, nofollow',
+})
+
 const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()

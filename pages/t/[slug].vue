@@ -501,7 +501,7 @@ const perPerson = computed(() => {
     <!-- Fixed download CTA. Lives outside the view branches so it is present on
          the tab and the bill drill-down alike. -->
     <div
-      class="fixed inset-x-0 bottom-1 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
     >
       <div class="mx-auto max-w-2xl px-4 py-1 flex items-baseline justify-center gap-3">
         <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug">

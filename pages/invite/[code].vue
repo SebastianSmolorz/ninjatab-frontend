@@ -9,6 +9,9 @@ useSeoMeta({
   ogDescription: 'Click to open the Ninja Tab app and join the tab.',
   ogImage: 'https://tab.ninja/logo-v2.png',
   twitterCard: 'summary',
+  // Per-invite pages are private and infinite; keep them out of the index.
+  // (No robots.txt Disallow — Google must crawl the page to see this.)
+  robots: 'noindex, nofollow',
 })
 
 const route = useRoute()

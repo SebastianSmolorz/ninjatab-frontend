@@ -1,8 +1,12 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: 'Early Access - Tab.ninja',
-  description: 'Get early access to the Tab.ninja mobile app.',
+  title: 'Download Ninja Tab - Bill Splitting App for iPhone & Android',
+  description: 'Download the free Ninja Tab app for iOS and Android. Split bills, scan receipts and settle up with friends in a few taps.',
 })
+
+// Self-referencing canonical: /join is hit with a swarm of ?go=/utm_* params,
+// which Search Console flags as duplicates without one.
+useHead({ link: [{ rel: 'canonical', href: 'https://tab.ninja/join' }] })
 
 const route = useRoute()
 const config = useRuntimeConfig()

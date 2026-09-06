@@ -2,7 +2,11 @@
 definePageMeta({
   middleware: 'auth',
 })
-useSeoMeta({ title: 'Welcome - Tab.ninja' })
+useSeoMeta({
+  title: 'Welcome - Tab.ninja',
+  // Gated post-login step, nothing to rank for. Keep it out of the index.
+  robots: 'noindex, nofollow',
+})
 
 const authStore = useAuthStore()
 const router = useRouter()

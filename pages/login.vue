@@ -2,7 +2,11 @@
 definePageMeta({
   middleware: 'guest',
 })
-useSeoMeta({ title: 'Login - Tab.ninja' })
+useSeoMeta({
+  title: 'Login - Tab.ninja',
+  // App entry point, nothing to rank for. Keep it out of the index.
+  robots: 'noindex, nofollow',
+})
 
 const authStore = useAuthStore()
 const emailSent = ref(false)

@@ -393,12 +393,31 @@ const footerLinks = [
   { label: 'Home', to: '/' },
 ]
 
+const canonical = 'https://tab.ninja/splitwise-alternative'
+const ogImage = 'https://tab.ninja/og-image.jpg'
+const ogTitle = 'Ninja Tab — The free Splitwise alternative built for trips'
+const ogDescription = 'No daily limits, no £39.99 subscription, multi-currency included. Built for the way groups actually spend.'
+
 useSeoMeta({
   title: 'Best Free Splitwise Alternative (UK) — Ninja Tab',
   description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
-  ogTitle: 'Ninja Tab — The free Splitwise alternative built for trips',
-  ogDescription: 'No daily limits, no £39.99 subscription, multi-currency included. Built for the way groups actually spend.',
-  ogImage: 'https://tab.ninja/og-image.jpg',
+  ogType: 'website',
+  ogUrl: canonical,
+  ogSiteName: 'Ninja Tab',
+  ogLocale: 'en_GB',
+  ogTitle,
+  ogDescription,
+  ogImage,
+  ogImageAlt: 'Ninja Tab - the free Splitwise alternative for group trips',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  ogImageType: 'image/jpeg',
   twitterCard: 'summary_large_image',
+  twitterTitle: ogTitle,
+  twitterDescription: ogDescription,
+  twitterImage: ogImage,
+  twitterImageAlt: 'Ninja Tab - the free Splitwise alternative for group trips',
 })
+
+useHead({ link: [{ rel: 'canonical', href: canonical }] })
 </script>
