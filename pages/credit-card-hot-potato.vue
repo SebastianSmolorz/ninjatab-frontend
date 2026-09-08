@@ -102,7 +102,9 @@ useHead({
     type: 'application/ld+json',
     innerHTML: JSON.stringify({
       '@context': 'https://schema.org',
+      '@graph': [organizationNode, webSiteNode, {
       '@type': 'VideoGame',
+      '@id': `${url}#game`,
       name: 'Credit Card Hot Potato',
       url,
       description: 'Credit card roulette without the cards. Pass the phone round the table to settle the dinner, a round at the bar or the taxi home — whoever is holding it when it blows picks up the tab for everyone.',
@@ -115,8 +117,10 @@ useHead({
       numberOfPlayers: { '@type': 'QuantitativeValue', minValue: 2 },
       applicationCategory: 'GameApplication',
       operatingSystem: 'Any',
-      publisher: { '@type': 'Organization', name: 'Ninja Tab', url: 'https://tab.ninja' },
+      publisher: { '@id': ORG_ID },
+      isPartOf: { '@id': WEBSITE_ID },
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'GBP' },
+      }],
     }),
   }],
 })

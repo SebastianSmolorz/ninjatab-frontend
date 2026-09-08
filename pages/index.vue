@@ -575,67 +575,62 @@ useHead({
 
 const stripHtml = (html: string) => html.replace(/<[^>]+>/g, '').trim()
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Ninja Tab",
-    url: siteUrl,
-    logo: `${siteUrl}/logo-v2.png`,
-    sameAs: [
-      "https://play.google.com/store/apps/details?id=ninja.tab.app",
-      "https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804",
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "MobileApplication",
-    name: "Ninja Tab",
-    operatingSystem: "Android, iOS",
-    applicationCategory: "FinanceApplication",
-    installUrl: [
-      "https://play.google.com/store/apps/details?id=ninja.tab.app",
-      "https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804",
-    ],
-    url: siteUrl,
-    description: "Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.",
-    // Combined App Store + Google Play, not shown on-page by choice.
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "5",
-      ratingCount: "16",
-      bestRating: "5",
-      worstRating: "1",
+// One graph, so the Organization and WebSite here are the same nodes every
+// other page references by `@id` rather than a second Ninja Tab.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    organizationNode,
+    webSiteNode,
+    {
+      "@type": "MobileApplication",
+      name: "Ninja Tab",
+      operatingSystem: "Android, iOS",
+      applicationCategory: "FinanceApplication",
+      publisher: { "@id": ORG_ID },
+      installUrl: [
+        "https://play.google.com/store/apps/details?id=ninja.tab.app",
+        "https://apps.apple.com/us/app/ninja-tab-split-travel-bills/id6761298804",
+      ],
+      url: siteUrl,
+      description: "Split group expenses, trips and bills with smart settlement, receipt scanning and multi-currency support.",
+      // Combined App Store + Google Play, not shown on-page by choice.
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "5",
+        ratingCount: "16",
+        bestRating: "5",
+        worstRating: "1",
+      },
+      offers: [
+        {
+          "@type": "Offer",
+          name: "Free",
+          price: "0",
+          priceCurrency: "GBP",
+        },
+        {
+          "@type": "Offer",
+          name: "Unlimited tab",
+          price: "1",
+          priceCurrency: "GBP",
+          description: "One-off per person for unlimited bills on a tab.",
+        },
+      ],
     },
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Free",
-        price: "0",
-        priceCurrency: "GBP",
-      },
-      {
-        "@type": "Offer",
-        name: "Unlimited tab",
-        price: "1",
-        priceCurrency: "GBP",
-        description: "One-off per person for unlimited bills on a tab.",
-      },
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqItems.map(item => ({
-      "@type": "Question",
-      name: item.label,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: stripHtml(item.content),
-      },
-    })),
-  },
-]
+    {
+      "@type": "FAQPage",
+      mainEntity: faqItems.map(item => ({
+        "@type": "Question",
+        name: item.label,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: stripHtml(item.content),
+        },
+      })),
+    },
+  ],
+}
 
 useHead({
   script: [

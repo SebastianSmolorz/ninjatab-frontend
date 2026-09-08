@@ -74,15 +74,62 @@ const formattedDate = computed(() =>
     : ''
 )
 
+const canonical = computed(() => `${SITE}${route.path}`)
+const ogImage = computed(() =>
+  page.value?.image ? `${SITE}${page.value.image}` : `${SITE}/logo-v2.png`
+)
+
 useSeoMeta({
   title: () => `${page.value?.title} — Ninja Tab`,
   description: () => page.value?.description,
   ogTitle: () => page.value?.title,
   ogDescription: () => page.value?.description,
-  ogImage: () => page.value?.image,
+  ogUrl: () => canonical.value,
+  ogImage: () => ogImage.value,
   ogType: 'article',
+  ogSiteName: 'Ninja Tab',
   twitterCard: 'summary_large_image',
 })
+
+// Same Organization and WebSite nodes as everywhere else. The post is one more
+// thing Ninja Tab publishes, not a second Ninja Tab.
+useHead(() => ({
+  link: [{ rel: 'canonical', href: canonical.value }],
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        organizationNode,
+        webSiteNode,
+        {
+          '@type': 'BlogPosting',
+          '@id': `${canonical.value}#article`,
+          headline: page.value?.title,
+          description: page.value?.description,
+          image: ogImage.value,
+          inLanguage: 'en',
+          isAccessibleForFree: true,
+          mainEntityOfPage: canonical.value,
+          isPartOf: { '@id': WEBSITE_ID },
+          datePublished: page.value?.date,
+          author: { '@type': 'Person', name: page.value?.author },
+          publisher: { '@id': ORG_ID },
+          breadcrumb: { '@id': `${canonical.value}#breadcrumb` },
+        },
+        {
+          '@type': 'BreadcrumbList',
+          '@id': `${canonical.value}#breadcrumb`,
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Ninja Tab', item: `${SITE}/` },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
+            { '@type': 'ListItem', position: 3, name: page.value?.title, item: canonical.value },
+          ],
+        },
+      ],
+    }),
+  }],
+}))
 </script>
 
 <style scoped>

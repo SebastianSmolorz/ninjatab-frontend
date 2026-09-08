@@ -34,6 +34,21 @@ if (!data.value?.tab) {
 const tab = computed(() => data.value!.tab!)
 const copy = computed(() => data.value?.copy ?? null)
 const author = computed(() => data.value?.author ?? null)
+const currency = computed(() => tab.value.settlement_currency)
+
+// Group spend averaged over the roster. Rounded to whole minor units, so the
+// per-person figures need not sum back to the group total.
+const perPerson = computed(() => {
+  const spend = tab.value.group_spend
+  const heads = tab.value.people.length
+  if (spend === null || spend === undefined || heads === 0) return null
+  return Math.round(spend / heads)
+})
+
+// A costed itinerary is a worked budget, not a record of money that was spent.
+// It changes the copy, and it hides the per-expense dates: on a modelled tab
+// they are all the day it was built, which reads as a claim it isn't.
+const isModelled = computed(() => (copy.value?.costs ?? 'modelled') === 'modelled')
 
 // A hand-written body on the trip doc wins over the tab's own description, so
 // a page can carry proper intro copy without editing the tab in the app.
@@ -41,7 +56,7 @@ const introDoc = computed(() =>
   copy.value?.body?.value?.length ? copy.value : tab.value
 )
 
-const canonical = computed(() => `https://tab.ninja/t/${slug.value}`)
+const canonical = computed(() => `${SITE}/t/${slug.value}`)
 const heading = computed(() => copy.value?.heading ?? copy.value?.title ?? tab.value.name)
 const pageTitle = computed(() =>
   copy.value?.title ? `${copy.value.title} | Ninja Tab` : `${tab.value.name} – Ninja Tab`
@@ -50,7 +65,7 @@ const pageDescription = computed(() =>
   copy.value?.description ?? 'A shared tab, split down to the line item.'
 )
 const ogImage = computed(() =>
-  copy.value?.image ? `https://tab.ninja${copy.value.image}` : 'https://tab.ninja/logo-v2.png'
+  copy.value?.image ? `${SITE}${copy.value.image}` : `${SITE}/logo-v2.png`
 )
 
 useSeoMeta({
@@ -64,9 +79,6 @@ useSeoMeta({
   ogImage: () => ogImage.value,
   twitterCard: 'summary_large_image',
 })
-
-const SITE = 'https://tab.ninja'
-const ORGANISATION = `${SITE}/#organization`
 
 // The creator's `@id` here is the same node the author page defines, so a trip
 // and its creator reconcile into one entity across the two pages. Trips without
@@ -84,9 +96,48 @@ const authorNode = computed(() => {
   }
 })
 
+const placeNode = computed(() => {
+  const place = copy.value?.place
+  if (!place) return null
+  return { '@type': place.type, '@id': `${canonical.value}#place`, name: place.name }
+})
+
+// The figures from the summary strip, and only those: every one of them is on
+// the page in the same units, so the markup can't drift from what a reader sees.
+const tripFacts = computed(() => {
+  const money = (name: string, minor: number) => ({
+    '@type': 'PropertyValue',
+    name,
+    value: {
+      '@type': 'MonetaryAmount',
+      currency: currency.value,
+      value: Number(minorToDisplay(minor, currency.value)),
+    },
+  })
+  return [
+    { '@type': 'PropertyValue', name: 'Number of travellers', value: tab.value.people.length },
+    { '@type': 'PropertyValue', name: 'Itemised expenses', value: tab.value.bills.length },
+    ...(tab.value.group_spend === null ? [] : [money('Total trip cost', tab.value.group_spend)]),
+    ...(perPerson.value === null ? [] : [money('Cost per person', perPerson.value)]),
+  ]
+})
+
 const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@graph': [
+    organizationNode,
+    webSiteNode,
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical.value}#webpage`,
+      url: canonical.value,
+      name: copy.value?.title ?? tab.value.name,
+      description: pageDescription.value,
+      inLanguage: 'en',
+      isPartOf: { '@id': WEBSITE_ID },
+      breadcrumb: { '@id': `${canonical.value}#breadcrumb` },
+      mainEntity: { '@id': `${canonical.value}#article` },
+    },
     {
       '@type': 'Article',
       '@id': `${canonical.value}#article`,
@@ -95,19 +146,17 @@ const jsonLd = computed(() => ({
       image: ogImage.value,
       inLanguage: 'en',
       isAccessibleForFree: true,
-      mainEntityOfPage: canonical.value,
-      author: { '@id': authorNode.value?.['@id'] ?? ORGANISATION },
-      publisher: { '@id': ORGANISATION },
-      ...(copy.value?.date ? { datePublished: copy.value.date } : {}),
+      mainEntityOfPage: { '@id': `${canonical.value}#webpage` },
+      isPartOf: { '@id': WEBSITE_ID },
+      author: { '@id': authorNode.value?.['@id'] ?? ORG_ID },
+      publisher: { '@id': ORG_ID },
+      ...(placeNode.value
+        ? { about: { '@id': placeNode.value['@id'] }, contentLocation: { '@id': placeNode.value['@id'] } }
+        : {}),
+      additionalProperty: tripFacts.value,
     },
+    ...(placeNode.value ? [placeNode.value] : []),
     ...(authorNode.value ? [authorNode.value] : []),
-    {
-      '@type': 'Organization',
-      '@id': ORGANISATION,
-      name: 'Ninja Tab',
-      url: `${SITE}/`,
-      logo: `${SITE}/logo-v2.png`,
-    },
     {
       '@type': 'BreadcrumbList',
       '@id': `${canonical.value}#breadcrumb`,
@@ -119,7 +168,7 @@ const jsonLd = computed(() => ({
         {
           '@type': 'ListItem',
           position: authorNode.value ? 3 : 2,
-          name: copy.value?.title ?? tab.value.name,
+          name: tab.value.name,
           item: canonical.value,
         },
       ],
@@ -168,7 +217,6 @@ const joinLink = computed(() => ({
   },
 }))
 
-const currency = computed(() => tab.value.settlement_currency)
 const money = (amount: number, code?: string) => formatMinorCurrency(amount, code ?? currency.value)
 // Headline figures only — bills and settlements stay exact to the cent.
 const summaryMoney = (amount: number) => formatMinorCurrencyCompact(amount, currency.value)
@@ -188,15 +236,6 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
   item.claims.length > 0 &&
   item.claims.length === tab.value.people.length &&
   item.claims.every(c => (c.split_value ?? 0) === (item.claims[0]!.split_value ?? 0))
-
-// Group spend averaged over the roster. Rounded to whole minor units, so the
-// per-person figures need not sum back to the group total.
-const perPerson = computed(() => {
-  const spend = tab.value.group_spend
-  const heads = tab.value.people.length
-  if (spend === null || spend === undefined || heads === 0) return null
-  return Math.round(spend / heads)
-})
 </script>
 
 <template>
@@ -224,11 +263,11 @@ const perPerson = computed(() => {
           </div>
           <div class="border-t border-white/5 p-4 sm:p-5 space-y-2 text-sm">
             <div class="flex items-center justify-between gap-3">
-              <span class="flex items-center gap-2 text-gray-300">
+              <span v-if="!isModelled" class="flex items-center gap-2 text-gray-300">
                 <UIcon name="i-lucide-calendar" class="size-4 text-gray-500" />
                 {{ longDate(bill.date) }}
               </span>
-              <span class="text-gray-300">{{ getCurrencySymbol(bill.currency) }}</span>
+              <span class="ml-auto text-gray-300">{{ getCurrencySymbol(bill.currency) }}</span>
             </div>
             <div class="flex items-center justify-between gap-3 text-gray-500">
               <span>Created by <span class="text-white font-medium">{{ bill.created_by }}</span></span>
@@ -345,6 +384,16 @@ const perPerson = computed(() => {
 
       <!-- ── Tab overview ───────────────────────────────────────────────── -->
       <div v-else class="space-y-5">
+        <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-1.5 text-sm text-gray-500">
+          <NuxtLink to="/" class="hover:text-white transition-colors">Ninja Tab</NuxtLink>
+          <span aria-hidden="true">/</span>
+          <template v-if="author">
+            <NuxtLink :to="`/${copy!.author}`" class="hover:text-white transition-colors">{{ author.name }}</NuxtLink>
+            <span aria-hidden="true">/</span>
+          </template>
+          <span class="text-gray-300">{{ tab.name }}</span>
+        </nav>
+
         <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
           <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ heading }}</h1>
           <!-- Clamped with CSS, not JS: the full description stays in the HTML
@@ -380,6 +429,7 @@ const perPerson = computed(() => {
             <p class="text-white font-small truncate">
               {{ author.name }} <span v-if="author.flag">{{ author.flag }}</span>
             </p>
+            <p class="text-xs text-gray-500 truncate">More {{ author.name }} trip cost breakdowns</p>
           </div>
           <UIcon name="i-lucide-chevron-right" class="size-5 text-gray-500 shrink-0" />
         </NuxtLink>

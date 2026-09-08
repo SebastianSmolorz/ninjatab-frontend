@@ -32,6 +32,16 @@ export default defineContentConfig({
                 blurb: z.string().optional(),
                 date: z.string().optional(),
                 order: z.number().default(0),
+                // What the page is about, for `about`/`contentLocation`.
+                // Country only where the trip really is a whole country.
+                place: z.object({
+                    name: z.string(),
+                    type: z.enum(['Country', 'Place']).default('Place'),
+                }).optional(),
+                // Where the numbers came from. Defaults to the weaker claim on
+                // purpose: a costed itinerary is safe to call a real record,
+                // never the other way round.
+                costs: z.enum(['modelled', 'recorded']).default('modelled'),
             }),
         }),
 

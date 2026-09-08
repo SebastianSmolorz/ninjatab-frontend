@@ -46,10 +46,10 @@ const trips = computed(() => data.value!.trips.map((trip) => {
   }
 }))
 
-const canonical = computed(() => `https://tab.ninja/${slug.value}`)
+const canonical = computed(() => `${SITE}/${slug.value}`)
 const title = computed(() => `${author.value.title} | Ninja Tab`)
 const ogImage = computed(() =>
-  trips.value[0]?.image ? `https://tab.ninja${trips.value[0].image}` : 'https://tab.ninja/logo-v2.png'
+  trips.value[0]?.image ? `${SITE}${trips.value[0].image}` : `${SITE}/logo-v2.png`
 )
 
 useSeoMeta({
@@ -68,6 +68,18 @@ useSeoMeta({
   twitterImage: () => ogImage.value,
 })
 
+// Downloads from a creator page are attributed like the trip pages are: the
+// source names the surface, utm_content carries the specific one.
+const joinLink = computed(() => ({
+  path: '/join',
+  query: {
+    go: '1',
+    utm_source: 'creator_profile',
+    utm_medium: 'referral',
+    utm_content: slug.value,
+  },
+}))
+
 useHead(() => ({
   link: [{ rel: 'canonical', href: canonical.value }],
   script: [{
@@ -75,23 +87,30 @@ useHead(() => ({
     innerHTML: JSON.stringify({
       '@context': 'https://schema.org',
       '@graph': [
+        organizationNode,
+        webSiteNode,
         {
           '@type': 'ProfilePage',
-          '@id': canonical.value,
+          '@id': `${canonical.value}#profilepage`,
           url: canonical.value,
           name: author.value.title,
           description: author.value.description,
           inLanguage: 'en',
+          isPartOf: { '@id': WEBSITE_ID },
+          publisher: { '@id': ORG_ID },
           mainEntity: { '@id': `${canonical.value}#person` },
           breadcrumb: { '@id': `${canonical.value}#breadcrumb` },
+          hasPart: { '@id': `${canonical.value}#trips` },
         },
         {
           '@type': 'Person',
           '@id': `${canonical.value}#person`,
           name: author.value.name,
           description: author.value.summary,
-          image: author.value.avatar ? `https://tab.ninja${author.value.avatar}` : undefined,
-          url: author.value.website,
+          image: author.value.avatar ? `${SITE}${author.value.avatar}` : undefined,
+          // The profile page is the entity page being described here, so it is
+          // the Person's `url`; their own site and socials are `sameAs`.
+          url: canonical.value,
           nationality: author.value.nationality,
           knowsAbout: author.value.knowsAbout,
           sameAs: [author.value.website, author.value.instagram].filter(Boolean),
@@ -100,19 +119,27 @@ useHead(() => ({
           '@type': 'BreadcrumbList',
           '@id': `${canonical.value}#breadcrumb`,
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Ninja Tab', item: 'https://tab.ninja/' },
+            { '@type': 'ListItem', position: 1, name: 'Ninja Tab', item: `${SITE}/` },
             { '@type': 'ListItem', position: 2, name: author.value.name, item: canonical.value },
           ],
         },
         {
           '@type': 'ItemList',
+          '@id': `${canonical.value}#trips`,
           name: `${author.value.name} trip cost breakdowns`,
           numberOfItems: trips.value.length,
+          // Each entry is the same node the trip page defines, so the list
+          // resolves into the real articles rather than a set of loose links.
           itemListElement: trips.value.map((t, i) => ({
             '@type': 'ListItem',
             position: i + 1,
             name: t.title,
-            url: `https://tab.ninja/t/${t.slug}`,
+            item: {
+              '@type': 'Article',
+              '@id': `${SITE}/t/${t.slug}#article`,
+              name: t.title,
+              url: `${SITE}/t/${t.slug}`,
+            },
           })),
         },
       ],
@@ -122,7 +149,7 @@ useHead(() => ({
 </script>
 
 <template>
-  <UMain class="relative min-h-screen bg-gray-900">
+  <UMain class="relative min-h-screen bg-gray-900 pb-12">
     <UContainer class="relative max-w-3xl pt-28 pb-20">
       <!-- Author -->
       <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
@@ -227,6 +254,24 @@ useHead(() => ({
     </UContainer>
 
     <MarketingFooter />
+
+    <!-- Same fixed download CTA as the trip pages. -->
+    <div
+      class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
+    >
+      <div class="mx-auto max-w-2xl px-4 py-1 flex items-baseline justify-center gap-3">
+        <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug">
+          <strong>Split</strong> your own trip expenses
+        </p>
+        <NuxtLink
+          :to="joinLink"
+          class="inline-flex items-center gap-1 bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
+        >
+          Get Ninja Tab
+          <UIcon name="i-lucide-arrow-right" class="size-3.5" />
+        </NuxtLink>
+      </div>
+    </div>
   </UMain>
 </template>
 
