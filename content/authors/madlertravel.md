@@ -17,6 +17,7 @@ knowsAbout:
   - Peru
   - Kazakhstan
   - Bali
+  - China
 ---
 
 Madlertravel publishes firsthand adventure travel guides from 37+ countries. Real routes,

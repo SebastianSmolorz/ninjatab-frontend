@@ -4,7 +4,7 @@ description: See what a four day Sardinia trip cost four friends, with nearly 40
 heading: Sardinia Trip Cost
 ogTitle: What 4 Days in Sardinia Cost 4 Friends
 ogDescription: Nearly 40 expenses in four days. See exactly what we spent in Sardinia and how we split it between four people.
-order: 6
+order: 7
 ---
 
 Four friends, four days in Sardinia and nearly 40 shared expenses. We tracked everything along
