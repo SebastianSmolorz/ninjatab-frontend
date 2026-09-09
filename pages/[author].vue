@@ -113,7 +113,7 @@ useHead(() => ({
           url: canonical.value,
           nationality: author.value.nationality,
           knowsAbout: author.value.knowsAbout,
-          sameAs: [author.value.website, author.value.instagram].filter(Boolean),
+          sameAs: [author.value.website, author.value.instagram, author.value.tiktok].filter(Boolean),
         },
         {
           '@type': 'BreadcrumbList',
@@ -195,6 +195,18 @@ useHead(() => ({
             icon="i-lucide-instagram"
           >
             @{{ author.instagram.split('/').filter(Boolean).pop() }}
+          </UButton>
+          <!-- ponytail: lucide ships no TikTok glyph; music-2 until a brand icon set is worth adding -->
+          <UButton
+            v-if="author.tiktok"
+            :to="author.tiktok"
+            target="_blank"
+            rel="noopener"
+            color="neutral"
+            variant="subtle"
+            icon="i-lucide-music-2"
+          >
+            {{ author.tiktok.split('/').filter(Boolean).pop() }}
           </UButton>
         </div>
       </div>

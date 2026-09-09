@@ -12,6 +12,27 @@ const contentRoutes = (dir: string, prefix: string): string[] =>
             .map(file => prefix + file.replace(/\.md$/, ''))
         : []
 
+// Marketing pages that aren't content-backed. /giveaway and /join are
+// deliberately absent: they're campaign landings, not pages to index.
+const staticRoutes = [
+    '/',
+    '/splitwise-alternative',
+    '/credit-card-hot-potato',
+    '/contact',
+    '/privacy',
+    '/terms',
+]
+
+// Every indexable route, derived from the files so a new trip, creator or post
+// lands in the sitemap without anyone remembering to add it.
+const indexableRoutes = [
+    ...staticRoutes,
+    '/blog',
+    ...contentRoutes('blog', '/blog/'),
+    ...contentRoutes('trips', '/t/'),
+    ...contentRoutes('authors', '/'),
+]
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
@@ -27,6 +48,7 @@ export default defineNuxtConfig({
     nitro: {
         prerender: {
             routes: [
+                '/sitemap.xml',
                 '/blog',
                 ...contentRoutes('blog', '/blog/'),
                 ...contentRoutes('trips', '/t/'),
@@ -54,6 +76,9 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
+        // The sitemap route reads this instead of the filesystem: at prerender
+        // time the server bundle's cwd is not the project root.
+        indexableRoutes,
         public: {
             apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api'
         }

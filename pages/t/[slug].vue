@@ -21,7 +21,7 @@ const { data } = await useAsyncData(`trip-${slug.value}`, async () => {
   const author = copy?.author
     ? await queryCollection('authors')
       .path(`/authors/${copy.author}`)
-      .select('path', 'name', 'avatar', 'tagline', 'flag', 'website', 'instagram')
+      .select('path', 'name', 'avatar', 'tagline', 'flag', 'website', 'instagram', 'tiktok')
       .first()
     : null
   return { copy, tab, author }
@@ -92,7 +92,7 @@ const authorNode = computed(() => {
     name: author.value.name,
     url: `${SITE}/${slugged}`,
     ...(author.value.avatar ? { image: `${SITE}${author.value.avatar}` } : {}),
-    sameAs: [author.value.website, author.value.instagram].filter(Boolean),
+    sameAs: [author.value.website, author.value.instagram, author.value.tiktok].filter(Boolean),
   }
 })
 

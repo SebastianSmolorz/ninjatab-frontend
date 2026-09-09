@@ -116,6 +116,7 @@ export default defineContentConfig({
                 avatar: z.string().optional(),
                 website: z.string().optional(),
                 instagram: z.string().optional(),
+                tiktok: z.string().optional(),
                 nationality: z.string().optional(),
                 summary: z.string().optional(),
                 knowsAbout: z.array(z.string()).default([]),
