@@ -1,6 +1,6 @@
 ---
 title: 'Koh Samui & Koh Tao Trip Cost: £603 for 2 Friends'
-description: What two friends spent island hopping Koh Samui and Koh Tao — hostel, boat trips, food and nights out. £603.42 across 21 shared expenses, itemised and split.
+description: What two friends spent island hopping Koh Samui and Koh Tao — hostel, boat trips, food and nights out. £603.87 across 21 shared expenses, itemised and split.
 author: chloe-dillon
 image: /trip-thailand.jpg
 heading: Koh Samui & Koh Tao Trip Cost

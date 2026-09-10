@@ -4,14 +4,14 @@ name: Koh Samui & Koh Tao
 settlement_currency: GBP
 is_settled: true
 is_pro: true
-group_spend: 60342
+group_spend: 60387
 people:
 - id: 01a0805e-964e-7de9-9160-5c8245e112b8
   name: Chloe
-  spend: 30034
+  spend: 29989
 - id: 01a0805e-9652-7100-be0f-48400089d655
   name: Ellie
-  spend: 30258
+  spend: 30347
 bills:
 - id: 01a08099-ffea-7eee-8953-f34d456b9ee1
   description: 7/11
@@ -73,7 +73,7 @@ bills:
   description: Dinner
   currency: THB
   date: '2026-09-08'
-  total_amount: 45000
+  total_amount: 47000
   created_by: Chloe
   paid_by: Chloe
   has_receipt: false
@@ -184,7 +184,7 @@ bills:
 settlements:
 - from_name: Ellie
   to_name: Chloe
-  amount: 16425
+  amount: 16514
   currency: GBP
   paid: false
 bill_details:
@@ -346,24 +346,51 @@ bill_details:
   person_totals:
   - person_id: 01a0805e-964e-7de9-9160-5c8245e112b8
     person_name: Chloe
-    amount: 22500
+    amount: 20500
   - person_id: 01a0805e-9652-7100-be0f-48400089d655
     person_name: Ellie
-    amount: 22500
+    amount: 26500
   line_items:
   - id: 01a08065-da7c-7d7a-97f7-512977f916ea
-    description: 'Dinner '
-    value: 45000
+    description: Pad Thai
+    value: 19000
     split_type: shares
     claims:
     - person_id: 01a0805e-964e-7de9-9160-5c8245e112b8
       person_name: Chloe
       split_value: 1
-      amount: 22500
+      amount: 19000
+  - id: 01a08065-da84-7b12-8f3a-1c6e9d40b7a2
+    description: Chicken fried rice
+    value: 21000
+    split_type: shares
+    claims:
     - person_id: 01a0805e-9652-7100-be0f-48400089d655
       person_name: Ellie
       split_value: 1
-      amount: 22500
+      amount: 21000
+  - id: 01a08065-da8b-7c55-a0d1-4e7b2f83c916
+    description: Water
+    value: 3000
+    split_type: shares
+    claims:
+    - person_id: 01a0805e-964e-7de9-9160-5c8245e112b8
+      person_name: Chloe
+      split_value: 1
+      amount: 1500
+    - person_id: 01a0805e-9652-7100-be0f-48400089d655
+      person_name: Ellie
+      split_value: 1
+      amount: 1500
+  - id: 01a08065-da93-7a08-b74c-92f5108ad6e3
+    description: Coke
+    value: 4000
+    split_type: shares
+    claims:
+    - person_id: 01a0805e-9652-7100-be0f-48400089d655
+      person_name: Ellie
+      split_value: 1
+      amount: 4000
 - id: 01a08065-aaaf-744a-a612-6543ff9d47c0
   person_totals:
   - person_id: 01a0805e-964e-7de9-9160-5c8245e112b8
