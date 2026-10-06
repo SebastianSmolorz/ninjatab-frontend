@@ -18,6 +18,8 @@ knowsAbout:
   - Kazakhstan
   - Bali
   - China
+  - Japan
+  - Bolivia
 ---
 
 **Madlertravel × Ninja Tab.** [Madlertravel](https://madlertravel.com/) publishes firsthand
