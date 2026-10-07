@@ -3,6 +3,8 @@ title: 'Japan Trip Cost: 2 Weeks by Rail for 4 People'
 description: What two weeks in Japan costs four friends, from Tokyo to Kyoto, Nara and Osaka, all by train. A $3,784 itinerary, itemised and split four ways.
 author: madlertravel
 order: 9
+image: /trip-japan.jpg
+imageAlt: Feeding the free-roaming deer outside Todai-ji temple in Nara, Japan
 blurb: 'Thirteen nights across three cities, all by rail: Tokyo, Kyoto and Osaka, with Nara in between.'
 place:
   name: Japan

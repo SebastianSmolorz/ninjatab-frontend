@@ -3,6 +3,8 @@ title: 'Bolivia Trip Cost: La Paz, Uyuni and Lake Titicaca for 4'
 description: What a Bolivia trip costs four friends, from Copacabana and Isla del Sol to La Paz, Death Road and the Uyuni salt flats. A $3,708 itinerary, itemised.
 author: madlertravel
 order: 10
+image: /trip-bolivia.jpg
+imageAlt: Sunrise over the flooded Uyuni salt flats, Bolivia
 blurb: 'Lake Titicaca, then La Paz as a base, then three days across the salt flats and lagoons at Uyuni.'
 place:
   name: Bolivia

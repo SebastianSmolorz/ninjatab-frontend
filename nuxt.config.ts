@@ -57,6 +57,11 @@ export default defineNuxtConfig({
         },
     },
 
+    // better-sqlite3's native binding doesn't load in a Vercel function, so
+    // @nuxt/content's DB fails there on every request that reaches it. Node's
+    // built-in sqlite has no binary to load.
+    content: {experimental: {sqliteConnector: 'native'}},
+
     fonts: {
         families: [
             {name: 'Nunito', provider: 'google', weights: [400, 500, 600, 700, 800], styles: ['normal']},
