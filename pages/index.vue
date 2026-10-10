@@ -87,7 +87,7 @@
               :autoplay="{ delay: 3000, stopOnMouseEnter: true, stopOnInteraction: false }"
               :items="reels"
               class="w-full min-w-0"
-              :ui="{ item: 'basis-[70%] sm:basis-1/3' }"
+              :ui="{ item: 'basis-[90%] sm:basis-1/3' }"
             >
               <div class="flex flex-col gap-2">
                 <div class="relative">
