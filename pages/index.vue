@@ -70,19 +70,6 @@
               </div>
             </div>
 
-            <!-- Testimonial -->
-            <figure class="mt-1 max-w-md flex flex-col items-center lg:items-start gap-1">
-              <div class="flex items-center gap-0.5" aria-label="5 out of 5 stars">
-                <UIcon v-for="n in 5" :key="n" name="i-heroicons-star-20-solid" class="size-3 text-amber-400" />
-              </div>
-              <blockquote class="text-gray-300 text-xs leading-snug italic">
-                Used it on a ski trip, love the receipt scanner. <br/>It made splitting bills so much easier.
-              </blockquote>
-              <small>
-                Mel (Play Store review)
-              </small>
-            </figure>
-
             <NuxtLink
               to="/splitwise-alternative"
               class="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 decoration-primary-400/50 hover:decoration-primary-300"
@@ -91,26 +78,44 @@
             </NuxtLink>
           </div>
 
-          <!-- Device mockup carousel column -->
-          <div class="relative flex items-center justify-center">
+          <!-- Creator reels column -->
+          <div class="relative min-w-0">
+            <h2 class="text-center text-xl sm:text-2xl font-bold text-white mt-8 lg:mt-0 mb-4">See it in action</h2>
             <UCarousel
               v-slot="{ item }"
               loop
-              fade
-              dots
-              :autoplay="{ delay: 3500 }"
-              :items="deviceMockups"
-              class="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px]"
-              :ui="{ container: 'items-center ml-0', item: 'pl-0 min-w-0 basis-full', dots: 'mt-6', dot: 'bg-white/30 data-[state=active]:bg-primary-400' }"
+              :autoplay="{ delay: 3000, stopOnMouseEnter: true, stopOnInteraction: false }"
+              :items="reels"
+              class="w-full min-w-0"
+              :ui="{ item: 'basis-[70%] sm:basis-1/3' }"
             >
-              <div class="flex items-center justify-center">
-                <img
-                  :src="item"
-                  alt="Ninja Tab app screen"
-                  loading="eager"
-                  fetchpriority="high"
-                  class="w-full h-auto max-h-[48vh] lg:max-h-[62vh] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
-                />
+              <div class="flex flex-col gap-2">
+                <div class="relative">
+                  <!-- Preview only: the link on top takes every click, so reels play on Instagram -->
+                  <iframe
+                    :src="`https://www.instagram.com/p/${item.id}/embed`"
+                    title="Instagram reel preview"
+                    loading="lazy"
+                    scrolling="no"
+                    tabindex="-1"
+                    aria-hidden="true"
+                    class="w-full h-[380px] rounded-xl bg-white border-0 pointer-events-none"
+                  />
+                  <a
+                    :href="`https://www.instagram.com/p/${item.id}/`"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Watch reel on Instagram"
+                    class="absolute inset-0 rounded-xl"
+                  />
+                </div>
+                <NuxtLink
+                  v-if="item.trip"
+                  :to="item.trip"
+                  class="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 decoration-primary-400/50"
+                >
+                  See {{ item.tripName }} costs →
+                </NuxtLink>
               </div>
             </UCarousel>
           </div>
@@ -391,10 +396,15 @@ const { trackDownload, storeUrl } = useDownloadTracking()
 const playStoreHref = computed(() => storeUrl('android'))
 const appStoreHref = computed(() => storeUrl('ios'))
 
-const deviceMockups = [
-  '/screen3.webp',
-  '/screen1.webp',
-  '/screen2.webp',
+// Instagram post id from instagram.com/p/<id>/; trip = /t/<slug> page it shows, if any.
+const reels: { id: string, trip?: string, tripName?: string }[] = [
+  { id: 'DdrodOtMNe_' },
+  { id: 'DaWBaaiST5V' },
+  { id: 'DaQ9bgHsjqS', trip: '/t/sardinia', tripName: 'Sardinia' },
+  { id: 'Dapo0wXoW4o' },
+  { id: 'DeHoTWCzyje' },
+  { id: 'DcZPGYosYsY' },
+  { id: 'DYurnLNMhF6' },
 ]
 
 const painPoints = [
