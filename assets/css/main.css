@@ -24,3 +24,49 @@
     @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
   }
 }
+
+/* Section textures, drawn behind the content (isolate + z-index -1).
+   dots: lighter sections. lines: the near-black ones. */
+@utility bg-texture-dots {
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+}
+
+@utility bg-texture-lines {
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  }
+}
+
+/* One round primary glow per section, placed by vars so each section's differs:
+   [--glow-at:70%_40%] [--glow-strength:12%] */
+@utility section-glow {
+  isolation: isolate;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(circle 22rem at var(--glow-at, 50% 0%), color-mix(in oklab, var(--ui-primary) var(--glow-strength, 12%), transparent), transparent);
+  }
+}

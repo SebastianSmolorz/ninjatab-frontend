@@ -25,15 +25,15 @@
           <div class="flex flex-col items-center lg:items-start gap-4 lg:gap-3 text-center lg:text-left bg-black/50 pt-3 pb-5 md:pl-5 md:pr-5 rounded-md">
             <h1 class="font-bold text-white leading-[1.05] tracking-tight drop-shadow-lg">
               <span class="block text-3xl sm:text-4xl lg:text-5xl mt-2">
-                <span class="text-primary-200">Less maths. </span>
-                <span class="text-primary-400">More trip.</span>
+                <span class="text-primary-200">Stick the whole trip </span>
+                <span class="text-primary-400">on one tab.</span>
               </span>
             </h1>
             <p class="text-primary-200 text-lg sm:text-xl lg:text-2xl max-w-lg leading-snug font-medium">
-              Try it on a dinner, love it on holiday.
+              Snap the receipt, tap what you had, settle up.
             </p>
             <p class="text-gray-400 text-sm sm:text-base max-w-lg leading-snug">
-              One shared tab scans every receipt, splits it fairly, and settles up in the fewest payments.
+              Everyone pays for exactly what they had, across every bill and currency. Less maths. More trip.
             </p>
             <div class="lg:pt-1">
               <div class="flex items-center">
@@ -78,79 +78,47 @@
             </NuxtLink>
           </div>
 
-          <!-- Creator reels column -->
-          <div class="relative min-w-0">
-            <h2 class="text-center text-xl sm:text-2xl font-bold text-white mt-8 lg:mt-0 mb-4">See it in action</h2>
-            <UCarousel
-              v-slot="{ item }"
-              loop
-              :autoplay="{ delay: 3000, stopOnMouseEnter: true, stopOnInteraction: false }"
-              :items="reels"
-              class="w-full min-w-0"
-              :ui="{ item: 'basis-[90%] sm:basis-1/3' }"
-            >
-              <div class="flex flex-col gap-2">
-                <div class="relative">
-                  <!-- Preview only: the link on top takes every click, so reels play on Instagram -->
-                  <iframe
-                    :src="`https://www.instagram.com/p/${item.id}/embed`"
-                    title="Instagram reel preview"
-                    loading="lazy"
-                    scrolling="no"
-                    tabindex="-1"
-                    aria-hidden="true"
-                    class="w-full h-[380px] rounded-xl bg-white border-0 pointer-events-none"
-                  />
-                  <a
-                    :href="`https://www.instagram.com/p/${item.id}/`"
-                    target="_blank"
-                    rel="noopener"
-                    aria-label="Watch reel on Instagram"
-                    class="absolute inset-0 rounded-xl"
-                  />
-                </div>
-                <NuxtLink
-                  v-if="item.trip"
-                  :to="item.trip"
-                  class="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 decoration-primary-400/50"
-                >
-                  See {{ item.tripName }} costs →
-                </NuxtLink>
-              </div>
-            </UCarousel>
+          <!-- Two phones fanned apart: the whole tab, with the receipt scan on top -->
+          <div class="relative flex justify-center items-center mt-10 lg:mt-0 h-[360px] sm:h-[480px] lg:h-[580px]">
+            <img
+              src="/screen1.webp"
+              alt="A trip tab with its spending summary, people and expenses"
+              class="absolute h-full w-auto -translate-x-[30%] -rotate-6 drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
+            />
+            <img
+              src="/screen3.webp"
+              alt="Scanning a Spanish receipt and converting euros to pounds"
+              class="absolute h-full w-auto translate-x-[30%] translate-y-6 rotate-6 drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
+            />
           </div>
         </div>
       </UContainer>
     </div>
 
     <!-- Problem framing -->
-    <section class="relative py-20 lg:py-28 bg-gray-900">
+    <section class="relative py-16 lg:py-20 bg-gray-950 bg-texture-lines overflow-hidden">
       <UContainer>
-        <div class="max-w-3xl mx-auto text-center">
+        <!-- Glow pinned to the content's centre, like How it works -->
+        <div class="relative isolate max-w-3xl mx-auto text-center before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_12%,transparent),transparent)]">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">The problem</span>
           <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Group trips always end the same way.
           </h2>
-          <p class="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed">
-            A messy group chat. Bunch of pictures of receipts. Nobody can remember what they had.
-          </p>
-          <h3 class="mt-10 text-xl sm:text-2xl lg:text-3xl font-semibold text-primary-300 leading-tight">
+          <ul class="mt-6 inline-flex flex-col gap-2 text-left text-base sm:text-lg text-gray-300">
+            <li v-for="pain in painPoints" :key="pain" class="flex items-start gap-2">
+              <UIcon name="i-lucide-x" class="size-5 text-primary-400 mt-1 shrink-0" />
+              <span>{{ pain }}</span>
+            </li>
+          </ul>
+          <h3 class="mt-8 text-xl sm:text-2xl lg:text-3xl font-semibold text-primary-300 leading-tight">
             Welcome home. <br/>Here's some maths homework.
           </h3>
-        </div>
-
-        <div class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          <div v-for="pain in painPoints" :key="pain.title" class="p-6 rounded-xl bg-gray-800/40 ring-1 ring-white/5">
-            <UIcon :name="pain.icon" class="size-7 text-primary-400 mb-3" />
-            <h3 class="font-semibold text-white mb-1">{{ pain.title }}</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">{{ pain.description }}</p>
-          </div>
         </div>
       </UContainer>
     </section>
 
     <!-- How it works -->
-    <section id="how-it-works" class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-900 to-gray-950">
+    <section id="how-it-works" class="relative py-20 lg:py-28 bg-gray-900 bg-texture-dots border-y border-white/5 overflow-hidden">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-14">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">How it works</span>
@@ -158,11 +126,12 @@
             Three steps. No maths. No drama.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
-            Ninja Tab keeps every expense in one shared tab and works out the simplest way to settle up.
+            Ninja Tab keeps every expense in one shared tab and tells everyone what to pay, and to whom.
           </p>
         </div>
 
-        <ol class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <!-- Glow pinned to the list's centre, so it sits behind the middle step whether stacked or in a row -->
+        <ol class="relative isolate grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_10%,transparent),transparent)]">
           <li v-for="(step, i) in steps" :key="step.title" class="relative p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
             <div class="absolute -top-4 -left-2 size-10 rounded-full bg-primary-500 text-gray-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-primary-500/30">
               {{ i + 1 }}
@@ -179,8 +148,54 @@
       </UContainer>
     </section>
 
+    <!-- Creator reels -->
+    <section class="relative py-16 lg:py-20 bg-gray-950 bg-texture-lines section-glow [--glow-at:60%_25%]">
+      <UContainer>
+        <div class="relative min-w-0 max-w-5xl mx-auto">
+          <h2 class="text-center text-2xl sm:text-3xl font-bold text-white mb-8">See it in action</h2>
+          <UCarousel
+            v-slot="{ item }"
+            loop
+            :autoplay="{ delay: 3000, stopOnMouseEnter: true, stopOnInteraction: false }"
+            :items="reels"
+            class="w-full min-w-0"
+            :ui="{ item: 'basis-[90%] sm:basis-1/2 lg:basis-1/3' }"
+          >
+            <div class="flex flex-col gap-2">
+              <div class="relative">
+                <!-- Preview only: the link on top takes every click, so reels play on Instagram -->
+                <iframe
+                  :src="`https://www.instagram.com/p/${item.id}/embed`"
+                  title="Instagram reel preview"
+                  loading="lazy"
+                  scrolling="no"
+                  tabindex="-1"
+                  aria-hidden="true"
+                  class="w-full h-[380px] rounded-xl bg-white border-0 pointer-events-none"
+                />
+                <a
+                  :href="`https://www.instagram.com/p/${item.id}/`"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Watch reel on Instagram"
+                  class="absolute inset-0 rounded-xl"
+                />
+              </div>
+              <NuxtLink
+                v-if="item.trip"
+                :to="item.trip"
+                class="text-sm text-primary-300 hover:text-primary-200 underline underline-offset-4 decoration-primary-400/50"
+              >
+                See {{ item.tripName }} costs →
+              </NuxtLink>
+            </div>
+          </UCarousel>
+        </div>
+      </UContainer>
+    </section>
+
     <!-- Use cases -->
-    <section class="relative py-20 lg:py-28 bg-gray-950">
+    <section class="relative py-20 lg:py-28 bg-gray-950 bg-texture-lines overflow-hidden">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-14">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Made for groups</span>
@@ -192,7 +207,8 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+        <!-- Glow pinned to the grid's centre, like How it works -->
+        <div class="relative isolate grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_12%,transparent),transparent)]">
           <div
             v-for="useCase in useCases"
             :key="useCase.title"
@@ -207,7 +223,7 @@
     </section>
 
     <!-- Feature highlights - alternating rows -->
-    <section class="relative py-20 lg:py-28 bg-gray-950">
+    <section class="relative py-20 lg:py-28 bg-gray-950 bg-texture-lines section-glow [--glow-at:70%_60%]">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-16">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Features</span>
@@ -249,7 +265,7 @@
       </UContainer>
     </section>
 
-    <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900">
+    <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900 section-glow [--glow-at:35%_30%] [--glow-strength:10%]">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-12">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Why Ninja Tab</span>
@@ -290,15 +306,15 @@
     </section>
 
     <!-- Pricing -->
-    <section id="pricing" class="relative py-20 lg:py-28 bg-gray-900">
+    <section id="pricing" class="relative py-20 lg:py-28 bg-gray-900 bg-texture-dots section-glow [--glow-at:85%_65%] [--glow-strength:14%]">
       <UContainer>
         <div class="max-w-3xl mx-auto text-center mb-12">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Pricing</span>
           <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Every feature, free. Pay only when the tab gets massive.
+            Free for small plans. £1 each for big trips.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
-            Free gets you the full Ninja Tab experience: receipt scanning, smart settlement, multi-currency, all of it. The only thing that changes on a paid tab is the cap on expenses.
+            Every feature works on a free tab: receipt scanning, smart settlement, multi-currency, all of it. Free tabs are capped at 7 expenses and 1 receipt scan. Go unlimited for £1 each, added to the tab.
           </p>
         </div>
 
@@ -342,7 +358,7 @@
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="relative py-20 lg:py-28 bg-gray-950">
+    <section id="faq" class="relative py-20 lg:py-28 bg-gray-950 bg-texture-lines section-glow [--glow-at:25%_40%]">
       <UContainer>
         <div class="max-w-3xl mx-auto">
           <div class="text-center mb-10">
@@ -408,21 +424,10 @@ const reels: { id: string, trip?: string, tripName?: string }[] = [
 ]
 
 const painPoints = [
-  {
-    icon: 'i-lucide-message-circle-off',
-    title: 'The endless group chat',
-    description: 'Receipts, screenshots and "who paid for the Uber?" buried under 400 messages.',
-  },
-  {
-    icon: 'i-lucide-calculator',
-    title: 'Headache inducing calculations',
-    description: 'Have fun working out a 10 person, 30 expense trip by hand. Don\'t forget the exchange rate.',
-  },
-  {
-    icon: 'i-lucide-clock-alert',
-    title: 'Gnawing feeling this should be easier',
-    description: 'If Steve owes Ben £100, but Ben owes Seb £25....no wonder your gang constantly put it off.',
-  },
+  'Receipts and "who paid for the Uber?" buried in 400 messages',
+  'Nobody remembers what they had',
+  '30 expenses to add up by hand, in two currencies',
+  'Steve owes Ben, Ben owes Seb… so it gets put off',
 ]
 
 const steps = [
@@ -434,12 +439,12 @@ const steps = [
   {
     icon: 'i-lucide-receipt',
     title: 'Scan receipts as you go',
-    description: 'Scan a receipt or enter manually. Split evenly, by number of item each person had.',
+    description: 'Scan a receipt or enter manually. Split evenly, or by the items each person had.',
   },
   {
     icon: 'i-lucide-hand-coins',
     title: 'Settle in fewer payments',
-    description: 'Ninja Tab works out the minimum transfers needed so the group squares up fast.',
+    description: 'Ninja Tab simplifies who owes who into just a few transfers, so the group squares up fast.',
   },
 ]
 
@@ -492,9 +497,9 @@ const highlights = [
   {
     icon: 'i-lucide-route',
     title: 'Smart settlement, fewer transfers.',
-    description: 'Ninja Tab works out the smallest set of transfers that settle the whole group.',
+    description: 'Lots of bills and lots of payers become just a few transfers that settle the whole group.',
     bullets: [
-      'Minimises the number of payments',
+      'Cuts down the number of payments',
       'Handles multi-currency tabs',
       'See exactly who pays whom, and how much',
     ],
@@ -505,11 +510,10 @@ const highlights = [
 const comparison = [
   { feature: 'Add bills in seconds' },
   { feature: 'Receipt scanning' },
-  { feature: 'Smart settlement (minimum transfers)' },
+  { feature: 'Smart settlement (fewer transfers)' },
   { feature: 'Multi-currency on one tab' },
   { feature: 'Friends join without signing up' },
   { feature: 'Updates in real time for everyone' },
-  { feature: 'Works on phone and web' },
 ]
 
 const faqItems = [
@@ -523,7 +527,7 @@ const faqItems = [
   },
   {
     label: 'How does the smart settlement work?',
-    content: 'Once all expenses are added, Ninja Tab calculates the minimum number of payments needed to settle all debts across the group. Instead of everyone paying everyone else back, you get a simple list of who pays whom and how much.',
+    content: 'Once all expenses are added, Ninja Tab simplifies all the debts across the group into just a few payments. Instead of everyone paying everyone else back, you get a simple list of who pays whom and how much.',
   },
   {
     label: 'Can I split bills unevenly?',
@@ -552,7 +556,7 @@ const ogImage = `${siteUrl}/og-image.jpg`
 
 useSeoMeta({
   title: 'Split Group Expenses & Trip Bills | Ninja Tab',
-  description: 'Split group expenses the easy way. Open a shared tab, scan receipts, split bills by item or share, and settle up in the fewest payments. Free to start.',
+  description: 'Split group expenses the easy way. Open a shared tab, scan receipts, split bills by item or share, and settle up in just a few payments. Free to start.',
   keywords: 'split bills, split expenses, group expenses, expense splitting app, trip cost splitter, splitwise alternative, holiday expenses, group travel app',
   applicationName: 'Ninja Tab',
   author: 'Ninja Tab',
