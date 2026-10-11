@@ -70,3 +70,22 @@
     background: radial-gradient(circle 22rem at var(--glow-at, 50% 0%), color-mix(in oklab, var(--ui-primary) var(--glow-strength, 12%), transparent), transparent);
   }
 }
+
+/* Same glow, centred on the element it's on rather than placed in the section.
+   The circle is wider than a phone, so the section needs overflow-hidden. */
+@utility glow-centre {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: -1;
+    width: 44rem;
+    height: 44rem;
+    translate: -50% -50%;
+    pointer-events: none;
+    background: radial-gradient(circle closest-side, color-mix(in oklab, var(--ui-primary) var(--glow-strength, 12%), transparent), transparent);
+  }
+}

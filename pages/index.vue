@@ -78,19 +78,7 @@
             </NuxtLink>
           </div>
 
-          <!-- Two phones fanned apart: the whole tab, with the receipt scan on top -->
-          <div class="relative flex justify-center items-center mt-10 lg:mt-0 h-[360px] sm:h-[480px] lg:h-[580px]">
-            <img
-              src="/screen1.webp"
-              alt="A trip tab with its spending summary, people and expenses"
-              class="absolute h-full w-auto -translate-x-[30%] -rotate-6 drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
-            />
-            <img
-              src="/screen3.webp"
-              alt="Scanning a Spanish receipt and converting euros to pounds"
-              class="absolute h-full w-auto translate-x-[30%] translate-y-6 rotate-6 drop-shadow-[0_25px_40px_rgba(0,0,0,0.6)]"
-            />
-          </div>
+          <AppPhones class="mt-10 lg:mt-0 h-[360px] sm:h-[480px] lg:h-[580px]" />
         </div>
       </UContainer>
     </div>
@@ -98,8 +86,7 @@
     <!-- Problem framing -->
     <section class="relative py-16 lg:py-20 bg-gray-950 bg-texture-lines overflow-hidden">
       <UContainer>
-        <!-- Glow pinned to the content's centre, like How it works -->
-        <div class="relative isolate max-w-3xl mx-auto text-center before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_12%,transparent),transparent)]">
+        <div class="glow-centre max-w-3xl mx-auto text-center">
           <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">The problem</span>
           <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Group trips always end the same way.
@@ -130,8 +117,8 @@
           </p>
         </div>
 
-        <!-- Glow pinned to the list's centre, so it sits behind the middle step whether stacked or in a row -->
-        <ol class="relative isolate grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_10%,transparent),transparent)]">
+        <!-- glow-centre: behind the middle step whether stacked or in a row -->
+        <ol class="glow-centre grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto [--glow-strength:10%]">
           <li v-for="(step, i) in steps" :key="step.title" class="relative p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
             <div class="absolute -top-4 -left-2 size-10 rounded-full bg-primary-500 text-gray-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-primary-500/30">
               {{ i + 1 }}
@@ -207,8 +194,7 @@
           </p>
         </div>
 
-        <!-- Glow pinned to the grid's centre, like How it works -->
-        <div class="relative isolate grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto before:absolute before:left-1/2 before:top-1/2 before:-z-10 before:size-[44rem] before:-translate-x-1/2 before:-translate-y-1/2 before:pointer-events-none before:bg-[radial-gradient(circle_closest-side,color-mix(in_oklab,var(--ui-primary)_12%,transparent),transparent)]">
+        <div class="glow-centre grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
           <div
             v-for="useCase in useCases"
             :key="useCase.title"
