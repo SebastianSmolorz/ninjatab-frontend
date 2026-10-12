@@ -100,6 +100,12 @@
           <h3 class="mt-8 text-xl sm:text-2xl lg:text-3xl font-semibold text-primary-300 leading-tight">
             Welcome home. <br/>Here's some maths homework.
           </h3>
+          <p class="mt-12 text-lg text-gray-300">
+            Stick it on the tab and the homework does itself. Three payments become one.
+          </p>
+          <div class="mt-6 max-w-md mx-auto rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-1 ring-primary-500/20">
+            <SettleDiagram />
+          </div>
         </div>
       </UContainer>
     </section>
@@ -117,17 +123,41 @@
           </p>
         </div>
 
-        <!-- glow-centre: behind the middle step whether stacked or in a row -->
-        <ol class="glow-centre grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto [--glow-strength:10%]">
-          <li v-for="(step, i) in steps" :key="step.title" class="relative p-6 rounded-2xl bg-gray-800/50 ring-1 ring-white/5">
-            <div class="absolute -top-4 -left-2 size-10 rounded-full bg-primary-500 text-gray-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-primary-500/30">
-              {{ i + 1 }}
+        <div class="flex flex-col gap-16 lg:gap-24 max-w-6xl mx-auto">
+          <div
+            v-for="(highlight, i) in highlights"
+            :key="highlight.title"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+          >
+            <div :class="[i % 2 === 1 ? 'lg:order-2' : '', 'flex flex-col gap-4']">
+              <div class="flex items-center gap-3">
+                <div class="size-10 rounded-full bg-primary-500 text-gray-950 font-bold flex items-center justify-center text-lg shadow-lg shadow-primary-500/30">
+                  {{ i + 1 }}
+                </div>
+                <UIcon :name="highlight.icon" class="size-8 text-primary-400" />
+              </div>
+              <h3 class="text-2xl sm:text-3xl font-bold text-white">{{ highlight.title }}</h3>
+              <p class="text-gray-300 text-lg leading-relaxed">{{ highlight.description }}</p>
+              <ul class="flex flex-col gap-2 mt-2">
+                <li v-for="bullet in highlight.bullets" :key="bullet" class="flex items-start gap-2 text-gray-300">
+                  <UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />
+                  <span>{{ bullet }}</span>
+                </li>
+              </ul>
             </div>
-            <UIcon :name="step.icon" class="size-8 text-primary-400 mt-2 mb-4" />
-            <h3 class="text-xl font-semibold text-white mb-2">{{ step.title }}</h3>
-            <p class="text-gray-400 leading-relaxed">{{ step.description }}</p>
-          </li>
-        </ol>
+            <div :class="[i % 2 === 1 ? 'lg:order-1' : '', 'relative']">
+              <!-- Placeholder visual - swap with annotated screenshots when ready -->
+              <div class="aspect-[4/5] rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-1 ring-primary-500/20 flex items-center justify-center overflow-hidden">
+                <img
+                  :src="highlight.image"
+                  :alt="highlight.title"
+                  class="w-full h-full object-contain p-8 drop-shadow-[0_25px_40px_rgba(0,0,0,0.5)]"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="mt-12 flex justify-center">
           <UButton size="xl" to="/join" trailing-icon="i-lucide-arrow-right">Start a free tab</UButton>
@@ -177,76 +207,6 @@
               </NuxtLink>
             </div>
           </UCarousel>
-        </div>
-      </UContainer>
-    </section>
-
-    <!-- Use cases -->
-    <section class="relative py-20 lg:py-28 bg-gray-950 bg-texture-lines overflow-hidden">
-      <UContainer>
-        <div class="max-w-3xl mx-auto text-center mb-14">
-          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Made for groups</span>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Built for every kind of shared spend.
-          </h2>
-          <p class="mt-6 text-lg text-gray-300">
-            From a single dinner to a two-week trip across three currencies, Ninja Tab handles it.
-          </p>
-        </div>
-
-        <div class="glow-centre grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
-          <div
-            v-for="useCase in useCases"
-            :key="useCase.title"
-            class="group relative p-6 rounded-2xl bg-gradient-to-br from-gray-800/60 to-gray-800/20 ring-1 ring-white/10 hover:ring-primary-500/40 transition"
-          >
-            <UIcon :name="useCase.icon" class="size-8 text-primary-400 mb-4" />
-            <h3 class="text-lg font-semibold text-white mb-2">{{ useCase.title }}</h3>
-            <p class="text-sm text-gray-400 leading-relaxed">{{ useCase.description }}</p>
-          </div>
-        </div>
-      </UContainer>
-    </section>
-
-    <!-- Feature highlights - alternating rows -->
-    <section class="relative py-20 lg:py-28 bg-gray-950 bg-texture-lines section-glow [--glow-at:70%_60%]">
-      <UContainer>
-        <div class="max-w-3xl mx-auto text-center mb-16">
-          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Features</span>
-          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            Less time on the maths. More time enjoying the trip.
-          </h2>
-        </div>
-
-        <div class="flex flex-col gap-16 lg:gap-24 max-w-6xl mx-auto">
-          <div
-            v-for="(highlight, i) in highlights"
-            :key="highlight.title"
-            class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
-          >
-            <div :class="[i % 2 === 1 ? 'lg:order-2' : '', 'flex flex-col gap-4']">
-              <UIcon :name="highlight.icon" class="size-10 text-primary-400" />
-              <h3 class="text-2xl sm:text-3xl font-bold text-white">{{ highlight.title }}</h3>
-              <p class="text-gray-300 text-lg leading-relaxed">{{ highlight.description }}</p>
-              <ul class="flex flex-col gap-2 mt-2">
-                <li v-for="bullet in highlight.bullets" :key="bullet" class="flex items-start gap-2 text-gray-300">
-                  <UIcon name="i-lucide-check" class="size-5 text-primary-400 mt-0.5 shrink-0" />
-                  <span>{{ bullet }}</span>
-                </li>
-              </ul>
-            </div>
-            <div :class="[i % 2 === 1 ? 'lg:order-1' : '', 'relative']">
-              <!-- Placeholder visual - swap with annotated screenshots when ready -->
-              <div class="aspect-[4/5] rounded-2xl bg-gradient-to-br from-primary-500/10 to-primary-700/5 ring-1 ring-primary-500/20 flex items-center justify-center overflow-hidden">
-                <img
-                  :src="highlight.image"
-                  :alt="highlight.title"
-                  class="w-full h-full object-contain p-8 drop-shadow-[0_25px_40px_rgba(0,0,0,0.5)]"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-          </div>
         </div>
       </UContainer>
     </section>
@@ -358,6 +318,33 @@
       </UContainer>
     </section>
 
+    <!-- Use cases -->
+    <section class="relative py-20 lg:py-28 bg-gray-900 bg-texture-dots overflow-hidden">
+      <UContainer>
+        <div class="max-w-3xl mx-auto text-center mb-14">
+          <span class="inline-block text-primary-400 font-semibold tracking-wide uppercase text-sm mb-3">Made for groups</span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Built for every kind of shared spend.
+          </h2>
+          <p class="mt-6 text-lg text-gray-300">
+            From a single dinner to a two-week trip across three currencies, Ninja Tab handles it.
+          </p>
+        </div>
+
+        <div class="glow-centre grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-6xl mx-auto">
+          <div
+            v-for="useCase in useCases"
+            :key="useCase.title"
+            class="group relative p-6 rounded-2xl bg-gradient-to-br from-gray-800/60 to-gray-800/20 ring-1 ring-white/10 hover:ring-primary-500/40 transition"
+          >
+            <UIcon :name="useCase.icon" class="size-8 text-primary-400 mb-4" />
+            <h3 class="text-lg font-semibold text-white mb-2">{{ useCase.title }}</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">{{ useCase.description }}</p>
+          </div>
+        </div>
+      </UContainer>
+    </section>
+
     <!-- Final CTA -->
     <section class="relative py-20 lg:py-28 bg-gradient-to-b from-gray-950 to-gray-900 overflow-hidden">
       <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--ui-color-primary-500)/15%,_transparent_60%)]" />
@@ -416,24 +403,6 @@ const painPoints = [
   'Steve owes Ben, Ben owes Seb… so it gets put off',
 ]
 
-const steps = [
-  {
-    icon: 'i-lucide-users-round',
-    title: 'Open a tab',
-    description: 'Create a shared tab and add the group. Friends don\'t need to sign up, just add them by name and invite later.',
-  },
-  {
-    icon: 'i-lucide-receipt',
-    title: 'Scan receipts as you go',
-    description: 'Scan a receipt or enter manually. Split evenly, or by the items each person had.',
-  },
-  {
-    icon: 'i-lucide-hand-coins',
-    title: 'Settle in fewer payments',
-    description: 'Ninja Tab simplifies who owes who into just a few transfers, so the group squares up fast.',
-  },
-]
-
 const useCases = [
   {
     icon: 'i-lucide-plane',
@@ -460,21 +429,21 @@ const useCases = [
 const highlights = [
   {
     icon: 'i-lucide-scan-line',
-    title: 'Scan the receipt. Split the items.',
-    description: 'Snap a photo of any receipt and let Ninja Tab pull out the line items, currency and date. Then everyone claims what they had.',
+    title: 'Snap the receipt.',
+    description: 'Take a photo of any receipt and Ninja Tab pulls out the items, currency and date. No receipt? Type it in, it takes seconds.',
     bullets: [
       'Auto-detects currency and date',
       'Built-in translation for receipts abroad',
-      'Tap to claim items per person',
+      'Friends don\'t need to sign up, just add them by name',
     ],
     image: '/screen3.webp',
   },
   {
     icon: 'i-lucide-split',
-    title: 'Split however the group actually spent.',
-    description: 'Split it evenly, or choose what you all had. No need to fall out over money.',
+    title: 'Tap what you had.',
+    description: 'Everyone claims their own items, so nobody pays for someone else\'s lobster. Or just split it evenly.',
     bullets: [
-      'Uneven or even splits per line item',
+      'Even or uneven splits per item',
       'Different splits on different items in the same bill',
       'See your share of each bill automatically',
     ],
@@ -482,12 +451,12 @@ const highlights = [
   },
   {
     icon: 'i-lucide-route',
-    title: 'Smart settlement, fewer transfers.',
-    description: 'Lots of bills and lots of payers become just a few transfers that settle the whole group.',
+    title: 'Settle up in fewer payments.',
+    description: 'Ninja Tab adds up every bill, in every currency, and works out the fewest payments to square the group.',
     bullets: [
-      'Cuts down the number of payments',
+      'Fewest payments to settle the whole group',
       'Handles multi-currency tabs',
-      'See exactly who pays whom, and how much',
+      'See exactly who pays who, and how much',
     ],
     image: '/screen2.webp',
   },
