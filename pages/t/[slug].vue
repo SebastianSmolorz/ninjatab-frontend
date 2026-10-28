@@ -11,11 +11,15 @@ const slug = computed(() => String(route.params.slug))
 // backend is down. `bill_details` is deliberately left out of the select — it
 // is the bulk of the payload and only the drill-down reads it.
 const { data } = await useAsyncData(`trip-${slug.value}`, async () => {
-  const [copy, tab] = await Promise.all([
+  const [copy, tab, categories] = await Promise.all([
     queryCollection('trips').path(`/trips/${slug.value}`).first(),
     queryCollection('tripData')
       .path(`/tripdata/${slug.value}`)
       .select('name', 'settlement_currency', 'group_spend', 'people', 'settlements', 'bills', 'body')
+      .first(),
+    queryCollection('tripCategories')
+      .where('slug', '=', slug.value)
+      .select('categories', 'venues', 'people', 'bills')
       .first(),
   ])
   const author = copy?.author
@@ -24,7 +28,7 @@ const { data } = await useAsyncData(`trip-${slug.value}`, async () => {
       .select('path', 'name', 'avatar', 'tagline', 'flag', 'website', 'instagram', 'tiktok')
       .first()
     : null
-  return { copy, tab, author }
+  return { copy, tab, author, categories }
 })
 
 if (!data.value?.tab) {
@@ -224,8 +228,49 @@ const summaryMoney = (amount: number) => formatMinorCurrencyCompact(amount, curr
 const longDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
-const showAllPeople = ref(false)
+const showAllPeople = ref(true)
+
+// The trip doc can put people in a chosen order (e.g. the most typical
+// spenders first); anyone it doesn't name keeps the export order after them.
+const orderedPeople = computed(() => {
+  const order = copy.value?.peopleOrder ?? []
+  const rank = (name: string) => (order.includes(name) ? order.indexOf(name) : order.length)
+  return [...tab.value.people].sort((a, b) => rank(a.name) - rank(b.name))
+})
 const showDescription = ref(false)
+
+// Per-person spend by category, from the hand-labelled `tripcategories` doc.
+// Optional: trips without one just show the plain totals.
+const categories = computed(() => data.value?.categories ?? null)
+const spendByCategory = computed(() =>
+  Object.fromEntries((categories.value?.people ?? []).map(p => [p.id, p.by_category]))
+)
+const highlightCategories = computed(() => categories.value?.categories.filter(c => c.highlight) ?? [])
+// Bars are scaled to the biggest spender so their lengths compare across people.
+const maxPersonSpend = computed(() => Math.max(1, ...tab.value.people.map(p => p.spend)))
+const venueByBill = computed(() => {
+  const venues = Object.fromEntries((categories.value?.venues ?? []).map(v => [v.key, v]))
+  return Object.fromEntries((categories.value?.bills ?? []).map(b => [b.id, venues[b.venue]]))
+})
+const VENUE_ICONS: Record<string, string> = {
+  restaurant: 'i-lucide-utensils',
+  bar: 'i-lucide-beer',
+  supermarket: 'i-lucide-shopping-cart',
+  shop: 'i-lucide-shopping-bag',
+  accommodation: 'i-lucide-bed-double',
+  transport: 'i-lucide-bus',
+  other: 'i-lucide-tag',
+}
+const CATEGORY_COLORS: Record<string, string> = {
+  accommodation: 'bg-sky-500',
+  flights: 'bg-indigo-400',
+  getting_around: 'bg-teal-500',
+  activities: 'bg-emerald-400',
+  food_drink: 'bg-amber-400',
+  alcohol: 'bg-rose-500',
+  shopping: 'bg-fuchsia-400',
+  other: 'bg-gray-500',
+}
 
 const claimFor = (item: { claims: { person_id: string }[] }, personId: string) =>
   item.claims.find(c => c.person_id === personId)
@@ -437,21 +482,19 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
         <!-- Read-only: no Pay action here, unlike the in-app view. -->
         <section v-if="tab.settlements.length">
           <h2 class="text-lg font-semibold text-white mb-2">Who pays who</h2>
-          <div class="rounded-xl bg-gray-800/60 ring-1 ring-white/5 divide-y divide-white/5">
+          <div class="flex flex-wrap gap-2">
             <div
               v-for="(s, i) in tab.settlements"
               :key="i"
-              class="flex items-center gap-2 px-3 py-2.5 text-sm"
+              class="flex items-center gap-1.5 rounded-lg bg-gray-800/60 ring-1 ring-white/5 px-2.5 py-1.5 text-sm"
             >
-              <span class="text-white font-medium truncate">{{ s.from_name }}</span>
-              <UIcon name="i-lucide-arrow-right" class="size-4 text-gray-500 shrink-0" />
-              <span class="text-white font-medium truncate">{{ s.to_name }}</span>
-              <span class="ml-auto flex items-center gap-2 shrink-0">
-                <span class="font-semibold" :class="s.paid ? 'text-gray-500 line-through' : 'text-primary-400'">
-                  {{ money(s.amount, s.currency) }}
-                </span>
-                <UIcon v-if="s.paid" name="i-lucide-check" class="size-4 text-primary-400" />
+              <span class="text-white font-medium">{{ s.from_name }}</span>
+              <UIcon name="i-lucide-arrow-right" class="size-3.5 text-gray-500 shrink-0" />
+              <span class="text-white font-medium">{{ s.to_name }}</span>
+              <span class="font-semibold ml-1" :class="s.paid ? 'text-gray-500 line-through' : 'text-primary-400'">
+                {{ money(s.amount, s.currency) }}
               </span>
+              <UIcon v-if="s.paid" name="i-lucide-check" class="size-4 text-primary-400" />
             </div>
           </div>
         </section>
@@ -459,19 +502,19 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
         <section>
           <h2 class="text-lg font-semibold text-white mb-2">Spending summary</h2>
           <div class="grid grid-cols-3 rounded-xl bg-gray-800/60 ring-1 ring-white/5 divide-x divide-white/10">
-            <div class="p-3 sm:p-4 text-center">
-              <div class="text-xs text-gray-500">Group spend</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1">
+            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+              <div class="text-xs text-gray-500 truncate">Group spend</div>
+              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
                 {{ tab.group_spend === null ? '—' : summaryMoney(tab.group_spend) }}
               </div>
             </div>
-            <div class="p-3 sm:p-4 text-center">
-              <div class="text-xs text-gray-500">Expenses</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1">{{ tab.bills.length }}</div>
+            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+              <div class="text-xs text-gray-500 truncate">Expenses</div>
+              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">{{ tab.bills.length }}</div>
             </div>
-            <div class="p-3 sm:p-4 text-center">
-              <div class="text-xs text-gray-500">Per person</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1">
+            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+              <div class="text-xs text-gray-500 truncate">Avg per person</div>
+              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
                 {{ perPerson === null ? '—' : summaryMoney(perPerson) }}
               </div>
             </div>
@@ -498,21 +541,62 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
               />
             </button>
           </div>
+          <div
+            v-if="showAllPeople && categories"
+            class="flex flex-wrap gap-x-3 gap-y-1 mb-3 text-xs text-gray-400"
+          >
+            <span v-for="c in categories.categories" :key="c.key" class="flex items-center gap-1.5">
+              <span class="size-2 rounded-full" :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'" />
+              {{ c.label }}
+            </span>
+          </div>
           <div v-if="showAllPeople" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div
-              v-for="person in tab.people"
+              v-for="person in orderedPeople"
               :key="person.id"
-              class="flex items-center gap-3 rounded-xl bg-gray-800/60 ring-1 ring-white/5 p-3"
+              class="rounded-xl bg-gray-800/60 ring-1 ring-white/5 p-3"
             >
-              <div
-                class="size-10 shrink-0 rounded-full flex items-center justify-center font-semibold bg-primary-900/60 text-primary-300"
-              >
-                {{ person.name.charAt(0).toUpperCase() }}
+              <div class="flex items-center gap-3">
+                <div
+                  class="size-10 shrink-0 rounded-full flex items-center justify-center font-semibold bg-primary-900/60 text-primary-300"
+                >
+                  {{ person.name.charAt(0).toUpperCase() }}
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-white font-medium truncate">{{ person.name }}</div>
+                </div>
+                <div class="text-sm text-gray-300 whitespace-nowrap">{{ summaryMoney(person.spend) }}</div>
               </div>
-              <div class="min-w-0 flex-1">
-                <div class="text-white font-medium truncate">{{ person.name }}</div>
-              </div>
-              <div class="text-sm text-gray-300 whitespace-nowrap">{{ summaryMoney(person.spend) }}</div>
+              <template v-if="spendByCategory[person.id]">
+                <div class="mt-3 h-2 rounded-full bg-white/5 overflow-hidden">
+                  <div class="flex h-full" :style="{ width: `${100 * person.spend / maxPersonSpend}%` }">
+                    <div
+                      v-for="c in categories!.categories"
+                      :key="c.key"
+                      :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'"
+                      :style="{ flex: `${spendByCategory[person.id]![c.key] ?? 0} 0 0` }"
+                      :title="`${c.label} ${summaryMoney(spendByCategory[person.id]![c.key] ?? 0)}`"
+                    />
+                  </div>
+                </div>
+                <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+                  <span
+                    v-for="c in highlightCategories"
+                    :key="c.key"
+                    class="flex items-center gap-1.5"
+                    :class="spendByCategory[person.id]![c.key] ? 'text-gray-300' : 'text-gray-600'"
+                  >
+                    <span
+                      class="size-2 rounded-full"
+                      :class="spendByCategory[person.id]![c.key] ? CATEGORY_COLORS[c.key] : 'bg-gray-700'"
+                    />
+                    <template v-if="spendByCategory[person.id]![c.key]">
+                      {{ c.label }} {{ summaryMoney(spendByCategory[person.id]![c.key]!) }}
+                    </template>
+                    <template v-else>No {{ c.label.toLowerCase() }}</template>
+                  </span>
+                </div>
+              </template>
             </div>
           </div>
         </section>
@@ -533,8 +617,14 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
             >
               <div class="min-w-0 flex-1">
                 <div class="text-white font-medium truncate">{{ b.description }}</div>
-                <div class="text-sm text-gray-500 truncate">
-                  <template v-if="b.paid_by">Paid by {{ b.paid_by }}</template>
+                <!-- Venue shares the "Paid by" line so it can't grow the card. -->
+                <div class="flex items-center gap-1.5 text-sm text-gray-500 min-w-0">
+                  <span v-if="venueByBill[b.id]" class="flex items-center gap-1 text-primary-400 shrink-0">
+                    <UIcon :name="VENUE_ICONS[venueByBill[b.id]!.key] ?? 'i-lucide-tag'" class="size-3.5" />
+                    {{ venueByBill[b.id]!.label }}
+                  </span>
+                  <span v-if="venueByBill[b.id] && b.paid_by" class="text-gray-600">·</span>
+                  <span v-if="b.paid_by" class="truncate">Paid by {{ b.paid_by }}</span>
                 </div>
               </div>
               <span class="font-semibold text-white whitespace-nowrap">

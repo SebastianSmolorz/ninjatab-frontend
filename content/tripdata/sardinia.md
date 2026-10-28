@@ -4,20 +4,20 @@ name: Sardinia Trip Costs June 2026
 settlement_currency: GBP
 is_settled: true
 is_pro: true
-group_spend: 224158
+group_spend: 216596
 people:
 - id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
   name: Ski
-  spend: 72633
+  spend: 68837
 - id: 019e5a35-5d16-75bb-8e63-45901cdb5777
   name: Bleu
-  spend: 32342
+  spend: 32018
 - id: 019e5a36-8d03-732c-a860-8751c17ff804
   name: Mel
-  spend: 52071
+  spend: 50885
 - id: 019e5a38-7435-7891-bb61-dd33a5b44765
   name: seb
-  spend: 67529
+  spend: 65242
 bills:
 - id: 019f1f67-d709-753f-bac1-5f0c0918f1c8
   description: Flights
@@ -187,14 +187,6 @@ bills:
   created_by: Ski
   paid_by: Ski
   has_receipt: true
-- id: 019ef675-643a-70a5-99ef-8548bed7fc86
-  description: RISTORANTE <40>
-  currency: EUR
-  date: '2026-06-23'
-  total_amount: 8800
-  created_by: Ski
-  paid_by: Ski
-  has_receipt: true
 - id: 019ef660-8bb8-733b-8f3c-9568d2259459
   description: Cash
   currency: GBP
@@ -358,17 +350,17 @@ bills:
 settlements:
 - from_name: seb
   to_name: Ski
-  amount: 14707
+  amount: 12420
   currency: GBP
   paid: false
 - from_name: Bleu
   to_name: Ski
-  amount: 22918
+  amount: 22594
   currency: GBP
   paid: false
 - from_name: Mel
   to_name: Ski
-  amount: 41245
+  amount: 40059
   currency: GBP
   paid: false
 bill_details:
@@ -1235,152 +1227,6 @@ bill_details:
       person_name: Ski
       split_value: 1
       amount: 450
-- id: 019ef675-643a-70a5-99ef-8548bed7fc86
-  person_totals:
-  - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-    person_name: Ski
-    amount: 4400
-  - person_id: 019e5a35-5d16-75bb-8e63-45901cdb5777
-    person_name: Bleu
-    amount: 375
-  - person_id: 019e5a36-8d03-732c-a860-8751c17ff804
-    person_name: Mel
-    amount: 1375
-  - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-    person_name: seb
-    amount: 2650
-  line_items:
-  - id: 019ef675-643e-79fd-be44-686b4a4568d9
-    description: COPERTO
-    value: 1000
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 250
-    - person_id: 019e5a35-5d16-75bb-8e63-45901cdb5777
-      person_name: Bleu
-      split_value: 1
-      amount: 250
-    - person_id: 019e5a36-8d03-732c-a860-8751c17ff804
-      person_name: Mel
-      split_value: 1
-      amount: 250
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 250
-  - id: 019ef675-6454-78af-b682-28c346bf94ab
-    description: PENNE ARRABBIATA
-    value: 1000
-    split_type: shares
-    claims:
-    - person_id: 019e5a36-8d03-732c-a860-8751c17ff804
-      person_name: Mel
-      split_value: 1
-      amount: 1000
-  - id: 019ef675-645a-78d8-a4a9-eaa48cad1a1f
-    description: PROSCIUTTO
-    value: 750
-    split_type: shares
-    claims:
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 750
-  - id: 019ef675-6461-7533-a6e6-513a0e613d1b
-    description: CAPRESE
-    value: 900
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 2
-      amount: 900
-  - id: 019ef675-6468-794f-b0a8-6cd15af03822
-    description: GRILL DI GAMBERONI
-    value: 1600
-    split_type: shares
-    claims:
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 800
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 800
-  - id: 019ef675-6473-7b09-8fae-3697ae01f768
-    description: DIAVOLA
-    value: 800
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 800
-  - id: 019ef675-647a-7fb9-b808-a6f9de82fa2f
-    description: SPAGHETTI POMODORO
-    value: 800
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 800
-  - id: 019ef675-6481-75d7-8778-8bb1bcf4a26b
-    description: 1/2 BIANCO
-    value: 500
-    split_type: shares
-    claims:
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 500
-  - id: 019ef675-6488-7f3a-a6d3-4f37bf80cced
-    description: ACQUA NAT 1L
-    value: 500
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 125
-    - person_id: 019e5a35-5d16-75bb-8e63-45901cdb5777
-      person_name: Bleu
-      split_value: 1
-      amount: 125
-    - person_id: 019e5a36-8d03-732c-a860-8751c17ff804
-      person_name: Mel
-      split_value: 1
-      amount: 125
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 125
-  - id: 019ef675-64a3-746f-a7d2-aadfb86663e2
-    description: SPINA 0.40
-    value: 450
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 225
-    - person_id: 019e5a38-7435-7891-bb61-dd33a5b44765
-      person_name: seb
-      split_value: 1
-      amount: 225
-  - id: 019ef675-64b5-7266-9eea-de3af7cc1615
-    description: panna cotta
-    value: 500
-    split_type: shares
-    claims:
-    - person_id: 019e5a35-5d12-7580-b596-b7cb1f2b114d
-      person_name: Ski
-      split_value: 1
-      amount: 500
 - id: 019ef660-8bb8-733b-8f3c-9568d2259459
   person_totals:
   - person_id: 019e5a35-5d16-75bb-8e63-45901cdb5777

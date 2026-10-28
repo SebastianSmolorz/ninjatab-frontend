@@ -42,6 +42,8 @@ export default defineContentConfig({
                 // purpose: a costed itinerary is safe to call a real record,
                 // never the other way round.
                 costs: z.enum(['modelled', 'recorded']).default('modelled'),
+                // Names, in the order the People cards show them.
+                peopleOrder: z.array(z.string()).optional(),
             }),
         }),
 
@@ -99,6 +101,42 @@ export default defineContentConfig({
                             split_value: z.number().nullable(),
                             amount: z.number().nullable(),
                         })),
+                    })),
+                })),
+            }),
+        }),
+
+        // Hand-labelled expense categories for a public tab, keyed by the
+        // bill/line item ids in `tripData`. Totals are in `currency` minor
+        // units and each person's parts add up to their `spend`.
+        tripCategories: defineCollection({
+            type: 'data',
+            source: 'tripcategories/**/*.md',
+            schema: z.object({
+                slug: z.string(),
+                currency: z.string(),
+                // `highlight`: shown per person as "Flights £118" / "No flights"
+                categories: z.array(z.object({
+                    key: z.string(),
+                    label: z.string(),
+                    highlight: z.boolean().default(false),
+                })),
+                venues: z.array(z.object({ key: z.string(), label: z.string() })),
+                people: z.array(z.object({
+                    id: z.string(),
+                    name: z.string(),
+                    spend: z.number(),
+                    by_category: z.record(z.string(), z.number()),
+                    by_venue: z.record(z.string(), z.number()),
+                })),
+                bills: z.array(z.object({
+                    id: z.string(),
+                    description: z.string(),
+                    venue: z.string(),
+                    items: z.array(z.object({
+                        id: z.string(),
+                        description: z.string(),
+                        category: z.string(),
                     })),
                 })),
             }),

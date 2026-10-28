@@ -9,6 +9,7 @@ place:
   name: Sardinia, Italy
   type: Place
 costs: recorded
+peopleOrder: [Mel, seb, Ski, Bleu]
 ---
 
 Four friends, four days in Sardinia and nearly 40 shared expenses. We tracked everything along
