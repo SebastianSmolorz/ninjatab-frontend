@@ -1,6 +1,6 @@
 ---
 title: Group Expense Fairness Explained for Every Situation
-description: Fair doesn't always mean equal. A practical guide to the core fairness models, the psychology behind money disputes, and strategies that keep group finances—and friendships—intact.
+description: Fair doesn't always mean equal. A practical guide to the core fairness models, the psychology behind money disputes, and strategies that keep group finances, and friendships, intact.
 image: https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098823479_Group-of-friends-discussing-expenses-in-living-room.jpeg
 imageAlt: Group of friends discussing expenses in living room
 date: 2026-06-15
@@ -45,7 +45,7 @@ Here's how these norms play out in real group scenarios:
 - **Equity:** Each person pays for what they actually ordered at dinner, down to the last appetizer.
 - **Need:** A boyfriend covering lunch for his girlfriend because she earns less.
 
-> "Fairness in group expenses is not a single principle but a balance among equality, equity, and need, depending on context and relationships." — Harvard Program on Negotiation
+> "Fairness in group expenses is not a single principle but a balance among equality, equity, and need, depending on context and relationships." - Harvard Program on Negotiation
 
 The key insight here is that no single norm works for every situation. The groups that handle money well are the ones that pick a norm together, out loud, before the bill arrives.
 
@@ -85,7 +85,7 @@ Here's what this looks like in practice:
 - Someone who owes $50 to three different people feels less urgency because the amounts seem small individually.
 - A group member who quietly pays more than their share starts to feel used, even if no one intended that outcome.
 
-> "People evaluate fairness emotionally; practical systems should acknowledge timing, clarity, and mental accounting to succeed." — [HRZone](https://hrzone.com/who-is-the-fairest-of-them-all-defining-and-delivering-fairness-in-a-fragmented-workforce/)
+> "People evaluate fairness emotionally; practical systems should acknowledge timing, clarity, and mental accounting to succeed." - [HRZone](https://hrzone.com/who-is-the-fairest-of-them-all-defining-and-delivering-fairness-in-a-fragmented-workforce/)
 
 Transparency and clear governance are the antidote to most of this friction. When everyone can see the numbers, the rationale, and the running balance, resentment has less room to grow. Explained decisions reduce disengagement, even when the amounts involved are small.
 
@@ -149,13 +149,13 @@ If your group can agree on the rules upfront, log expenses as they happen, and s
 
 Pick a system. Stick to it. Talk about it when it stops working. That's the whole thing.
 
-> *— Seb*
+> *- Seb*
 
 ## Stop chasing receipts. Start using Tab.
 
 If you've ever spent the last night of a trip trying to reconstruct who paid for what from a chaotic group chat, you already know there's a better way.
 
-![Tab — split group expenses](https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098708890_tab.jpg)
+![Tab: split group expenses](https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098708890_tab.jpg)
 
 Tab is built for exactly this. You create a shared tab, scan receipts as you go, and Tab automatically calculates the smartest way to settle up with the fewest possible payments. No one needs to download the app to be included. Multi-currency support means international trips are no longer a headache. And the free tier gives you everything you need to manage group finances without spending a cent.
 
@@ -186,4 +186,4 @@ Expense tracking apps log costs in real time, show everyone a live balance, and 
 ## Recommended
 
 - [Split Group Expenses & Trip Bills | Ninja Tab](https://tab.ninja)
-- [Best Free Splitwise Alternative (UK) — Ninja Tab](https://tab.ninja/splitwise-alternative)
+- [Best Free Splitwise Alternative (UK) | Ninja Tab](https://tab.ninja/splitwise-alternative)

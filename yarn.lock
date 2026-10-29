@@ -499,10 +499,24 @@
     "@floating-ui/utils" "^0.2.10"
     vue-demi ">=0.13.0"
 
-"@iconify-json/lucide@^1.2.93":
-  version "1.2.93"
-  resolved "https://registry.npmjs.org/@iconify-json/lucide/-/lucide-1.2.93.tgz"
-  integrity sha512-xMbNHP3uS0c/jkgmj6k/9DcuqW7Ey88R0bM2hV5rOJ8wDARql6kM0UC/WCHOyfjh+7OIJnRuDqUvvStx2NHbNw==
+"@iconify-json/heroicons@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@iconify-json/heroicons/-/heroicons-1.2.3.tgz#041fe0d689535dddc51e97c8b692cdff792ac4b2"
+  integrity sha512-n+vmCEgTesRsOpp5AB5ILB6srsgsYK+bieoQBNlafvoEhjVXLq8nIGN4B0v/s4DUfa0dOrjwE/cKJgIKdJXOEg==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/lucide@^1.2.148":
+  version "1.2.148"
+  resolved "https://registry.yarnpkg.com/@iconify-json/lucide/-/lucide-1.2.148.tgz#07c72324bfa7f0153f780bf03654f4f311593e18"
+  integrity sha512-m+39WCfRJYC2JgzOsmDuzfZCJqNZg45sm4lYDAnxMvj3F4mN9N1olCc53jMhsn0ZIZBoNV2iyrq5JIxv/GZzow==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify-json/simple-icons@^1.2.101":
+  version "1.2.101"
+  resolved "https://registry.yarnpkg.com/@iconify-json/simple-icons/-/simple-icons-1.2.101.tgz#323b81ed81d282dbf95eb39329b27e1e398243a0"
+  integrity sha512-MXJkMZDancJ/9I+Bgdthi9kXvn3AwWStxoTHwEPwAFQ9kMLBASO1BSstg52fNtjXeizm1Wi91R+QnWxNGkWHPQ==
   dependencies:
     "@iconify/types" "*"
 

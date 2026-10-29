@@ -11,7 +11,7 @@
             Got a question? <span class="text-primary-400">Drop us a line.</span>
           </h1>
           <p class="mt-6 text-lg text-gray-300 leading-relaxed">
-            Feedback, feature requests, bug reports, or just want to say hi — every message lands in our inbox.
+            Feedback, feature requests, bug reports, or just want to say hi? Every message lands in our inbox.
           </p>
         </div>
       </UContainer>
@@ -97,6 +97,6 @@ async function copyEmail() {
 
 useSeoMeta({
   title: 'Contact Ninja Tab',
-  description: 'Get in touch with the Ninja Tab team — feedback, feature requests and support.',
+  description: 'Get in touch with the Ninja Tab team: feedback, feature requests and support.',
 })
 </script>

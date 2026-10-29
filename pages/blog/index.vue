@@ -78,7 +78,7 @@ const canonical = 'https://tab.ninja/blog'
 const ogImage = 'https://tab.ninja/og-image.jpg'
 
 useSeoMeta({
-  title: 'Blog — Ninja Tab',
+  title: 'Blog | Ninja Tab',
   description: 'Honest guides on group expenses, fair splitting, and keeping friendships intact when money is involved.',
   ogType: 'website',
   ogUrl: canonical,

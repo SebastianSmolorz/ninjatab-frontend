@@ -2,6 +2,7 @@
 title: 'Kyrgyzstan Trip Cost: 2 Weeks for 4 People'
 description: What two weeks in Kyrgyzstan costs four friends, including accommodation, food, taxis, horse treks, yurts and transport. A $2,541 itinerary, itemised.
 author: madlertravel
+style: adventure
 order: 1
 image: /trip-kyrgyzstan.jpg
 imageAlt: Looking down on the turquoise Ala-Kol lake in Kyrgyzstan

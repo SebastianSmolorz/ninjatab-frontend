@@ -2,6 +2,7 @@
 title: 'Peru Trip Cost: Coast, Andes and Machu Picchu for 4'
 description: What a Peru trip costs four friends, from Lima and Huacachina to Cusco and the Salkantay trek into Machu Picchu. A $3,908 itinerary, itemised.
 author: madlertravel
+style: adventure
 order: 4
 image: /trip-peru.jpg
 imageAlt: Glacial lake below the Salkantay mountains on the trek to Machu Picchu, Peru

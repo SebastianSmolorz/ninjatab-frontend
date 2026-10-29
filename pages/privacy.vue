@@ -109,9 +109,9 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">5. Device permissions (mobile app)</h2>
           <p>The Ninja Tab mobile app may request the following device permissions:</p>
           <ul>
-            <li><strong class="text-white">Camera</strong> — to take photos of receipts or bills when recording an expense.</li>
-            <li><strong class="text-white">Photo library / storage</strong> — to select existing images from your device when uploading a receipt.</li>
-            <li><strong class="text-white">Internet access</strong> — to communicate with Ninja Tab servers.</li>
+            <li><strong class="text-white">Camera</strong>: to take photos of receipts or bills when recording an expense.</li>
+            <li><strong class="text-white">Photo library / storage</strong>: to select existing images from your device when uploading a receipt.</li>
+            <li><strong class="text-white">Internet access</strong>: to communicate with Ninja Tab servers.</li>
           </ul>
           <p>You can revoke any permission at any time through your device settings. Revoking camera or photo library access will prevent you from uploading receipt images but will not affect other features.</p>
         </section>
@@ -121,9 +121,9 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">6. Legal basis for processing</h2>
           <p>Under UK GDPR we process personal data on the following legal bases:</p>
           <ul>
-            <li><strong class="text-white">Contract</strong> — To provide the Ninja Tab service requested by users.</li>
-            <li><strong class="text-white">Legitimate interests</strong> — To operate, analyse, and improve the service.</li>
-            <li><strong class="text-white">Consent</strong> — Where required for analytics or cookies.</li>
+            <li><strong class="text-white">Contract</strong>: To provide the Ninja Tab service requested by users.</li>
+            <li><strong class="text-white">Legitimate interests</strong>: To operate, analyse, and improve the service.</li>
+            <li><strong class="text-white">Consent</strong>: Where required for analytics or cookies.</li>
           </ul>
         </section>
 
@@ -132,9 +132,9 @@ useSeoMeta({
           <h2 class="text-xl font-semibold text-white">7. Data sharing</h2>
           <p>We share limited data with service providers that help us operate the service, including:</p>
           <ul>
-            <li><strong class="text-white">Google Analytics</strong> — web analytics</li>
-            <li><strong class="text-white">PostHog</strong> — product analytics (web and mobile)</li>
-            <li><strong class="text-white">Sentry</strong> — crash and error reporting (mobile app)</li>
+            <li><strong class="text-white">Google Analytics</strong>: web analytics</li>
+            <li><strong class="text-white">PostHog</strong>: product analytics (web and mobile)</li>
+            <li><strong class="text-white">Sentry</strong>: crash and error reporting (mobile app)</li>
             <li>Infrastructure and hosting providers</li>
           </ul>
           <p>Service providers process data on our behalf and are required to protect it. We do not sell personal data to third parties.</p>

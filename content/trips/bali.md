@@ -2,6 +2,8 @@
 title: 'Bali Trip Cost: A$3,681 for 4 Friends'
 description: What a week in Bali costs four friends, including flights, villa, scooters, food, drinks, massages and a Nusa Penida tour. An A$3,681 itinerary, itemised.
 author: madlertravel
+flightsFrom: Australia
+style: holiday
 order: 6
 image: /trip-bali.jpg
 imageAlt: Surfers in the water off Bali at sunset

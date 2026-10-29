@@ -32,6 +32,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
     ],
     [
       { label: 'Trips', type: 'label' },
+      { label: 'All trip costs', icon: 'i-lucide-map', to: '/trips' },
       { label: 'By Madlertravel', icon: 'i-lucide-user-round', to: '/madlertravel' },
       { label: 'Bali trip', to: '/t/bali' },
       { label: 'Kyrgyzstan trip', to: '/t/kyrgyzstan' },

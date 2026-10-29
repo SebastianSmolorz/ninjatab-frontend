@@ -1,6 +1,6 @@
 ---
 title: How to Create a Shared Expense Tab for Group Trips
-description: A practical guide to setting up a shared expense tab before your trip—what counts as shared, how to log costs in real time, how to settle without friction, and how to close out cleanly.
+description: 'A practical guide to setting up a shared expense tab before your trip: what counts as shared, how to log costs in real time, how to settle without friction, and how to close out cleanly.'
 image: https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098818843_Group-updating-shared-trip-expenses-at-kitchen-table.jpeg
 imageAlt: Group updating shared trip expenses at kitchen table
 date: 2026-06-16
@@ -166,13 +166,13 @@ My take on settlement timing is strong. Do not wait until the airport. I've watc
 
 The tools today are genuinely good. Tab, in particular, gets the no-signup approach right. Not everyone in your group wants to create an account just to see what they owe. Removing that friction means people actually use the system instead of ignoring it.
 
-> *— Seb*
+> *- Seb*
 
 ## Try Tab for your next group trip
 
 Managing shared costs does not have to be the most stressful part of traveling together. Tab was built specifically for this situation: a group of people, a pile of shared expenses, and zero desire to do complex math or chase anyone through group chats.
 
-![Tab — split group expenses](https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098708890_tab.jpg)
+![Tab: split group expenses](https://csuxjmfbwmkxiegfpljm.supabase.co/storage/v1/object/public/blog-images/organization-31843/1779098708890_tab.jpg)
 
 With Tab, you create a shared tab in seconds, scan receipts to log expenses instantly, and let the app calculate the fairest way to settle with the fewest payments possible. Nobody needs to sign up. Multi-currency support means international trips are just as easy as local ones. And the smart settlement feature does the heavy lifting so you are not manually figuring out who owes what to whom.
 
@@ -203,4 +203,4 @@ Not always. Tab allows members to view and participate in a shared tab without c
 ## Recommended
 
 - [Split Group Expenses & Trip Bills | Ninja Tab](https://tab.ninja)
-- [Best Free Splitwise Alternative (UK) — Ninja Tab](https://tab.ninja/splitwise-alternative)
+- [Best Free Splitwise Alternative (UK) | Ninja Tab](https://tab.ninja/splitwise-alternative)

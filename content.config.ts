@@ -44,6 +44,10 @@ export default defineContentConfig({
                 costs: z.enum(['modelled', 'recorded']).default('modelled'),
                 // Names, in the order the People cards show them.
                 peopleOrder: z.array(z.string()).optional(),
+                // Filter on /trips.
+                style: z.enum(['adventure', 'holiday']).optional(),
+                // Where the costed flights leave from, e.g. "UK". Shown on /trips.
+                flightsFrom: z.string().optional(),
             }),
         }),
 

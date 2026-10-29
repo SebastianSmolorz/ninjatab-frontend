@@ -2,6 +2,7 @@
 title: 'Uzbekistan Trip Cost: The Silk Road for 4 People'
 description: What a Silk Road trip through Tashkent, Samarkand and Bukhara costs four friends, including trains, guesthouses, food and sightseeing. An A$1,550 itinerary, itemised.
 author: madlertravel
+style: adventure
 order: 3
 image: /trip-uzbekistan.jpg
 imageAlt: Tiled mausoleum facades at Shah-i-Zinda in Samarkand, Uzbekistan

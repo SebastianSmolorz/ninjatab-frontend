@@ -208,7 +208,7 @@
             Built for how groups actually spend on trips.
           </h2>
           <p class="mt-6 text-lg text-gray-300">
-            Flights, accommodation, transfers, restaurants, bar tabs, supermarket runs, activities — across multiple currencies, paid by different people at different times.
+            Flights, accommodation, transfers, restaurants, bar tabs, supermarket runs, activities, across multiple currencies, paid by different people at different times.
           </p>
         </div>
 
@@ -308,7 +308,7 @@
 const gripes = [
   { title: 'One expense a day on free', description: 'The free tier limits you to a single expense per day. Useless on a trip.' },
   { title: 'Everyone must join by email', description: 'No way to track expenses for a friend who hasn\'t signed up.' },
-  { title: '£39.99 a year — one person fronts it', description: 'A subscription that one person has to subsidise for the whole group.' },
+  { title: '£39.99 a year, one person fronts it', description: 'A subscription that one person has to subsidise for the whole group.' },
   { title: 'Pro features only for the subscriber', description: 'The rest of the group still uses the limited free experience.' },
   { title: 'No currency conversion on free', description: 'Travelling abroad? Pay up.' },
   { title: 'No receipt scanning into items', description: 'Manual entry, line by line, for every meal.' },
@@ -376,7 +376,7 @@ const pricingExamples = [
 ]
 
 const groupTravelFeatures = [
-  { icon: 'i-lucide-split', title: 'Uneven splits', description: 'Shares, fixed amounts, or evenly — per line item.' },
+  { icon: 'i-lucide-split', title: 'Uneven splits', description: 'Shares, fixed amounts, or evenly, per line item.' },
   { icon: 'i-lucide-list-checks', title: 'Item-level splits', description: 'Claim only what you actually had on the bill.' },
   { icon: 'i-lucide-scan-line', title: 'Receipt scanning', description: 'Snap, auto-detect items, currency and date.' },
   { icon: 'i-lucide-languages', title: 'Receipt translation', description: 'Foreign menus translated into something you recognise.' },
@@ -395,11 +395,11 @@ const footerLinks = [
 
 const canonical = 'https://tab.ninja/splitwise-alternative'
 const ogImage = 'https://tab.ninja/og-image.jpg'
-const ogTitle = 'Ninja Tab — The free Splitwise alternative built for trips'
+const ogTitle = 'Ninja Tab: The free Splitwise alternative built for trips'
 const ogDescription = 'No daily limits, no £39.99 subscription, multi-currency included. Built for the way groups actually spend.'
 
 useSeoMeta({
-  title: 'Best Free Splitwise Alternative (UK) — Ninja Tab',
+  title: 'Best Free Splitwise Alternative (UK) | Ninja Tab',
   description: 'Looking for a Splitwise alternative? Ninja Tab is a modern expense splitting app for group trips. No subscriptions, multi-currency included, just £1 per person.',
   ogType: 'website',
   ogUrl: canonical,

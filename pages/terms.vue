@@ -134,7 +134,7 @@ useSeoMeta({
           </ul>
           <p>We may change pricing or introduce new features in the future.</p>
           <h3 class="text-lg font-medium text-white mt-4">Fair usage (Pro)</h3>
-          <p>Pro plans may include unlimited expenses as a feature. "Unlimited" refers to normal personal or group use — for example, recording expenses for trips, meals, or shared purchases with a small group of people.</p>
+          <p>Pro plans may include unlimited expenses as a feature. "Unlimited" refers to normal personal or group use, for example, recording expenses for trips, meals, or shared purchases with a small group of people.</p>
           <p>You must not use a Pro plan to:</p>
           <ul>
             <li>Automate the creation of large numbers of expenses</li>

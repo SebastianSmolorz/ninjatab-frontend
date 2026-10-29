@@ -80,7 +80,7 @@ const ogImage = computed(() =>
 )
 
 useSeoMeta({
-  title: () => `${page.value?.title} — Ninja Tab`,
+  title: () => `${page.value?.title} | Ninja Tab`,
   description: () => page.value?.description,
   ogTitle: () => page.value?.title,
   ogDescription: () => page.value?.description,

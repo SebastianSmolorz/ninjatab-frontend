@@ -24,7 +24,9 @@
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
   "devDependencies": {
-    "@iconify-json/lucide": "^1.2.93",
+    "@iconify-json/heroicons": "^1.2.3",
+    "@iconify-json/lucide": "^1.2.148",
+    "@iconify-json/simple-icons": "^1.2.101",
     "@nuxt/fonts": "^0.14.0"
   }
 }

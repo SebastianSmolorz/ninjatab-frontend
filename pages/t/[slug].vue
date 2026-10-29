@@ -166,12 +166,13 @@ const jsonLd = computed(() => ({
       '@id': `${canonical.value}#breadcrumb`,
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Ninja Tab', item: `${SITE}/` },
+        { '@type': 'ListItem', position: 2, name: 'Trips', item: `${SITE}/trips` },
         ...(authorNode.value
-          ? [{ '@type': 'ListItem', position: 2, name: authorNode.value.name, item: authorNode.value.url }]
+          ? [{ '@type': 'ListItem', position: 3, name: authorNode.value.name, item: authorNode.value.url }]
           : []),
         {
           '@type': 'ListItem',
-          position: authorNode.value ? 3 : 2,
+          position: authorNode.value ? 4 : 3,
           name: tab.value.name,
           item: canonical.value,
         },
@@ -228,7 +229,9 @@ const summaryMoney = (amount: number) => formatMinorCurrencyCompact(amount, curr
 const longDate = (d: string) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
-const showAllPeople = ref(true)
+// Collapsed by default: one row of people, one settlement.
+const showAllPeople = ref(false)
+const showSettlements = ref(false)
 
 // The trip doc can put people in a chosen order (e.g. the most typical
 // spenders first); anyone it doesn't name keeps the export order after them.
@@ -252,25 +255,6 @@ const venueByBill = computed(() => {
   const venues = Object.fromEntries((categories.value?.venues ?? []).map(v => [v.key, v]))
   return Object.fromEntries((categories.value?.bills ?? []).map(b => [b.id, venues[b.venue]]))
 })
-const VENUE_ICONS: Record<string, string> = {
-  restaurant: 'i-lucide-utensils',
-  bar: 'i-lucide-beer',
-  supermarket: 'i-lucide-shopping-cart',
-  shop: 'i-lucide-shopping-bag',
-  accommodation: 'i-lucide-bed-double',
-  transport: 'i-lucide-bus',
-  other: 'i-lucide-tag',
-}
-const CATEGORY_COLORS: Record<string, string> = {
-  accommodation: 'bg-sky-500',
-  flights: 'bg-indigo-400',
-  getting_around: 'bg-teal-500',
-  activities: 'bg-emerald-400',
-  food_drink: 'bg-amber-400',
-  alcohol: 'bg-rose-500',
-  shopping: 'bg-fuchsia-400',
-  other: 'bg-gray-500',
-}
 
 const claimFor = (item: { claims: { person_id: string }[] }, personId: string) =>
   item.claims.find(c => c.person_id === personId)
@@ -430,7 +414,7 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
       <!-- ── Tab overview ───────────────────────────────────────────────── -->
       <div v-else class="space-y-5">
         <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-1.5 text-sm text-gray-500">
-          <NuxtLink to="/" class="hover:text-white transition-colors">Ninja Tab</NuxtLink>
+          <NuxtLink to="/trips" class="hover:text-white transition-colors">Trips</NuxtLink>
           <span aria-hidden="true">/</span>
           <template v-if="author">
             <NuxtLink :to="`/${copy!.author}`" class="hover:text-white transition-colors">{{ author.name }}</NuxtLink>
@@ -480,13 +464,37 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
         </NuxtLink>
 
         <!-- Read-only: no Pay action here, unlike the in-app view. -->
-        <section v-if="tab.settlements.length">
-          <h2 class="text-lg font-semibold text-white mb-2">Who pays who</h2>
-          <div class="flex flex-wrap gap-2">
+        <section v-if="tab.settlements.length" class="rounded-xl bg-gray-800/60 ring-1 ring-white/5">
+          <h2>
+            <button
+              class="w-full flex items-center gap-2 px-3 py-2 text-sm text-left"
+              :aria-expanded="showSettlements"
+              @click="showSettlements = !showSettlements"
+            >
+              <span class="font-semibold text-white shrink-0">Who pays who</span>
+              <span v-if="!showSettlements" class="flex items-center gap-1 min-w-0 text-gray-400">
+                <span class="truncate">{{ tab.settlements[0]!.from_name }}</span>
+                <UIcon name="i-lucide-arrow-right" class="size-3.5 shrink-0" />
+                <span class="truncate">{{ tab.settlements[0]!.to_name }}</span>
+                <span class="text-primary-400 font-semibold shrink-0">
+                  {{ money(tab.settlements[0]!.amount, tab.settlements[0]!.currency) }}
+                </span>
+              </span>
+              <span class="ml-auto shrink-0 text-xs text-gray-500">
+                {{ !showSettlements && tab.settlements.length > 1 ? `+${tab.settlements.length - 1}` : '' }}
+              </span>
+              <UIcon
+                name="i-lucide-chevron-down"
+                class="size-4 shrink-0 text-gray-400 transition-transform"
+                :class="showSettlements && 'rotate-180'"
+              />
+            </button>
+          </h2>
+          <div v-if="showSettlements" class="flex flex-wrap gap-1.5 px-3 pb-3">
             <div
               v-for="(s, i) in tab.settlements"
               :key="i"
-              class="flex items-center gap-1.5 rounded-lg bg-gray-800/60 ring-1 ring-white/5 px-2.5 py-1.5 text-sm"
+              class="flex items-center gap-1.5 rounded-lg bg-white/5 px-2 py-1 text-sm"
             >
               <span class="text-white font-medium">{{ s.from_name }}</span>
               <UIcon name="i-lucide-arrow-right" class="size-3.5 text-gray-500 shrink-0" />
@@ -505,7 +513,7 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
             <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
               <div class="text-xs text-gray-500 truncate">Group spend</div>
               <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
-                {{ tab.group_spend === null ? '—' : summaryMoney(tab.group_spend) }}
+                {{ tab.group_spend === null ? '-' : summaryMoney(tab.group_spend) }}
               </div>
             </div>
             <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
@@ -515,34 +523,23 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
             <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
               <div class="text-xs text-gray-500 truncate">Avg per person</div>
               <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
-                {{ perPerson === null ? '—' : summaryMoney(perPerson) }}
+                {{ perPerson === null ? '-' : summaryMoney(perPerson) }}
               </div>
             </div>
           </div>
         </section>
 
         <section>
-          <div class="flex items-center justify-between gap-1 mb-2">
+          <div class="mb-2">
             <h2 class="text-lg font-semibold text-white">
               People
               <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
                 {{ tab.people.length }}
               </UBadge>
             </h2>
-            <button
-              class="flex items-center gap-1.5 text-sm text-gray-400 hover:text-white transition-colors"
-              @click="showAllPeople = !showAllPeople"
-            >
-              {{ showAllPeople ? 'Hide people' : 'Show people' }}
-              <UIcon
-                name="i-lucide-chevron-down"
-                class="size-4 transition-transform"
-                :class="showAllPeople && 'rotate-180'"
-              />
-            </button>
           </div>
           <div
-            v-if="showAllPeople && categories"
+            v-if="categories"
             class="flex flex-wrap gap-x-3 gap-y-1 mb-3 text-xs text-gray-400"
           >
             <span v-for="c in categories.categories" :key="c.key" class="flex items-center gap-1.5">
@@ -550,11 +547,13 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
               {{ c.label }}
             </span>
           </div>
-          <div v-if="showAllPeople" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Collapsed = the first grid row: one card on phones, two from sm. -->
             <div
-              v-for="person in orderedPeople"
+              v-for="(person, i) in orderedPeople"
               :key="person.id"
               class="rounded-xl bg-gray-800/60 ring-1 ring-white/5 p-3"
+              :class="!showAllPeople && i > 0 && (i > 1 ? 'hidden' : 'hidden sm:block')"
             >
               <div class="flex items-center gap-3">
                 <div
@@ -599,6 +598,20 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
               </template>
             </div>
           </div>
+          <button
+            v-if="tab.people.length > 1"
+            class="mx-auto mt-3 flex items-center gap-1.5 text-sm text-white hover:text-gray-300 transition-colors"
+            :class="tab.people.length <= 2 && 'sm:hidden'"
+            :aria-expanded="showAllPeople"
+            @click="showAllPeople = !showAllPeople"
+          >
+            {{ showAllPeople ? 'Show fewer' : 'Show all people' }}
+            <UIcon
+              name="i-lucide-chevron-down"
+              class="size-4 transition-transform"
+              :class="showAllPeople && 'rotate-180'"
+            />
+          </button>
         </section>
 
         <section>

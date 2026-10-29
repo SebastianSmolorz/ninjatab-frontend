@@ -131,10 +131,10 @@
           </div>
 
           <div class="p-6 sm:p-8 rounded-2xl bg-gray-900/60 ring-1 ring-white/10 text-gray-300 leading-relaxed text-sm sm:text-base">
-            <h3 class="text-lg sm:text-xl font-semibold text-white">Ninja Tab — £50 Bank Holiday Giveaway: Terms and Conditions</h3>
+            <h3 class="text-lg sm:text-xl font-semibold text-white">Ninja Tab: £50 Bank Holiday Giveaway: Terms and Conditions</h3>
             <p class="mt-4"><span class="text-white font-medium">Promoter:</span> Ninja Tab ("the Promoter", "we", "us"). This giveaway is in no way sponsored, endorsed or administered by, or associated with, any social media platform.</p>
 
-            <p class="mt-4"><span class="text-white font-medium">In short:</span> We're giving away three £50 prizes. To enter, create a tab in the Ninja Tab app and invite a friend who signs up between 21–26 May 2026. You can enter either by scanning a qualifying receipt to your tab, or completely free by emailing us instead — both have the same chance of winning, and no purchase is necessary. You must be 18+ and a UK resident, and you can enter once. Winners are picked at random and paid by bank transfer. The full terms below set out the detail.</p>
+            <p class="mt-4"><span class="text-white font-medium">In short:</span> We're giving away three £50 prizes. To enter, create a tab in the Ninja Tab app and invite a friend who signs up between 21–26 May 2026. You can enter either by scanning a qualifying receipt to your tab, or completely free by emailing us instead. Both have the same chance of winning, and no purchase is necessary. You must be 18+ and a UK resident, and you can enter once. Winners are picked at random and paid by bank transfer. The full terms below set out the detail.</p>
 
             <h4 class="mt-6 text-white font-semibold">1. Eligibility</h4>
             <p class="mt-2">1.1 Open to residents of the United Kingdom aged 18 or over at the time of entry. Employees of the Promoter and their immediate families are not eligible.</p>
@@ -162,7 +162,7 @@
 
             <h4 class="mt-6 text-white font-semibold">5. Eligible receipts (paid-product route only)</h4>
             <p class="mt-2">5.1 A receipt must be from a UK-based establishment and dated within the entry period.</p>
-            <p class="mt-1">5.2 Any UK experience-based establishment is eligible — that is, any venue whose primary offering is an on-site experience or service consumed at the venue. This includes (without limitation) pubs, bars, clubs, restaurants, cafés, coffee shops, hotels and B&amp;Bs, cinemas, theatres, live music and comedy venues, museums, galleries, sporting and leisure venues, spas, and activities or attractions such as guided tours, classes, and experience days.</p>
+            <p class="mt-1">5.2 Any UK experience-based establishment is eligible, that is, any venue whose primary offering is an on-site experience or service consumed at the venue. This includes (without limitation) pubs, bars, clubs, restaurants, cafés, coffee shops, hotels and B&amp;Bs, cinemas, theatres, live music and comedy venues, museums, galleries, sporting and leisure venues, spas, and activities or attractions such as guided tours, classes, and experience days.</p>
             <p class="mt-1">5.3 The following are not eligible: supermarket receipts (which are explicitly excluded, regardless of what was purchased); receipts from other purely retail purchases (for example off-licences, convenience stores, or general retail shops); receipts from takeaway or delivery orders without on-site service; receipts dated outside the entry period; receipts from non-UK establishments; and any receipt that has already been used to enter.</p>
 
             <h4 class="mt-6 text-white font-semibold">6. One entry per person</h4>

@@ -2,6 +2,7 @@
 title: 'Kazakhstan Trip Cost: Tian Shan and Mangystau for 4'
 description: What a Kazakhstan trip costs four friends, from the Tian Shan lakes and canyons near Almaty to the Mangystau desert. A $1,936 itinerary, itemised.
 author: madlertravel
+style: adventure
 order: 5
 image: /trip-kazakhstan.jpg
 imageAlt: Sunken trees in Lake Kaindy, Kazakhstan

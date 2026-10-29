@@ -21,6 +21,7 @@ const staticRoutes = [
     '/contact',
     '/privacy',
     '/terms',
+    '/trips',
 ]
 
 // Every indexable route, derived from the files so a new trip, creator or post
@@ -51,6 +52,7 @@ export default defineNuxtConfig({
             routes: [
                 '/sitemap.xml',
                 '/blog',
+                '/trips',
                 ...contentRoutes('blog', '/blog/'),
                 ...contentRoutes('trips', '/t/'),
                 ...contentRoutes('authors', '/'),
@@ -62,6 +64,11 @@ export default defineNuxtConfig({
     // @nuxt/content's DB fails there on every request that reaches it. Node's
     // built-in sqlite has no binary to load.
     content: {experimental: {sqliteConnector: 'native'}},
+
+    // Icons ship in the client bundle (the sets are local devDependencies), so
+    // ones that only render after a click don't need a server or the Iconify
+    // API. .ts is scanned too: utils/tripCategories.ts maps keys to icon names.
+    icon: {clientBundle: {scan: {globInclude: ['**/*.{vue,ts}'], globExclude: ['node_modules', 'dist', '.*']}}},
 
     fonts: {
         families: [

@@ -2,6 +2,7 @@
 title: 'China Trip Cost: 2 Weeks by Train for 4 People'
 description: What two weeks in China costs four friends, from Beijing and Xi'an to Zhangjiajie, Chengdu and Shanghai, all by train. A $3,584 itinerary, itemised.
 author: madlertravel
+style: adventure
 order: 2
 image: /trip-china.jpg
 imageAlt: Red prayer ribbons on a suspension bridge above the karst peaks at Zhangjiajie, China
