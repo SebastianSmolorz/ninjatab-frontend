@@ -54,10 +54,11 @@ const toCard = (trip: NonNullable<typeof data.value>['trips'][number]) => {
 
 const cards = computed(() => (data.value?.trips ?? []).map(toCard))
 
-// One choice per group; picking the active chip again clears the group.
-const groups: { key: string, filters: Filter[] }[] = [
+// One choice per group; picking the active item again clears the group.
+const groups: { key: string, label: string, filters: Filter[] }[] = [
   {
     key: 'flights',
+    label: 'Flights',
     filters: [
       { key: 'with', label: 'Flights included', icon: 'i-lucide-plane', test: t => !!t.flights },
       { key: 'without', label: 'No flights', icon: 'i-lucide-plane-landing', test: t => !t.flights },
@@ -65,6 +66,7 @@ const groups: { key: string, filters: Filter[] }[] = [
   },
   {
     key: 'costs',
+    label: 'Costs',
     filters: [
       { key: 'recorded', label: 'Every expense logged', icon: 'i-lucide-receipt', test: t => t.recorded },
       { key: 'modelled', label: 'Itinerary', icon: 'i-lucide-map', test: t => !t.recorded },
@@ -72,6 +74,7 @@ const groups: { key: string, filters: Filter[] }[] = [
   },
   {
     key: 'style',
+    label: 'Style',
     filters: [
       { key: 'adventure', label: 'Adventure', icon: 'i-lucide-mountain-snow', test: t => t.style === 'adventure' },
       { key: 'holiday', label: 'Holiday', icon: 'i-lucide-sun', test: t => t.style === 'holiday' },
@@ -82,19 +85,26 @@ const active = ref<Record<string, string | undefined>>({})
 const toggle = (group: string, key: string) => {
   active.value = { ...active.value, [group]: active.value[group] === key ? undefined : key }
 }
-const anyActive = computed(() => Object.values(active.value).some(Boolean))
+const activeCount = computed(() => Object.values(active.value).filter(Boolean).length)
 const count = (f: Filter) => cards.value.filter(f.test).length
+
+// Each group is a section of the menu; preventDefault keeps it open while picking.
+const menuItems = computed(() => groups.map(g => [
+  { label: g.label, type: 'label' as const },
+  ...g.filters.map(f => ({
+    label: `${f.label} (${count(f)})`,
+    icon: f.icon,
+    type: 'checkbox' as const,
+    checked: active.value[g.key] === f.key,
+    onUpdateChecked: () => toggle(g.key, f.key),
+    onSelect: (e: Event) => e.preventDefault(),
+  })),
+]))
 
 const visible = computed(() => cards.value.filter(t => groups.every((g) => {
   const f = g.filters.find(f => f.key === active.value[g.key])
   return !f || f.test(t)
 })))
-
-// The legend only lists categories some trip actually has, in category order.
-const legend = computed(() => {
-  const used = new Set(cards.value.flatMap(t => t.segments.map(s => s.key)))
-  return (data.value?.categories[0]?.categories ?? []).filter(c => used.has(c.key))
-})
 
 const canonical = `${SITE}/trips`
 const title = 'Real Trip Costs: What Group Trips Actually Cost | Ninja Tab'
@@ -168,44 +178,29 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
 
 <template>
   <UMain class="relative min-h-screen bg-gray-900 pb-12">
-    <UContainer class="relative max-w-5xl pt-28 pb-20">
+    <UContainer class="relative max-w-5xl pt-20 pb-20">
       <p class="text-primary-400 text-xs sm:text-sm font-semibold uppercase tracking-wide">Real trip costs</p>
       <h1 class="mt-1 text-3xl sm:text-5xl font-bold text-white text-balance">What group trips actually cost</h1>
       <p class="mt-3 max-w-2xl text-gray-400 sm:text-lg">
-        {{ cards.length }} trips split per person, every expense itemised. See where the money went, then plan yours.
+        Fully tracked from start to finish. See every itemised expense so you can plan your own!
       </p>
 
-      <!-- Filters: a horizontal scroller on phones, wrapping on wider screens. -->
-      <div class="mt-8 -mx-4 px-4 sm:mx-0 sm:px-0 flex gap-2 overflow-x-auto sm:flex-wrap pb-1 [scrollbar-width:none]">
-        <template v-for="(g, gi) in groups" :key="g.key">
-          <span v-if="gi" class="w-px shrink-0 self-stretch bg-white/10" aria-hidden="true" />
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <UDropdownMenu :items="menuItems" :content="{ align: 'start' }">
           <UButton
-            v-for="f in g.filters"
-            :key="f.key"
-            :icon="f.icon"
-            :color="active[g.key] === f.key ? 'primary' : 'neutral'"
-            :variant="active[g.key] === f.key ? 'solid' : 'subtle'"
-            size="sm"
-            class="shrink-0 rounded-full"
-            :aria-pressed="active[g.key] === f.key"
-            @click="toggle(g.key, f.key)"
+            icon="i-lucide-sliders-horizontal"
+            trailing-icon="i-lucide-chevron-down"
+            :color="activeCount ? 'primary' : 'neutral'"
+            :variant="activeCount ? 'solid' : 'subtle'"
+            class="rounded-full"
           >
-            {{ f.label }}
-            <span class="text-xs opacity-60">{{ count(f) }}</span>
+            Filters
+            <span v-if="activeCount" class="text-xs opacity-70">{{ activeCount }}</span>
           </UButton>
-        </template>
-      </div>
-
-      <div class="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400">
-          <span v-for="c in legend" :key="c.key" class="flex items-center gap-1.5">
-            <span class="size-2 rounded-full" :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'" />
-            {{ c.label }}
-          </span>
-        </div>
+        </UDropdownMenu>
         <div class="flex items-center gap-2 text-sm text-gray-400">
           Showing {{ visible.length }} of {{ cards.length }}
-          <UButton v-if="anyActive" size="xs" variant="link" color="neutral" icon="i-lucide-x" @click="active = {}">
+          <UButton v-if="activeCount" size="xs" variant="link" color="neutral" icon="i-lucide-x" @click="active = {}">
             Clear
           </UButton>
         </div>
@@ -269,8 +264,8 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
               </UBadge>
             </div>
             <div class="absolute bottom-3 left-4 right-4">
-              <div class="flex items-center gap-1 text-xs text-gray-300">
-                <UIcon name="i-lucide-map-pin" class="size-3.5" />
+              <div class="flex items-center gap-1.5 text-base font-semibold text-white">
+                <UIcon name="i-lucide-map-pin" class="size-4 shrink-0 text-primary-400" />
                 <span class="truncate">{{ t.place }}</span>
               </div>
               <div v-if="t.flights && t.flightsFrom" class="flex items-center gap-1 text-[11px] text-gray-400">
@@ -300,14 +295,22 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
             <p class="text-sm text-gray-300 line-clamp-2">{{ t.blurb }}</p>
 
             <div v-if="t.segments.length" class="mt-auto pt-1">
-              <div class="flex h-2 overflow-hidden rounded-full bg-white/5">
+              <div class="flex h-5 overflow-hidden rounded-md bg-white/5">
+                <!-- ponytail: CSS-only fit check. The zero-width spacer pins line 1;
+                     an icon wider than its segment wraps to line 2 and is clipped. -->
                 <div
                   v-for="s in t.segments"
                   :key="s.key"
+                  class="min-w-0 flex flex-wrap justify-center overflow-hidden"
                   :class="CATEGORY_COLORS[s.key] ?? 'bg-gray-500'"
                   :style="{ flex: `${s.amount} 0 0` }"
                   :title="`${s.label} ${t.money(s.amount)}`"
-                />
+                >
+                  <span class="h-full w-0" aria-hidden="true" />
+                  <span class="self-center flex px-1 text-gray-950">
+                    <UIcon :name="CATEGORY_ICONS[s.key] ?? 'i-lucide-ellipsis'" class="size-3.5" />
+                  </span>
+                </div>
               </div>
               <div class="mt-2 flex justify-between text-xs text-gray-500">
                 <span>Biggest: {{ [...t.segments].sort((a, b) => b.amount - a.amount)[0]!.label }}</span>

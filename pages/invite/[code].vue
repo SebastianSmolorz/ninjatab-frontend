@@ -50,6 +50,14 @@ onMounted(async () => {
 function openInApp() {
   window.location.href = deepLink
 }
+
+// In-app browsers (Messenger, Snapchat, Instagram…) often swallow the app
+// hand-off, so offer the link for pasting into a real browser.
+const copied = ref(false)
+async function copyLink() {
+  await navigator.clipboard.writeText(window.location.href)
+  copied.value = true
+}
 </script>
 
 <template>
@@ -134,6 +142,20 @@ function openInApp() {
                 />
               </a>
             </div>
+          </div>
+
+          <div class="mt-6 text-center">
+            <p class="text-gray-400 text-sm mb-3">
+              If you're having trouble with this link, try copying the link and pasting it into Chrome or Safari.
+            </p>
+            <UButton
+              color="neutral"
+              variant="subtle"
+              :icon="copied ? 'i-lucide-check' : 'i-lucide-copy'"
+              @click="copyLink"
+            >
+              {{ copied ? 'Link copied' : 'Copy link' }}
+            </UButton>
           </div>
         </template>
       </div>

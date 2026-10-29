@@ -12,6 +12,17 @@ export const CATEGORY_COLORS: Record<string, string> = {
   other: 'bg-gray-500',
 }
 
+export const CATEGORY_ICONS: Record<string, string> = {
+  accommodation: 'i-lucide-bed-double',
+  flights: 'i-lucide-plane',
+  getting_around: 'i-lucide-car',
+  activities: 'i-lucide-ticket',
+  food_drink: 'i-lucide-utensils',
+  alcohol: 'i-lucide-wine',
+  shopping: 'i-lucide-shopping-bag',
+  other: 'i-lucide-ellipsis',
+}
+
 export const VENUE_ICONS: Record<string, string> = {
   restaurant: 'i-lucide-utensils',
   bar: 'i-lucide-beer',

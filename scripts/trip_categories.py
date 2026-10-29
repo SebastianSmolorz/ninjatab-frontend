@@ -19,7 +19,7 @@ import sys
 import yaml
 
 CATEGORIES = [
-    ('accommodation', 'Accommodation'), ('flights', 'Flights'), ('getting_around', 'Getting around'),
+    ('accommodation', 'Accommodation'), ('flights', 'Flights'), ('getting_around', 'Transport'),
     ('activities', 'Activities'), ('food_drink', 'Food & drink'), ('alcohol', 'Alcohol'),
     ('shopping', 'Shopping'), ('other', 'Other'),
 ]

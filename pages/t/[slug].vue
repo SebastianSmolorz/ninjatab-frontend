@@ -510,19 +510,19 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
         <section>
           <h2 class="text-lg font-semibold text-white mb-2">Spending summary</h2>
           <div class="grid grid-cols-3 rounded-xl bg-gray-800/60 ring-1 ring-white/5 divide-x divide-white/10">
-            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+            <div class="min-w-0 px-2 py-2 sm:px-4 sm:py-2.5 text-center">
               <div class="text-xs text-gray-500 truncate">Group spend</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
+              <div class="text-base sm:text-lg font-semibold text-white truncate">
                 {{ tab.group_spend === null ? '-' : summaryMoney(tab.group_spend) }}
               </div>
             </div>
-            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+            <div class="min-w-0 px-2 py-2 sm:px-4 sm:py-2.5 text-center">
               <div class="text-xs text-gray-500 truncate">Expenses</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">{{ tab.bills.length }}</div>
+              <div class="text-base sm:text-lg font-semibold text-white truncate">{{ tab.bills.length }}</div>
             </div>
-            <div class="min-w-0 px-2 py-3 sm:p-4 text-center">
+            <div class="min-w-0 px-2 py-2 sm:px-4 sm:py-2.5 text-center">
               <div class="text-xs text-gray-500 truncate">Avg per person</div>
-              <div class="text-base sm:text-lg font-semibold text-white mt-1 truncate">
+              <div class="text-base sm:text-lg font-semibold text-white truncate">
                 {{ perPerson === null ? '-' : summaryMoney(perPerson) }}
               </div>
             </div>
@@ -543,7 +543,12 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
             class="flex flex-wrap gap-x-3 gap-y-1 mb-3 text-xs text-gray-400"
           >
             <span v-for="c in categories.categories" :key="c.key" class="flex items-center gap-1.5">
-              <span class="size-2 rounded-full" :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'" />
+              <span
+                class="size-5 rounded-full flex items-center justify-center text-gray-950"
+                :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'"
+              >
+                <UIcon :name="CATEGORY_ICONS[c.key] ?? 'i-lucide-ellipsis'" class="size-3" />
+              </span>
               {{ c.label }}
             </span>
           </div>
@@ -567,15 +572,22 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
                 <div class="text-sm text-gray-300 whitespace-nowrap">{{ summaryMoney(person.spend) }}</div>
               </div>
               <template v-if="spendByCategory[person.id]">
-                <div class="mt-3 h-2 rounded-full bg-white/5 overflow-hidden">
+                <div class="mt-3 h-5 rounded-md bg-white/5 overflow-hidden">
                   <div class="flex h-full" :style="{ width: `${100 * person.spend / maxPersonSpend}%` }">
+                    <!-- Same fit check as /trips: an icon that doesn't fit wraps to a clipped line 2. -->
                     <div
                       v-for="c in categories!.categories"
                       :key="c.key"
+                      class="min-w-0 flex flex-wrap justify-center overflow-hidden"
                       :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'"
                       :style="{ flex: `${spendByCategory[person.id]![c.key] ?? 0} 0 0` }"
                       :title="`${c.label} ${summaryMoney(spendByCategory[person.id]![c.key] ?? 0)}`"
-                    />
+                    >
+                      <span class="h-full w-0" aria-hidden="true" />
+                      <span class="self-center flex px-1 text-gray-950">
+                        <UIcon :name="CATEGORY_ICONS[c.key] ?? 'i-lucide-ellipsis'" class="size-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">

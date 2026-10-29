@@ -9,7 +9,7 @@ categories:
   label: Flights
   highlight: true
 - key: getting_around
-  label: Getting around
+  label: Transport
 - key: activities
   label: Activities
 - key: food_drink
