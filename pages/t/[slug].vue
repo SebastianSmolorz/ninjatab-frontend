@@ -158,6 +158,8 @@ const jsonLd = computed(() => ({
         ? { about: { '@id': placeNode.value['@id'] }, contentLocation: { '@id': placeNode.value['@id'] } }
         : {}),
       additionalProperty: tripFacts.value,
+      // When the trip happened, as an ISO 8601 interval ("2026-02-10/2026-02-14").
+      ...(copy.value?.date ? { temporalCoverage: copy.value.date } : {}),
     },
     ...(placeNode.value ? [placeNode.value] : []),
     ...(authorNode.value ? [authorNode.value] : []),
@@ -248,9 +250,15 @@ const categories = computed(() => data.value?.categories ?? null)
 const spendByCategory = computed(() =>
   Object.fromEntries((categories.value?.people ?? []).map(p => [p.id, p.by_category]))
 )
-const highlightCategories = computed(() => categories.value?.categories.filter(c => c.highlight) ?? [])
-// Bars are scaled to the biggest spender so their lengths compare across people.
-const maxPersonSpend = computed(() => Math.max(1, ...tab.value.people.map(p => p.spend)))
+// Whole units: the per-segment labels under each bar are tiny.
+const tinyMoney = (amount: number) => formatMinorCurrencyCompact(Math.round(amount / 100) * 100, currency.value)
+// Every category the person spent in gets its own segment.
+const segmentsByPerson = computed(() => Object.fromEntries(Object.entries(spendByCategory.value).map(([id, spend]) => [
+  id,
+  (categories.value?.categories ?? [])
+    .filter(c => spend[c.key])
+    .map(c => ({ key: c.key, amount: spend[c.key]!, title: `${c.label} ${summaryMoney(spend[c.key]!)}` })),
+])))
 const venueByBill = computed(() => {
   const venues = Object.fromEntries((categories.value?.venues ?? []).map(v => [v.key, v]))
   return Object.fromEntries((categories.value?.bills ?? []).map(b => [b.id, venues[b.venue]]))
@@ -499,10 +507,9 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
               <span class="text-white font-medium">{{ s.from_name }}</span>
               <UIcon name="i-lucide-arrow-right" class="size-3.5 text-gray-500 shrink-0" />
               <span class="text-white font-medium">{{ s.to_name }}</span>
-              <span class="font-semibold ml-1" :class="s.paid ? 'text-gray-500 line-through' : 'text-primary-400'">
+              <span class="font-semibold ml-1 text-primary-400">
                 {{ money(s.amount, s.currency) }}
               </span>
-              <UIcon v-if="s.paid" name="i-lucide-check" class="size-4 text-primary-400" />
             </div>
           </div>
         </section>
@@ -573,39 +580,38 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
               </div>
               <template v-if="spendByCategory[person.id]">
                 <div class="mt-3 h-5 rounded-md bg-white/5 overflow-hidden">
-                  <div class="flex h-full" :style="{ width: `${100 * person.spend / maxPersonSpend}%` }">
+                  <!-- Full width per person: each segment is its share of what that person paid,
+                       but never narrower than its label (min-w-7), so every category stays visible. -->
+                  <div class="flex h-full">
                     <!-- Same fit check as /trips: an icon that doesn't fit wraps to a clipped line 2. -->
                     <div
-                      v-for="c in categories!.categories"
-                      :key="c.key"
-                      class="min-w-0 flex flex-wrap justify-center overflow-hidden"
-                      :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'"
-                      :style="{ flex: `${spendByCategory[person.id]![c.key] ?? 0} 0 0` }"
-                      :title="`${c.label} ${summaryMoney(spendByCategory[person.id]![c.key] ?? 0)}`"
+                      v-for="s in segmentsByPerson[person.id]"
+                      :key="s.key"
+                      class="min-w-7 flex flex-wrap justify-center overflow-hidden"
+                      :class="CATEGORY_COLORS[s.key] ?? 'bg-gray-500'"
+                      :style="{ flex: `${s.amount} 0 0` }"
+                      :title="s.title"
                     >
                       <span class="h-full w-0" aria-hidden="true" />
                       <span class="self-center flex px-1 text-gray-950">
-                        <UIcon :name="CATEGORY_ICONS[c.key] ?? 'i-lucide-ellipsis'" class="size-3.5" />
+                        <UIcon :name="CATEGORY_ICONS[s.key] ?? 'i-lucide-ellipsis'" class="size-3.5" />
                       </span>
                     </div>
                   </div>
                 </div>
-                <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                  <span
-                    v-for="c in highlightCategories"
-                    :key="c.key"
-                    class="flex items-center gap-1.5"
-                    :class="spendByCategory[person.id]![c.key] ? 'text-gray-300' : 'text-gray-600'"
+                <!-- A tiny total under each segment, same widths as the bar; one that doesn't fit wraps out of sight. -->
+                <div class="mt-0.5 flex h-3.5">
+                  <div
+                    v-for="s in segmentsByPerson[person.id]"
+                    :key="s.key"
+                    class="min-w-7 flex flex-wrap justify-center overflow-hidden"
+                    :style="{ flex: `${s.amount} 0 0` }"
                   >
-                    <span
-                      class="size-2 rounded-full"
-                      :class="spendByCategory[person.id]![c.key] ? CATEGORY_COLORS[c.key] : 'bg-gray-700'"
-                    />
-                    <template v-if="spendByCategory[person.id]![c.key]">
-                      {{ c.label }} {{ summaryMoney(spendByCategory[person.id]![c.key]!) }}
-                    </template>
-                    <template v-else>No {{ c.label.toLowerCase() }}</template>
-                  </span>
+                    <span class="h-full w-0" aria-hidden="true" />
+                    <span class="px-0.5 text-[10px] leading-3.5 font-bold text-white tabular-nums">
+                      {{ tinyMoney(s.amount) }}
+                    </span>
+                  </div>
                 </div>
               </template>
             </div>

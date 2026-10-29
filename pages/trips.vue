@@ -35,6 +35,7 @@ const toCard = (trip: NonNullable<typeof data.value>['trips'][number]) => {
     slug,
     title: trip.heading ?? trip.title,
     place: trip.place?.name ?? trip.title,
+    hasPlace: !!trip.place,
     blurb: trip.blurb ?? trip.description,
     image: trip.image,
     imageAlt: trip.imageAlt ?? trip.title,
@@ -106,23 +107,44 @@ const visible = computed(() => cards.value.filter(t => groups.every((g) => {
   return !f || f.test(t)
 })))
 
+// One answer per trip, built only from figures the card shows, so the visible
+// text and the FAQPage markup say the same thing. Answer engines quote these.
+const faqs = computed(() => cards.value.filter(t => t.perPerson).map((t) => {
+  const top = [...t.segments].sort((a, b) => b.amount - a.amount).slice(0, 2)
+    .map(s => `${s.label.toLowerCase()} (${t.money(Math.round(s.amount / 100) * 100)})`)
+  return {
+    slug: t.slug,
+    question: `How much does a trip to ${t.place} cost?`,
+    answer: [
+      `About ${t.perPerson} per person for ${t.people} ${t.people === 1 ? 'traveller' : 'travellers'}, ${
+        t.flights ? `including ${t.flights} of flights${t.flightsFrom ? ` from ${t.flightsFrom}` : ''}` : 'not including flights'}.`,
+      top.length ? `The biggest costs per person were ${top.join(' and ')}.` : '',
+      t.recorded ? 'Every expense was logged during the trip.' : 'Based on a fully costed itinerary.',
+    ].filter(Boolean).join(' '),
+  }
+}))
+
+// Destination names are the search terms; the first part of "Bali, Indonesia".
+const destinations = computed(() => cards.value.map(t => t.place.split(',')[0]!.trim()))
+
 const canonical = `${SITE}/trips`
-const title = 'Real Trip Costs: What Group Trips Actually Cost | Ninja Tab'
-const description = 'Real group trip budgets, split per person. Filter by flights, adventure or holiday, and itineraries vs trips where every single expense was logged.'
+const title = 'How Much Does a Trip Cost? Real Group Travel Budgets | Ninja Tab'
+const description = computed(() =>
+  `Real per-person trip costs for ${destinations.value.join(', ')}. Every expense itemised: flights, accommodation, food, transport and activities.`)
 const ogImage = computed(() => `${SITE}${cards.value.find(t => t.image)?.image ?? '/logo-v2.png'}`)
 
 useSeoMeta({
   title,
-  description,
+  description: () => description.value,
   ogTitle: title,
-  ogDescription: description,
+  ogDescription: () => description.value,
   ogUrl: canonical,
   ogType: 'website',
   ogSiteName: 'Ninja Tab',
   ogImage: () => ogImage.value,
   twitterCard: 'summary_large_image',
   twitterTitle: title,
-  twitterDescription: description,
+  twitterDescription: () => description.value,
   twitterImage: () => ogImage.value,
 })
 
@@ -140,12 +162,28 @@ useHead(() => ({
           '@id': `${canonical}#page`,
           url: canonical,
           name: title,
-          description,
+          description: description.value,
           inLanguage: 'en',
           isPartOf: { '@id': WEBSITE_ID },
           publisher: { '@id': ORG_ID },
           mainEntity: { '@id': `${canonical}#trips` },
           breadcrumb: { '@id': `${canonical}#breadcrumb` },
+          hasPart: { '@id': `${canonical}#faq` },
+          // The trip pages' Place nodes, so the page reads as about these destinations.
+          about: cards.value.filter(t => t.hasPlace).map(t => ({ '@id': `${SITE}/t/${t.slug}#place` })),
+        },
+        {
+          '@type': 'FAQPage',
+          '@id': `${canonical}#faq`,
+          url: canonical,
+          name: 'How much does a trip cost?',
+          inLanguage: 'en',
+          isPartOf: { '@id': `${canonical}#page` },
+          mainEntity: faqs.value.map(f => ({
+            '@type': 'Question',
+            name: f.question,
+            acceptedAnswer: { '@type': 'Answer', text: f.answer, url: `${SITE}/t/${f.slug}` },
+          })),
         },
         {
           '@type': 'BreadcrumbList',
@@ -165,7 +203,14 @@ useHead(() => ({
             '@type': 'ListItem',
             position: i + 1,
             name: t.title,
-            item: { '@type': 'Article', '@id': `${SITE}/t/${t.slug}#article`, name: t.title, url: `${SITE}/t/${t.slug}` },
+            item: {
+              '@type': 'Article',
+              '@id': `${SITE}/t/${t.slug}#article`,
+              name: t.title,
+              url: `${SITE}/t/${t.slug}`,
+              ...(t.image ? { image: `${SITE}${t.image}` } : {}),
+              ...(t.hasPlace ? { about: { '@id': `${SITE}/t/${t.slug}#place` } } : {}),
+            },
           })),
         },
       ],
@@ -184,6 +229,36 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
       <p class="mt-3 max-w-2xl text-gray-400 sm:text-lg">
         Fully tracked from start to finish. See every itemised expense so you can plan your own!
       </p>
+      <!-- Native <details>: collapsed for readers, still in the HTML for crawlers. -->
+      <details class="group/more mt-2 max-w-2xl text-sm text-gray-400">
+        <summary class="inline-flex cursor-pointer list-none items-center gap-1 text-primary-400 hover:text-primary-300 [&::-webkit-details-marker]:hidden">
+          How these trip costs work
+          <UIcon name="i-lucide-chevron-down" class="size-4 transition-transform group-open/more:rotate-180" />
+        </summary>
+        <div class="mt-3 space-y-3 leading-relaxed">
+          <p>
+            Wondering how much a trip to {{ destinations.join(', ') }} really costs? These aren't
+            guesses or average daily budgets. Each one is a real group trip, split in Ninja Tab, with
+            every shared expense itemised and divided between the people who were there.
+          </p>
+          <p>
+            Every trip shows the average cost per person, how many travellers went and whether flights
+            are included. Open a trip to see the full breakdown by category: flights, accommodation,
+            transport, activities, food and drink, alcohol and shopping. You can drill into each
+            individual expense, down to the line items on the receipt, and see who paid for what and
+            who owes whom at the end.
+          </p>
+          <p>
+            Some trips were logged expense by expense while they happened. Others are fully costed
+            itineraries, priced item by item before setting off. Use the filters to compare trips with
+            or without flights, adventure trips against holidays, and logged trips against itineraries.
+          </p>
+          <p>
+            Planning your own group trip? Use these real travel budgets as a starting point, then split
+            the costs with your friends in Ninja Tab as you go.
+          </p>
+        </div>
+      </details>
 
       <div class="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <UDropdownMenu :items="menuItems" :content="{ align: 'start' }">
@@ -328,6 +403,20 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
         <p class="mt-2 text-gray-300">No trips match those filters.</p>
         <UButton class="mt-4" variant="subtle" color="neutral" @click="active = {}">Clear filters</UButton>
       </div>
+
+      <!-- Answer-shaped copy for search and answer engines; mirrors the FAQPage node. -->
+      <section v-if="faqs.length" class="mt-16">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white">How much does a trip cost?</h2>
+        <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          <div v-for="f in faqs" :key="f.slug">
+            <h3 class="font-semibold text-white">{{ f.question }}</h3>
+            <p class="mt-1 text-sm text-gray-400 leading-relaxed">
+              {{ f.answer }}
+              <NuxtLink :to="`/t/${f.slug}`" class="text-primary-400 hover:text-primary-300">See the breakdown</NuxtLink>
+            </p>
+          </div>
+        </div>
+      </section>
     </UContainer>
 
     <MarketingFooter />

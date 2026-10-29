@@ -43,6 +43,7 @@ export default defineNuxtConfig({
         '/join': {prerender: true},
         '/credit-card-hot-potato': {prerender: true},
         '/potato': {redirect: '/credit-card-hot-potato'},
+        '/t/slovakia': {redirect: {to: '/t/tatranska-lomnica-ski-trip-cost', statusCode: 301}},
         '/madlertravel': {prerender: true},
     },
     modules: ['@nuxt/ui', '@pinia/nuxt', '@nuxt/fonts', '@vercel/analytics', '@vercel/speed-insights', '@nuxt/content'],
