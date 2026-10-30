@@ -243,6 +243,9 @@ const orderedPeople = computed(() => {
   return [...tab.value.people].sort((a, b) => rank(a.name) - rank(b.name))
 })
 const showDescription = ref(false)
+// The trip photo sits behind the collapsed description only: the expanded text
+// runs long enough that a photo behind it would be a stretched blur.
+const descriptionImage = computed(() => showDescription.value ? null : copy.value?.image)
 
 // Per-person spend by category, from the hand-labelled `tripcategories` doc.
 // Optional: trips without one just show the plain totals.
@@ -320,7 +323,7 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
           :href="`${config.public.apiBaseUrl}/tabs/public/${slug}/receipt/${bill.id}`"
           target="_blank"
           rel="noopener"
-          class="flex items-center justify-center gap-2 w-full py-3 rounded-xl ring-1 ring-white/10 text-gray-200 hover:bg-white/5 transition-colors"
+          class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-primary-500 font-semibold text-gray-900 hover:bg-primary-400 transition-colors"
         >
           <UIcon name="i-lucide-receipt" class="size-5" />
           View receipt
@@ -431,24 +434,30 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
           <span class="text-gray-300">{{ tab.name }}</span>
         </nav>
 
-        <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
-          <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ heading }}</h1>
+        <div class="relative overflow-hidden rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
+          <img
+            v-if="descriptionImage"
+            :src="descriptionImage"
+            :alt="copy?.imageAlt ?? ''"
+            class="absolute inset-0 size-full object-cover brightness-50"
+          >
+          <h1 class="relative text-2xl sm:text-3xl font-bold text-white">{{ heading }}</h1>
           <!-- Clamped with CSS, not JS: the full description stays in the HTML
                for crawlers even while it renders as a couple of lines. -->
           <button
-            class="flex items-start gap-1 w-full mt-1 text-left"
+            class="relative flex items-start gap-1 w-full mt-1 text-left"
             :aria-expanded="showDescription"
             @click="showDescription = !showDescription"
           >
             <ContentRenderer
               :value="introDoc"
               class="flex-1 trip-prose"
-              :class="!showDescription && 'line-clamp-2'"
+              :class="[!showDescription && 'line-clamp-2', descriptionImage && 'on-photo']"
             />
             <UIcon
               name="i-lucide-chevron-down"
-              class="size-4 shrink-0 mt-1.5 text-gray-400 transition-transform"
-              :class="showDescription && 'rotate-180'"
+              class="size-4 shrink-0 mt-1.5 transition-transform"
+              :class="[showDescription && 'rotate-180', descriptionImage ? 'text-gray-100' : 'text-gray-400']"
             />
           </button>
         </div>
@@ -658,9 +667,20 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
                   <span v-if="b.paid_by" class="truncate">Paid by {{ b.paid_by }}</span>
                 </div>
               </div>
-              <span class="font-semibold text-white whitespace-nowrap">
-                {{ money(b.total_amount, b.currency) }}
-              </span>
+              <!-- Receipt sits under the amount: beside "Paid by" it squeezes the name out. -->
+              <div class="flex flex-col items-end gap-1 shrink-0">
+                <span class="font-semibold text-white whitespace-nowrap">
+                  {{ money(b.total_amount, b.currency) }}
+                </span>
+                <UBadge
+                  v-if="b.has_receipt"
+                  color="primary"
+                  variant="subtle"
+                  size="sm"
+                  icon="i-lucide-receipt"
+                  label="Receipt"
+                />
+              </div>
               <UIcon name="i-lucide-chevron-right" class="size-5 text-gray-500 shrink-0" />
             </button>
           </div>
@@ -697,6 +717,9 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
    stays. */
 .trip-prose {
   color: var(--color-gray-400);
+}
+.trip-prose.on-photo {
+  color: var(--color-gray-100);
 }
 .trip-prose :deep(p),
 .trip-prose :deep(ul),

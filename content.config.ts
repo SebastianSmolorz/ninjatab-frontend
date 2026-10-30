@@ -46,7 +46,8 @@ export default defineContentConfig({
                 peopleOrder: z.array(z.string()).optional(),
                 // Filter on /trips.
                 style: z.enum(['adventure', 'holiday']).optional(),
-                // Where the costed flights leave from, e.g. "UK". Shown on /trips.
+                // Country the costed flights leave from, never a city: "UK". Shown on /trips.
+                // Every madlertravel trip with flights is "Australia".
                 flightsFrom: z.string().optional(),
             }),
         }),

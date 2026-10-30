@@ -8,7 +8,7 @@ blurb: 'Five days in Tatranská Lomnica, Slovakia, 10 to 14 February 2026: four 
 image: /trip-slovakia.jpg
 imageAlt: Four friends in ski gear taking a selfie on a snowy ridge in the High Tatras under a clear blue sky
 date: '2026-02-10/2026-02-14'
-flightsFrom: Bristol
+flightsFrom: UK
 style: adventure
 order: 7
 place:
