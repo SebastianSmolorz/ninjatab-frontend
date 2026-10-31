@@ -556,14 +556,14 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
           </div>
           <div
             v-if="categories"
-            class="flex flex-wrap gap-x-3 gap-y-1 mb-3 text-xs text-gray-400"
+            class="flex flex-wrap gap-x-2.5 gap-y-1 mb-3 text-[11px] text-gray-400"
           >
-            <span v-for="c in categories.categories" :key="c.key" class="flex items-center gap-1.5">
+            <span v-for="c in categories.categories" :key="c.key" class="flex items-center gap-1">
               <span
-                class="size-5 rounded-full flex items-center justify-center text-gray-950"
+                class="size-4 rounded-full flex items-center justify-center text-gray-950"
                 :class="CATEGORY_COLORS[c.key] ?? 'bg-gray-500'"
               >
-                <UIcon :name="CATEGORY_ICONS[c.key] ?? 'i-lucide-ellipsis'" class="size-3" />
+                <UIcon :name="CATEGORY_ICONS[c.key] ?? 'i-lucide-ellipsis'" class="size-2.5" />
               </span>
               {{ c.label }}
             </span>
