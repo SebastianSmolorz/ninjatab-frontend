@@ -11,49 +11,11 @@ const { data } = await useAsyncData('trips-index', async () => {
   return { trips, stats, categories }
 })
 
-type Filter = { key: string, label: string, icon: string, test: (t: TripCard) => boolean }
-type TripCard = ReturnType<typeof toCard>
+import type { TripCardData } from '~/utils/tripCard'
 
-const toCard = (trip: NonNullable<typeof data.value>['trips'][number]) => {
-  const slug = trip.path.split('/').pop()!
-  const stat = data.value!.stats.find(s => s.slug === slug)
-  const cats = data.value!.categories.find(c => c.slug === slug)
-  const heads = stat?.people.length ?? 0
-  const code = stat?.settlement_currency ?? 'GBP'
-  const spend = stat?.group_spend ?? null
+type Filter = { key: string, label: string, icon: string, test: (t: TripCardData) => boolean }
 
-  // Average per person by category, over everyone on the tab.
-  const byCategory: Record<string, number> = {}
-  for (const p of cats?.people ?? []) {
-    for (const [k, v] of Object.entries(p.by_category)) byCategory[k] = (byCategory[k] ?? 0) + v / heads
-  }
-  const segments = (cats?.categories ?? [])
-    .filter(c => byCategory[c.key])
-    .map(c => ({ ...c, amount: Math.round(byCategory[c.key]!) }))
-
-  return {
-    slug,
-    title: trip.heading ?? trip.title,
-    place: trip.place?.name ?? trip.title,
-    hasPlace: !!trip.place,
-    blurb: trip.blurb ?? trip.description,
-    image: trip.image,
-    imageAlt: trip.imageAlt ?? trip.title,
-    style: trip.style,
-    flightsFrom: trip.flightsFrom,
-    recorded: trip.costs === 'recorded',
-    people: heads,
-    expenses: stat?.bills.length ?? 0,
-    // Whole units: a headline, and the trip page has the exact figure.
-    perPerson: spend === null || heads === 0 ? null : formatMinorCurrencyCompact(Math.round(spend / heads / 100) * 100, code),
-    flights: byCategory.flights ? formatMinorCurrencyCompact(Math.round(byCategory.flights / 100) * 100, code) : null,
-    segments,
-    segmentTotal: segments.reduce((s, c) => s + c.amount, 0),
-    money: (amount: number) => formatMinorCurrencyCompact(amount, code),
-  }
-}
-
-const cards = computed(() => (data.value?.trips ?? []).map(toCard))
+const cards = computed(() => (data.value?.trips ?? []).map(t => toTripCard(t, data.value!)))
 
 // One choice per group; picking the active item again clears the group.
 const groups: { key: string, label: string, filters: Filter[] }[] = [
@@ -290,112 +252,7 @@ const joinLink = { path: '/join', query: { go: '1', utm_source: 'trips_index', u
         enter-active-class="transition duration-300"
         leave-active-class="hidden"
       >
-        <NuxtLink
-          v-for="(t, i) in visible"
-          :key="t.slug"
-          :to="`/t/${t.slug}`"
-          class="group flex flex-col overflow-hidden rounded-2xl bg-gray-800/60 ring-1 ring-white/5 hover:ring-primary-500/40 hover:bg-gray-800 transition"
-        >
-          <div class="relative aspect-[16/10] overflow-hidden">
-            <img
-              v-if="t.image"
-              :src="t.image"
-              :alt="t.imageAlt"
-              :loading="i < 3 ? 'eager' : 'lazy'"
-              width="1000"
-              height="625"
-              class="size-full object-cover transition-transform duration-500 group-hover:scale-105"
-            >
-            <div
-              v-else
-              class="size-full flex items-center justify-center bg-gradient-to-br from-primary-900 via-gray-800 to-sky-900"
-            >
-              <UIcon name="i-lucide-map-pinned" class="size-14 text-white/20" />
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-950/20 to-transparent" />
-            <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-1.5">
-              <UBadge
-                v-if="t.recorded"
-                color="primary"
-                variant="solid"
-                size="sm"
-                icon="i-lucide-receipt"
-                class="rounded-full"
-              >
-                Every expense
-              </UBadge>
-              <UBadge v-else color="neutral" variant="solid" size="sm" icon="i-lucide-map" class="rounded-full">
-                Itinerary
-              </UBadge>
-              <UBadge
-                v-if="t.style"
-                color="neutral"
-                variant="solid"
-                size="sm"
-                :icon="t.style === 'adventure' ? 'i-lucide-mountain-snow' : 'i-lucide-sun'"
-                class="rounded-full capitalize"
-              >
-                {{ t.style }}
-              </UBadge>
-            </div>
-            <div class="absolute bottom-3 left-4 right-4">
-              <div class="flex items-center gap-1.5 text-base font-semibold text-white">
-                <UIcon name="i-lucide-map-pin" class="size-4 shrink-0 text-primary-400" />
-                <span class="truncate">{{ t.place }}</span>
-              </div>
-              <div v-if="t.flights && t.flightsFrom" class="flex items-center gap-1 text-[11px] text-gray-400">
-                <UIcon name="i-lucide-plane-takeoff" class="size-3" />
-                From {{ t.flightsFrom }}
-              </div>
-              <div class="flex items-baseline gap-1.5 text-white">
-                <span class="text-3xl font-bold tracking-tight">{{ t.perPerson ?? '-' }}</span>
-                <span class="text-sm text-gray-300">avg per person</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex flex-1 flex-col gap-3 p-4">
-            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs text-gray-400">
-              <span class="flex items-center gap-1">
-                <UIcon name="i-lucide-users" class="size-3.5" />{{ t.people }} {{ t.people === 1 ? 'person' : 'people' }}
-              </span>
-              <span class="flex items-center gap-1">
-                <UIcon name="i-lucide-receipt-text" class="size-3.5" />{{ t.expenses }} expenses
-              </span>
-              <span class="flex items-center gap-1" :class="t.flights ? 'text-indigo-300' : ''">
-                <UIcon :name="t.flights ? 'i-lucide-plane' : 'i-lucide-plane-landing'" class="size-3.5" />
-                {{ t.flights ? `incl. ${t.flights} flights` : 'No flights' }}
-              </span>
-            </div>
-            <p class="text-sm text-gray-300 line-clamp-2">{{ t.blurb }}</p>
-
-            <div v-if="t.segments.length" class="mt-auto pt-1">
-              <div class="flex h-5 overflow-hidden rounded-md bg-white/5">
-                <!-- ponytail: CSS-only fit check. The zero-width spacer pins line 1;
-                     an icon wider than its segment wraps to line 2 and is clipped. -->
-                <div
-                  v-for="s in t.segments"
-                  :key="s.key"
-                  class="min-w-0 flex flex-wrap justify-center overflow-hidden"
-                  :class="CATEGORY_COLORS[s.key] ?? 'bg-gray-500'"
-                  :style="{ flex: `${s.amount} 0 0` }"
-                  :title="`${s.label} ${t.money(s.amount)}`"
-                >
-                  <span class="h-full w-0" aria-hidden="true" />
-                  <span class="self-center flex px-1 text-gray-950">
-                    <UIcon :name="CATEGORY_ICONS[s.key] ?? 'i-lucide-ellipsis'" class="size-3.5" />
-                  </span>
-                </div>
-              </div>
-              <div class="mt-2 flex justify-between text-xs text-gray-500">
-                <span>Biggest: {{ [...t.segments].sort((a, b) => b.amount - a.amount)[0]!.label }}</span>
-                <span class="flex items-center gap-1 text-primary-400 group-hover:gap-1.5 transition-all">
-                  See breakdown <UIcon name="i-lucide-arrow-right" class="size-3.5" />
-                </span>
-              </div>
-            </div>
-          </div>
-        </NuxtLink>
+        <TripCard v-for="(t, i) in visible" :key="t.slug" :trip="t" :eager="i < 3" />
       </TransitionGroup>
 
       <div v-else class="mt-10 rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-8 text-center">

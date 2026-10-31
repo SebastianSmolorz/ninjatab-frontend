@@ -17,11 +17,12 @@ const { data } = await useAsyncData(`author-${slug.value}`, async () => {
   // The card stats come from the exported tabs, not from hand-written copy, so
   // re-exporting a trip updates this page too. Selected down to the summary
   // fields — the line items would be most of the payload for none of the use.
-  const stats = await queryCollection('tripData')
-    .select('slug', 'settlement_currency', 'group_spend', 'people', 'bills')
-    .all()
+  const [stats, categories] = await Promise.all([
+    queryCollection('tripData').select('slug', 'settlement_currency', 'group_spend', 'people', 'bills').all(),
+    queryCollection('tripCategories').select('slug', 'categories', 'people').all(),
+  ])
 
-  return { author, trips, stats }
+  return { author, trips, stats, categories }
 })
 
 if (!data.value) {
@@ -30,21 +31,7 @@ if (!data.value) {
 
 const author = computed(() => data.value!.author)
 
-const trips = computed(() => data.value!.trips.map((trip) => {
-  const tripSlug = trip.path.split('/').pop()!
-  const stat = data.value!.stats.find(s => s.slug === tripSlug)
-  const heads = stat?.people.length ?? 0
-  const spend = stat?.group_spend ?? null
-  const code = stat?.settlement_currency ?? 'GBP'
-  return {
-    ...trip,
-    slug: tripSlug,
-    spend: spend === null ? null : formatMinorCurrencyCompact(spend, code),
-    perPerson: spend === null || heads === 0 ? null : formatMinorCurrencyCompact(Math.round(spend / heads), code),
-    people: heads,
-    expenses: stat?.bills.length ?? 0,
-  }
-}))
+const trips = computed(() => data.value!.trips.map(trip => toTripCard(trip, data.value!)))
 
 const canonical = computed(() => `${SITE}/${slug.value}`)
 const title = computed(() => `${author.value.title} | Ninja Tab`)
@@ -133,11 +120,11 @@ useHead(() => ({
           itemListElement: trips.value.map((t, i) => ({
             '@type': 'ListItem',
             position: i + 1,
-            name: t.title,
+            name: data.value!.trips[i]!.title,
             item: {
               '@type': 'Article',
               '@id': `${SITE}/t/${t.slug}#article`,
-              name: t.title,
+              name: data.value!.trips[i]!.title,
               url: `${SITE}/t/${t.slug}`,
             },
           })),
@@ -150,119 +137,85 @@ useHead(() => ({
 
 <template>
   <UMain class="relative min-h-screen bg-gray-900 pb-12">
-    <UContainer class="relative max-w-3xl pt-28 pb-20">
+    <UContainer class="relative max-w-5xl pt-20 pb-20">
       <!-- Author -->
-      <div class="rounded-2xl bg-gray-800/60 ring-1 ring-white/5 p-5 sm:p-6">
-        <div class="flex items-center gap-4">
-          <UAvatar
-            v-if="author.avatar"
-            :src="author.avatar"
-            :alt="`${author.name} profile picture`"
-            size="3xl"
-            class="shrink-0 ring-1 ring-white/10"
-          />
-          <div class="min-w-0">
-            <p class="text-primary-400 text-xs sm:text-sm font-semibold uppercase tracking-wide">Trips by</p>
-            <h1 class="text-2xl sm:text-4xl font-bold text-white">
-              {{ author.name }}
-              <span v-if="author.flag">{{ author.flag }}</span>
-            </h1>
-            <p v-if="author.tagline" class="text-sm sm:text-base text-gray-400">{{ author.tagline }}</p>
-          </div>
+      <div class="flex items-center gap-4">
+        <UAvatar
+          v-if="author.avatar"
+          :src="author.avatar"
+          :alt="`${author.name} profile picture`"
+          size="3xl"
+          class="shrink-0 ring-1 ring-white/10"
+        />
+        <div class="min-w-0">
+          <p class="text-primary-400 text-xs sm:text-sm font-semibold uppercase tracking-wide">Trips by</p>
+          <h1 class="mt-1 text-3xl sm:text-5xl font-bold text-white text-balance">
+            {{ author.name }}
+            <span v-if="author.flag">{{ author.flag }}</span>
+          </h1>
         </div>
+      </div>
+      <p v-if="author.tagline" class="mt-3 max-w-2xl text-gray-400 sm:text-lg">{{ author.tagline }}</p>
+      <!-- Native <details>: collapsed for readers, still in the HTML for crawlers. -->
+      <details class="group/more mt-2 max-w-2xl text-sm text-gray-400">
+        <summary class="inline-flex cursor-pointer list-none items-center gap-1 text-primary-400 hover:text-primary-300 [&::-webkit-details-marker]:hidden">
+          About {{ author.name }}
+          <UIcon name="i-lucide-chevron-down" class="size-4 transition-transform group-open/more:rotate-180" />
+        </summary>
+        <ContentRenderer :value="author" class="mt-3 author-prose" />
+      </details>
 
-        <ContentRenderer :value="author" class="mt-5 author-prose" />
-
-        <div class="mt-5 flex flex-wrap gap-3">
-          <UButton
-            v-if="author.website"
-            :to="author.website"
-            target="_blank"
-            rel="noopener"
-            color="neutral"
-            variant="subtle"
-            trailing-icon="i-lucide-external-link"
-          >
-            {{ author.website.replace(/^https?:\/\//, '').replace(/\/$/, '') }}
-          </UButton>
-          <UButton
-            v-if="author.instagram"
-            :to="author.instagram"
-            target="_blank"
-            rel="noopener"
-            color="neutral"
-            variant="subtle"
-            icon="i-lucide-instagram"
-          >
-            @{{ author.instagram.split('/').filter(Boolean).pop() }}
-          </UButton>
-          <!-- ponytail: lucide ships no TikTok glyph; music-2 until a brand icon set is worth adding -->
-          <UButton
-            v-if="author.tiktok"
-            :to="author.tiktok"
-            target="_blank"
-            rel="noopener"
-            color="neutral"
-            variant="subtle"
-            icon="i-lucide-music-2"
-          >
-            {{ author.tiktok.split('/').filter(Boolean).pop() }}
-          </UButton>
-        </div>
+      <div class="mt-5 flex flex-wrap gap-2">
+        <UButton
+          v-if="author.website"
+          :to="author.website"
+          target="_blank"
+          rel="noopener"
+          color="neutral"
+          variant="subtle"
+          trailing-icon="i-lucide-external-link"
+          class="rounded-full"
+        >
+          {{ author.website.replace(/^https?:\/\//, '').replace(/\/$/, '') }}
+        </UButton>
+        <UButton
+          v-if="author.instagram"
+          :to="author.instagram"
+          target="_blank"
+          rel="noopener"
+          color="neutral"
+          variant="subtle"
+          icon="i-lucide-instagram"
+          class="rounded-full"
+        >
+          @{{ author.instagram.split('/').filter(Boolean).pop() }}
+        </UButton>
+        <!-- ponytail: lucide ships no TikTok glyph; music-2 until a brand icon set is worth adding -->
+        <UButton
+          v-if="author.tiktok"
+          :to="author.tiktok"
+          target="_blank"
+          rel="noopener"
+          color="neutral"
+          variant="subtle"
+          icon="i-lucide-music-2"
+          class="rounded-full"
+        >
+          {{ author.tiktok.split('/').filter(Boolean).pop() }}
+        </UButton>
       </div>
 
       <!-- Trips -->
-      <h2 class="mt-12 mb-4 text-xl font-semibold text-white">
+      <h2 class="mt-10 text-2xl sm:text-3xl font-bold text-white">
         Trip cost breakdowns
         <UBadge color="neutral" variant="subtle" size="md" class="ml-2 rounded-full align-middle">
           {{ trips.length }}
         </UBadge>
       </h2>
 
-      <UPageGrid class="sm:grid-cols-2 lg:grid-cols-2">
-        <UPageCard
-          v-for="(trip, i) in trips"
-          :key="trip.slug"
-          :to="`/t/${trip.slug}`"
-          :title="trip.title"
-          :description="trip.blurb"
-          variant="subtle"
-          :ui="{ root: 'hover:bg-elevated/50 hover:ring-default' }"
-        >
-          <template v-if="trip.image" #header>
-            <img
-              :src="trip.image"
-              :alt="trip.imageAlt ?? trip.title"
-              :loading="i === 0 ? 'eager' : 'lazy'"
-              :fetchpriority="i === 0 ? 'high' : 'auto'"
-              width="1000"
-              height="563"
-              class="w-full aspect-video object-cover rounded-lg"
-            >
-          </template>
-
-          <template #footer>
-            <dl class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-sm text-gray-400">
-              <div v-if="trip.spend">
-                <dt class="sr-only">Group spend</dt>
-                <dd class="font-semibold text-primary-400">{{ trip.spend }}</dd>
-              </div>
-              <div v-if="trip.perPerson">
-                <dt class="sr-only">Per person</dt>
-                <dd>{{ trip.perPerson }} each</dd>
-              </div>
-              <div v-if="trip.people">
-                <dt class="sr-only">People</dt>
-                <dd>{{ trip.people }} {{ trip.people === 1 ? 'person' : 'people' }}</dd>
-              </div>
-              <div v-if="trip.expenses">
-                <dt class="sr-only">Expenses</dt>
-                <dd>{{ trip.expenses }} {{ trip.expenses === 1 ? 'expense' : 'expenses' }}</dd>
-              </div>
-            </dl>
-          </template>
-        </UPageCard>
-      </UPageGrid>
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <TripCard v-for="(trip, i) in trips" :key="trip.slug" :trip="trip" :eager="i < 3" />
+      </div>
     </UContainer>
 
     <MarketingFooter />
@@ -273,7 +226,6 @@ useHead(() => ({
 
 <style scoped>
 .author-prose {
-  color: var(--color-gray-300);
   line-height: 1.625;
 }
 .author-prose :deep(p),

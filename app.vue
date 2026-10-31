@@ -28,9 +28,8 @@ const hideHeader = computed(() =>
   || route.name === 'tabs-id-upgraded'
 )
 
-// Long-form reading pages carry the download CTA in the header. The trip pages
-// have their own sticky banner and the home page has a hero full of buttons.
-const showCta = computed(() =>
-  route.name === 'author' || String(route.name ?? '').startsWith('blog')
-)
+// Long-form reading pages carry the download CTA in the header. The trip and
+// creator pages have their own sticky banner and the home page has a hero full
+// of buttons.
+const showCta = computed(() => String(route.name ?? '').startsWith('blog'))
 </script>
