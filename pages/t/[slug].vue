@@ -691,22 +691,7 @@ const isEven = (item: { claims: { split_value: number | null }[] }) =>
 
     <!-- Fixed download CTA. Lives outside the view branches so it is present on
          the tab and the bill drill-down alike. -->
-    <div
-      class="fixed inset-x-0 bottom-0 z-40 border-t border-black/10 bg-[#01e474] pb-[env(safe-area-inset-bottom)]"
-    >
-      <div class="mx-auto max-w-2xl px-4 py-1 flex items-baseline justify-center gap-3">
-        <p class="text-sm sm:text-base text-gray-900 font-medium leading-snug">
-          <strong>Split</strong> your own trip expenses
-        </p>
-        <NuxtLink
-          :to="joinLink"
-          class="inline-flex items-center gap-1 bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800 transition-colors"
-        >
-          Get Ninja Tab
-          <UIcon name="i-lucide-arrow-right" class="size-3.5" />
-        </NuxtLink>
-      </div>
-    </div>
+    <TripCta :to="joinLink" />
   </UMain>
 </template>
 
